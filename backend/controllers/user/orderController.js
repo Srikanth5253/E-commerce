@@ -247,7 +247,7 @@ export const createCheckoutSession =
               item.quantity,
           })
         );
-
+      const userId = req.user._id;
       const session =
         await stripe.checkout.sessions.create(
           {
