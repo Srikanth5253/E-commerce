@@ -1,1 +1,0 @@
-{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"user":{"$numberInt":"1"}},"name":"user_1"},{"v":{"$numberInt":"2"},"key":{"lastMessageAt":{"$numberInt":"-1"}},"name":"lastMessageAt_-1"}],"uuid":"1eb4002606214b7798dda994b7f57702","collectionName":"conversations","type":"collection"}
