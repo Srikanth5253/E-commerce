@@ -21,9 +21,15 @@ const app = express();
 
 app.use(express.json());
 
-app.use(cors({
-  origin:"*",
-}));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://e-commerce-murex-two-61.vercel.app",
+    ],
+    credentials: true,
+  })
+);
 
 app.use("/api/auth", authRoutes);
 app.use(
@@ -78,7 +84,7 @@ const startServer = async () => {
 
     const PORT = process.env.PORT || 5000;
 
-    app.listen(PORT,'0.0.0.0',() => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`Server running on ${PORT}`);
     });
 
