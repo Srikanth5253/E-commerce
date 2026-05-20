@@ -9,7 +9,7 @@ import {
 
 import {
   getProducts,
-} from "../../services/productService";
+} from "../../services/ProductService";
 
 import Navbar from "../../components/Navbar";
 
