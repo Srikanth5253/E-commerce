@@ -16,7 +16,7 @@ export const createConversation =
   async () => {
 
     const response = await API.post(
-      "/user/chat/conversation"
+      "/api/user/chat/conversation"
     );
 
     return response.data;
@@ -26,7 +26,7 @@ export const getUserMessages =
   async (conversationId) => {
 
     const response = await API.get(
-      `/user/chat/messages/${conversationId}`
+      `/api/user/chat/messages/${conversationId}`
     );
 
     return response.data;
@@ -36,7 +36,7 @@ export const sendUserMessage =
   async (payload) => {
 
     const response = await API.post(
-      "/user/chat/message",
+      "/api/user/chat/message",
       payload
     );
 

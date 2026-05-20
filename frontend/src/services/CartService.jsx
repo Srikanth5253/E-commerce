@@ -5,7 +5,7 @@ export const addToCart =
 
     const response =
       await API.post(
-        "/cart/add",
+        "/api/cart/add",
         {
           productId,
         }
@@ -19,7 +19,7 @@ export const getCart =
 
     const response =
       await API.get(
-        "/cart"
+        "/api/cart"
       );
 
     return response.data;
@@ -34,7 +34,7 @@ export const updateCartQuantity =
 
     const response =
       await API.put(
-        "/cart/update-quantity",
+        "/api/cart/update-quantity",
         {
           productId,
           action,
@@ -48,7 +48,7 @@ export const removeFromCart =
   async (productId) => {
     const response =
       await API.delete(
-        `/cart/remove/${productId}`
+        `/api/cart/remove/${productId}`
       );
 
     return response.data;

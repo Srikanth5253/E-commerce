@@ -5,7 +5,7 @@ export const placeOrder =
 
     const response =
       await API.post(
-        "/orders/place"
+        "/api/orders/place"
       );
 
     return response.data;
@@ -16,7 +16,7 @@ export const getMyOrders =
 
     const response =
       await API.get(
-        "/orders/my-orders"
+        "/api/orders/my-orders"
       );
 
     return response.data;
@@ -27,7 +27,7 @@ export const checkoutOrder =
 
     const response =
       await API.post(
-        "/orders/checkout"
+        "/api/orders/checkout"
       );
 
     return response.data;

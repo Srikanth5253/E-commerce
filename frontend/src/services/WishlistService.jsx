@@ -5,7 +5,7 @@ export const addToWishlist =
 
     const response =
       await API.post(
-        "/wishlist/add",
+        "/api/wishlist/add",
         {
           productId,
         }
@@ -19,7 +19,7 @@ export const getWishlist =
 
     const response =
       await API.get(
-        "/wishlist"
+        "/api/wishlist"
       );
 
     return response.data;
@@ -31,7 +31,7 @@ export const removeFromWishlist =
 
     const response =
       await API.delete(
-        `/wishlist/remove/${productId}`
+        `/api/wishlist/remove/${productId}`
       );
 
     return response.data;

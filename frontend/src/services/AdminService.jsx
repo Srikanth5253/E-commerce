@@ -5,7 +5,7 @@ export const getDashboardStats =
 
     const response =
       await API.get(
-        "/admin/dashboard"
+        "/api/admin/dashboard"
       );
 
     return response.data;
@@ -16,7 +16,7 @@ export const getAllOrders =
 
     const response =
       await API.get(
-        "/admin/orders"
+        "/api/admin/orders"
       );
 
     return response.data;
@@ -31,7 +31,7 @@ export const updateOrderStatus =
 
     const response =
       await API.put(
-        `/admin/orders/${orderId}`,
+        `/api/admin/orders/${orderId}`,
         {
           status,
         }
@@ -45,7 +45,7 @@ export const getConversations =
   async () => {
 
     const response = await API.get(
-      "/admin/chat/conversations"
+      "/api/admin/chat/conversations"
     );
 
     return response.data;
@@ -55,7 +55,7 @@ export const getChatMessages =
   async (conversationId) => {
 
     const response = await API.get(
-      `/admin/chat/messages/${conversationId}`
+      `/api/admin/chat/messages/${conversationId}`
     );
 
     return response.data;
@@ -65,7 +65,7 @@ export const sendAdminMessage =
   async (payload) => {
 
     const response = await API.post(
-      "/admin/chat/message",
+      "/api/admin/chat/message",
       payload
     );
 

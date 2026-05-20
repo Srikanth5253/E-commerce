@@ -5,7 +5,7 @@ export const addProduct =
 
     const response =
       await API.post(
-        "/admin/products/add",
+        "/api/admin/products/add",
         productData
       );
 
@@ -17,7 +17,7 @@ export const getProducts =
 
     const response =
       await API.get(
-        "/user/products"
+        "/api/user/products"
       );
 
     return response.data;
@@ -28,7 +28,7 @@ export const getSingleProduct =
 
     const response =
       await API.get(
-        `/user/products/${id}`
+        `/api/user/products/${id}`
       );
 
     return response.data;
@@ -42,7 +42,7 @@ export const updateProduct =
 
     const response =
       await API.put(
-        `/admin/products/update/${id}`,
+        `/api/admin/products/update/${id}`,
         productData
       );
 
@@ -54,7 +54,7 @@ export const deleteProduct =
 
     const response =
       await API.delete(
-        `/admin/products/delete/${id}`
+        `/api/admin/products/delete/${id}`
       );
 
     return response.data;
@@ -68,7 +68,7 @@ export const addReview =
 
     const response =
       await API.post(
-        `/user/products/${productId}/review`,
+        `/api/user/products/${productId}/review`,
         reviewData
       );
 
@@ -80,7 +80,7 @@ export const getRelatedProducts =
 
     const response =
       await API.get(
-        `/user/products/related/${id}`
+        `/api/user/products/related/${id}`
       );
 
     return response.data;
