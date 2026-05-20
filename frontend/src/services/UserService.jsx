@@ -5,7 +5,7 @@ export const updateProfile =
 
     const response =
       await API.put(
-        "/auth/profile/update",
+        "api/auth/profile/update",
         userData
       );
 
