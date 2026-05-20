@@ -46,7 +46,6 @@ export const updateCartQuantity =
 
 export const removeFromCart =
   async (productId) => {
-
     const response =
       await API.delete(
         `/cart/remove/${productId}`
