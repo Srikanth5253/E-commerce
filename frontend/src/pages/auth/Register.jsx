@@ -105,7 +105,7 @@ function Register() {
       try {
 
         await API.post(
-          "api/auth/register",
+          "/api/auth/register",
           formData
         );
 

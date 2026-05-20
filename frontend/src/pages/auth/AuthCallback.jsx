@@ -39,7 +39,7 @@ function AuthCallback() {
 
                         const response =
                             await API.post(
-                                "api/auth/google-login",
+                                "/api/auth/google-login",
                                 {
                                     name:
                                         user.name,

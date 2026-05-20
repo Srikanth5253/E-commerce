@@ -168,7 +168,7 @@ function Login() {
 
       const response =
         await API.post(
-          "api/auth/login",
+          "/api/auth/login",
           formData
         );
 
