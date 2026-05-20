@@ -39,7 +39,7 @@ function PaymentSuccess() {
 
           const response =
             await API.post(
-              "/orders/payment-success"
+              "/api/orders/payment-success"
             );
 
           console.log(response);
