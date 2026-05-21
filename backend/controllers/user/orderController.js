@@ -259,10 +259,10 @@ export const createCheckoutSession =
             mode: "payment",
 
             success_url:
-              `${process.env.CLIENT_URLS}/payment-success?userId=${userId}`,
+              `${process.env.CLIENT_URL}/payment-success?userId=${userId}`,
 
             cancel_url:
-              `${process.env.CLIENT_URLS}/payment-cancel`,
+              `${process.env.CLIENT_URL}/payment-cancel`,
           }
         );
 
