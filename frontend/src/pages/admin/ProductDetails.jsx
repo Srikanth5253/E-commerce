@@ -57,8 +57,6 @@ function ProductDetails() {
 
       } catch (error) {
 
-        console.log(error);
-
         toast.error(
           "Failed to fetch product"
         );
@@ -102,8 +100,6 @@ function ProductDetails() {
         );
 
       } catch (error) {
-
-        console.log(error);
 
         toast.error(
 

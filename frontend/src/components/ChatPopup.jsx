@@ -10,6 +10,8 @@ import {
   MessageCircleMore,
 } from "lucide-react";
 
+import toast from "react-hot-toast";
+
 import {
   createConversation,
   getUserMessages,
@@ -48,7 +50,10 @@ const ChatPopup = ({
         );
 
       } catch (error) {
-        console.log(error);
+        toast.error(
+          error?.response?.data?.message ||
+          "Failed to load messages"
+        );
       }
     };
 
@@ -78,7 +83,10 @@ const ChatPopup = ({
           );
 
         } catch (error) {
-          console.log(error);
+          toast.error(
+            error?.response?.data?.message ||
+            "Failed to initialize chat"
+          );
         }
       };
 
@@ -106,7 +114,10 @@ const ChatPopup = ({
           );
 
         } catch (error) {
-          console.log(error);
+          toast.error(
+            error?.response?.data?.message ||
+            "Unable to refresh messages"
+          );
         }
 
       }, 3000);
@@ -164,10 +175,9 @@ const ChatPopup = ({
         setText("");
 
       } catch (error) {
-
-        console.log(
-          "SEND MESSAGE ERROR:",
-          error
+        toast.error(
+          error?.response?.data?.message ||
+          "Failed to send message"
         );
       }
     };
@@ -247,7 +257,7 @@ const ChatPopup = ({
             transition
           "
         >
-        <X size={30} />
+          <X size={30} />
         </button>
       </div>
 
@@ -303,8 +313,8 @@ const ChatPopup = ({
               <div
                 key={message._id}
                 className={`flex ${isUser
-                    ? "justify-end"
-                    : "justify-start"
+                  ? "justify-end"
+                  : "justify-start"
                   }`}
               >
 
@@ -447,3 +457,6 @@ const ChatPopup = ({
 };
 
 export default ChatPopup;
+
+
+

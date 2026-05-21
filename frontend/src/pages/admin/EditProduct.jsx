@@ -114,8 +114,6 @@ function EditProduct() {
 
       } catch (error) {
 
-        console.log(error);
-
         toast.error(
           "Failed to fetch product"
         );
@@ -264,8 +262,6 @@ function EditProduct() {
         );
 
       } catch (error) {
-
-        console.log(error);
 
         toast.error(
 

@@ -23,11 +23,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://e-commerce-nexcart.vercel.app",
-      "https://e-commerce-git-main-nexcart.vercel.app",
-    ],
+    origin: process.env.CLIENT_URLS.split(","),
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: [

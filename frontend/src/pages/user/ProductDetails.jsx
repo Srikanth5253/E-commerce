@@ -72,8 +72,6 @@ function ProductDetails() {
 
       } catch (error) {
 
-        console.log(error);
-
         toast.error(
           "Failed to load product"
         );
@@ -100,9 +98,10 @@ function ProductDetails() {
         );
 
       } catch (error) {
-
-        console.log(error);
-
+        toast.error(
+          error?.response?.data?.message ||
+          "Failed to load related products"
+        );
       }
     };
 
@@ -141,8 +140,6 @@ function ProductDetails() {
 
       } catch (error) {
 
-        console.log(error);
-
         toast.error(
 
           error.response?.data
@@ -169,8 +166,6 @@ function ProductDetails() {
         );
 
       } catch (error) {
-
-        console.log(error);
 
         toast.error(
           error.response?.data
@@ -214,8 +209,6 @@ function ProductDetails() {
         setComment("");
 
       } catch (error) {
-
-        console.log(error);
 
         toast.error(
           error.response?.data

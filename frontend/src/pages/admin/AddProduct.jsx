@@ -181,8 +181,6 @@ function AddProduct() {
             productData
           );
 
-        console.log(response);
-
         toast.success(
           "Product Added Successfully"
         );
@@ -192,8 +190,6 @@ function AddProduct() {
         );
 
       } catch (error) {
-
-        console.log(error);
 
         toast.error(
 

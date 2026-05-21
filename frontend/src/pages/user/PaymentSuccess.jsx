@@ -42,8 +42,6 @@ function PaymentSuccess() {
               "/api/orders/payment-success"
             );
 
-          console.log(response);
-
           setOrderCreated(true);
 
           toast.success(
@@ -59,8 +57,6 @@ function PaymentSuccess() {
           }, 3500);
 
         } catch (error) {
-
-          console.log(error);
 
           toast.error(
 

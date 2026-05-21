@@ -14,6 +14,8 @@ import {
   FaBoxOpen,
 } from "react-icons/fa";
 
+import toast from "react-hot-toast";
+
 import Navbar from "../../components/Navbar";
 
 import ProductCard from "../../components/ProductCard";
@@ -52,8 +54,10 @@ function Products() {
         );
 
       } catch (error) {
-
-        console.log(error);
+        toast.error(
+          error?.response?.data?.message ||
+          "Failed to load products"
+        );
 
       } finally {
 

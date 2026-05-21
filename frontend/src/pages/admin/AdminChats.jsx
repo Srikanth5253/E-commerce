@@ -50,7 +50,10 @@ const AdminChats = () => {
         );
 
       } catch (error) {
-        console.log(error);
+        toast.error(
+          error?.response?.data?.message ||
+          "Failed to load conversations"
+        );
       }
     };
 
@@ -80,7 +83,10 @@ const AdminChats = () => {
           fetchConversations();
 
         } catch (error) {
-          console.log(error);
+          toast.error(
+            error?.response?.data?.message ||
+            "Failed to refresh chat messages"
+          );
         }
 
       }, 3000);

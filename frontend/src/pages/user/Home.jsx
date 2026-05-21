@@ -7,6 +7,8 @@ import {
   Link,
 } from "react-router-dom";
 
+import toast from "react-hot-toast";
+
 import bannerImage from "../../assets/Banner.jpg";
 
 import {
@@ -38,8 +40,10 @@ function Home() {
         );
 
       } catch (error) {
-
-        console.log(error);
+        toast.error(
+          error?.response?.data?.message ||
+          "Failed to load products"
+        );
 
       } finally {
 

@@ -44,8 +44,6 @@ function Wishlist() {
 
       } catch (error) {
 
-        console.log(error);
-
         toast.error(
           "Failed to load wishlist"
         );
@@ -78,8 +76,6 @@ function Wishlist() {
 
       } catch (error) {
 
-        console.log(error);
-
         toast.error(
           error.response?.data
             ?.message ||
@@ -103,8 +99,6 @@ function Wishlist() {
         );
 
       } catch (error) {
-
-        console.log(error);
 
         toast.error(
           error.response?.data

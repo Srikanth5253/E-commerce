@@ -37,8 +37,6 @@ function Cart() {
 
             } catch (error) {
 
-                console.log(error);
-
                 toast.error(
                     "Failed to load cart"
                 );
@@ -73,8 +71,6 @@ function Cart() {
 
             } catch (error) {
 
-                console.log(error);
-
                 toast.error(
                     error.response?.data
                         ?.message ||
@@ -99,8 +95,6 @@ function Cart() {
                 fetchCart();
 
             } catch (error) {
-
-                console.log(error);
 
                 toast.error(
                     error.response?.data
@@ -131,8 +125,6 @@ function Cart() {
                     data.url;
 
             } catch (error) {
-
-                console.log(error);
 
                 toast.error(
                     error.response?.data

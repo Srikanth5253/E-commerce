@@ -16,6 +16,8 @@ import {
   FaChartLine,
 } from "react-icons/fa";
 
+import toast from "react-hot-toast";
+
 import Navbar from "../../components/Navbar";
 
 import {
@@ -48,9 +50,10 @@ function AdminDashboard() {
         setStats(data);
 
       } catch (error) {
-
-        console.log(error);
-
+        toast.error(
+          error?.response?.data?.message ||
+          "Failed to load dashboard statistics"
+        );
       } finally {
 
         setLoading(false);
@@ -83,7 +86,7 @@ function AdminDashboard() {
 
           </div>
 
-          </div>
+        </div>
 
         <div className="grid md:grid-cols-3 gap-8">
 

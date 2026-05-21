@@ -44,8 +44,6 @@ function AdminOrders() {
 
       } catch (error) {
 
-        console.log(error);
-
         toast.error(
           "Failed to fetch orders"
         );
@@ -81,8 +79,6 @@ function AdminOrders() {
         fetchOrders();
 
       } catch (error) {
-
-        console.log(error);
 
         toast.error(
           error.response?.data
