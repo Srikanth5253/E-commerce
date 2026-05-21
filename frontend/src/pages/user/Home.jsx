@@ -89,8 +89,6 @@ function Home() {
 
       <Navbar />
 
-      {/* HERO */}
-
       <section
         className="
           relative
@@ -117,8 +115,6 @@ function Home() {
         />
 
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center relative z-10">
-
-          {/* LEFT */}
 
           <div>
 
@@ -244,8 +240,6 @@ function Home() {
 
           </div>
 
-          {/* RIGHT */}
-
           <div className="relative">
 
             <img
@@ -262,8 +256,6 @@ function Home() {
                 duration-500
               "
             />
-
-            {/* FLOATING CARDS */}
 
             <div
               className="
@@ -380,8 +372,6 @@ function Home() {
         </div>
 
       </section>
-
-      {/* FEATURES */}
 
       <section className="max-w-7xl mx-auto px-6 py-20">
 
@@ -507,8 +497,6 @@ function Home() {
         </div>
 
       </section>
-
-      {/* CATEGORIES */}
 
       <section className="max-w-7xl mx-auto px-6 pb-20">
 
@@ -638,48 +626,46 @@ function Home() {
 
       </section>
 
-      {/* VIDEO PRODUCTS */}
-
       {featuredVideoProducts.length >
         0 && (
 
-        <section className="max-w-7xl mx-auto px-6 pb-20">
+          <section className="max-w-7xl mx-auto px-6 pb-20">
 
-          <div className="flex items-center justify-between mb-12">
+            <div className="flex items-center justify-between mb-12">
 
-            <div>
+              <div>
 
-              <h2 className="text-5xl font-extrabold mb-3 text-slate-900">
+                <h2 className="text-5xl font-extrabold mb-3 text-slate-900">
 
-                Video Products
+                  Video Products
 
-              </h2>
+                </h2>
 
-              <p className="text-slate-500 text-lg">
+                <p className="text-slate-500 text-lg">
 
-                Interactive product previews
+                  Interactive product previews
 
-              </p>
+                </p>
+
+              </div>
 
             </div>
 
-          </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featuredVideoProducts
+                .slice(0, 3)
+                .map(
+                  (
+                    product
+                  ) => (
 
-            {featuredVideoProducts
-              .slice(0, 3)
-              .map(
-                (
-                  product
-                ) => (
-
-                  <Link
-                    key={
-                      product._id
-                    }
-                    to={`/product/${product._id}`}
-                    className="
+                    <Link
+                      key={
+                        product._id
+                      }
+                      to={`/product/${product._id}`}
+                      className="
                       group
                       bg-white
                       border
@@ -693,35 +679,35 @@ function Home() {
                       duration-500
                       hover:-translate-y-2
                     "
-                  >
+                    >
 
-                    <div className="relative">
+                      <div className="relative">
 
-                      <video
-                        src={
-                          product
-                            .videos?.[0]
-                        }
-                        className="
+                        <video
+                          src={
+                            product
+                              .videos?.[0]
+                          }
+                          className="
                           h-80
                           w-full
                           object-cover
                           bg-black
                         "
-                      />
+                        />
 
-                      <div
-                        className="
+                        <div
+                          className="
                           absolute
                           inset-0
                           flex
                           items-center
                           justify-center
                         "
-                      >
+                        >
 
-                        <div
-                          className="
+                          <div
+                            className="
                             w-20
                             h-20
                             rounded-full
@@ -731,53 +717,51 @@ function Home() {
                             items-center
                             justify-center
                           "
-                        >
+                          >
 
-                          <FaPlay
-                            className="
+                            <FaPlay
+                              className="
                               text-white
                               text-3xl
                             "
-                          />
+                            />
+
+                          </div>
 
                         </div>
 
                       </div>
 
-                    </div>
+                      <div className="p-6">
 
-                    <div className="p-6">
+                        <h3 className="text-2xl font-bold text-slate-900">
 
-                      <h3 className="text-2xl font-bold text-slate-900">
+                          {
+                            product.title
+                          }
 
-                        {
-                          product.title
-                        }
+                        </h3>
 
-                      </h3>
+                        <p className="text-slate-500 mt-3">
 
-                      <p className="text-slate-500 mt-3">
+                          {
+                            product.category
+                          }
 
-                        {
-                          product.category
-                        }
+                        </p>
 
-                      </p>
+                      </div>
 
-                    </div>
+                    </Link>
 
-                  </Link>
+                  )
+                )}
 
-                )
-              )}
+            </div>
 
-          </div>
+          </section>
 
-        </section>
-
-      )}
-
-      {/* FEATURED PRODUCTS */}
+        )}
 
       <section className="max-w-7xl mx-auto px-6 pb-20">
 
@@ -909,8 +893,6 @@ function Home() {
         )}
 
       </section>
-
-      {/* CTA */}
 
       <section className="px-6 pb-24">
 
