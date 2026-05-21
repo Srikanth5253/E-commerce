@@ -443,9 +443,6 @@ import {
   FaSearch,
   FaFilter,
   FaBoxOpen,
-  FaVideo,
-  FaImage,
-  FaTags,
 } from "react-icons/fa";
 
 import toast from "react-hot-toast";
@@ -585,22 +582,6 @@ function Products() {
                 tag
                   ?.toLowerCase()
                   .includes(query)
-            ) ||
-
-            (
-              query ===
-                "video" &&
-
-              product.videos
-                ?.length > 0
-            ) ||
-
-            (
-              query ===
-                "image" &&
-
-              product.images
-                ?.length > 0
             );
 
           const matchesCategory =
@@ -629,38 +610,6 @@ function Products() {
       selectedCategory,
 
     ]);
-
-  const totalImages =
-    products.reduce(
-      (
-        total,
-        product
-      ) =>
-
-        total +
-        (
-          product.images
-            ?.length || 0
-        ),
-
-      0
-    );
-
-  const totalVideos =
-    products.reduce(
-      (
-        total,
-        product
-      ) =>
-
-        total +
-        (
-          product.videos
-            ?.length || 0
-        ),
-
-      0
-    );
 
   return (
 
@@ -708,7 +657,7 @@ function Products() {
 
               <p className="text-slate-500 mt-3 text-lg">
 
-                Discover premium products with images and videos
+                Discover premium products
 
               </p>
 
@@ -716,94 +665,33 @@ function Products() {
 
           </div>
 
-          {/* STATS */}
+          {/* PRODUCT COUNT */}
 
-          <div className="grid grid-cols-3 gap-4">
+          <div
+            className="
+              bg-white
+              border
+              border-slate-200
+              rounded-2xl
+              px-8
+              py-6
+              shadow-sm
+              text-center
+              min-w-[180px]
+            "
+          >
 
-            <div
-              className="
-                bg-white
-                border
-                border-slate-200
-                rounded-2xl
-                px-6
-                py-5
-                shadow-sm
-                text-center
-              "
-            >
+            <p className="text-slate-400 text-sm">
 
-              <p className="text-slate-400 text-sm">
+              Products
 
-                Products
+            </p>
 
-              </p>
+            <h2 className="text-4xl font-extrabold text-indigo-600 mt-2">
 
-              <h2 className="text-3xl font-extrabold text-indigo-600 mt-1">
+              {filteredProducts.length}
 
-                {filteredProducts.length}
-
-              </h2>
-
-            </div>
-
-            <div
-              className="
-                bg-white
-                border
-                border-slate-200
-                rounded-2xl
-                px-6
-                py-5
-                shadow-sm
-                text-center
-              "
-            >
-
-              <div className="flex items-center justify-center gap-2 text-slate-400 text-sm">
-
-                <FaImage />
-
-                Images
-
-              </div>
-
-              <h2 className="text-3xl font-extrabold text-indigo-600 mt-1">
-
-                {totalImages}
-
-              </h2>
-
-            </div>
-
-            <div
-              className="
-                bg-white
-                border
-                border-slate-200
-                rounded-2xl
-                px-6
-                py-5
-                shadow-sm
-                text-center
-              "
-            >
-
-              <div className="flex items-center justify-center gap-2 text-slate-400 text-sm">
-
-                <FaVideo />
-
-                Videos
-
-              </div>
-
-              <h2 className="text-3xl font-extrabold text-indigo-600 mt-1">
-
-                {totalVideos}
-
-              </h2>
-
-            </div>
+            </h2>
 
           </div>
 
@@ -846,7 +734,7 @@ function Products() {
                   e.target.value
                 )
               }
-              placeholder="Search products, tags, categories, videos..."
+              placeholder="Search products, tags, categories..."
               className="
                 w-full
                 outline-none
@@ -921,102 +809,6 @@ function Products() {
             </select>
 
           </div>
-
-        </div>
-
-        {/* QUICK TAGS */}
-
-        <div className="flex flex-wrap gap-3 mb-12">
-
-          <button
-            onClick={() =>
-              setSearch("video")
-            }
-            className="
-              px-5
-              py-2.5
-              rounded-full
-              bg-white
-              border
-              border-slate-200
-              text-slate-700
-              hover:bg-indigo-50
-              hover:border-indigo-400
-              transition-all
-              duration-300
-              flex
-              items-center
-              gap-2
-              font-medium
-            "
-          >
-
-            <FaVideo />
-
-            Video Products
-
-          </button>
-
-          <button
-            onClick={() =>
-              setSearch("image")
-            }
-            className="
-              px-5
-              py-2.5
-              rounded-full
-              bg-white
-              border
-              border-slate-200
-              text-slate-700
-              hover:bg-indigo-50
-              hover:border-indigo-400
-              transition-all
-              duration-300
-              flex
-              items-center
-              gap-2
-              font-medium
-            "
-          >
-
-            <FaImage />
-
-            Image Products
-
-          </button>
-
-          <button
-            onClick={() => {
-
-              setSearch("");
-
-              setSelectedCategory(
-                "All"
-              );
-
-            }}
-            className="
-              px-5
-              py-2.5
-              rounded-full
-              bg-indigo-500
-              text-white
-              hover:bg-indigo-600
-              transition-all
-              duration-300
-              flex
-              items-center
-              gap-2
-              font-medium
-            "
-          >
-
-            <FaTags />
-
-            Reset Filters
-
-          </button>
 
         </div>
 
