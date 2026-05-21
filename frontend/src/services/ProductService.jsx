@@ -6,7 +6,13 @@ export const addProduct =
     const response =
       await API.post(
         "/api/admin/products/add",
-        productData
+        productData,
+        {
+          headers: {
+            "Content-Type":
+              "multipart/form-data",
+          },
+        }
       );
 
     return response.data;
@@ -43,7 +49,13 @@ export const updateProduct =
     const response =
       await API.put(
         `/api/admin/products/update/${id}`,
-        productData
+        productData,
+        {
+          headers: {
+            "Content-Type":
+              "multipart/form-data",
+          },
+        }
       );
 
     return response.data;

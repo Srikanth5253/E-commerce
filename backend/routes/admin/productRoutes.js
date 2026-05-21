@@ -10,12 +10,24 @@ import protect from "../../middleware/authMiddleware.js";
 
 import adminOnly from "../../middleware/roleMiddleware.js";
 
+import upload from "../../middleware/upload.js";
+
 const router = express.Router();
 
 router.post(
   "/add",
   protect,
   adminOnly,
+  upload.fields([
+    {
+      name: "images",
+      maxCount: 10,
+    },
+    {
+      name: "videos",
+      maxCount: 5,
+    },
+  ]),
   addProduct
 );
 

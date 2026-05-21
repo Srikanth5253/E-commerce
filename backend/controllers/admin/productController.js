@@ -1,13 +1,99 @@
 import Product from "../../models/Product.js";
 
+// export const addProduct = async (
+//   req,
+//   res,
+//   next
+// ) => {
+
+//   try {
+
+//     const {
+//       title,
+//       description,
+//       price,
+//       category,
+//       stock,
+//       lowStockThreshold,
+//       tags,
+//       images,
+//       videos,
+//     } = req.body;
+
+//     if (stock < 0) {
+
+//       return res.status(400).json({
+//         success: false,
+//         message: "Stock cannot be negative",
+//       });
+
+//     }
+
+//     const formattedTags =
+//       Array.isArray(tags)
+
+//         ? tags.map(
+//           (tag) =>
+//             tag.trim().toLowerCase()
+//         )
+
+//         : tags
+//           ?.split(",")
+//           .map(
+//             (tag) =>
+//               tag.trim().toLowerCase()
+//           );
+
+//     const product =
+//       await Product.create({
+
+//         title,
+
+//         description,
+
+//         price,
+
+//         category,
+
+//         stock,
+
+//         lowStockThreshold:
+//           lowStockThreshold || 5,
+
+//         tags: formattedTags,
+
+//         images,
+
+//         videos,
+
+//         createdBy: req.user._id,
+
+//       });
+
+//     res.status(201).json({
+
+//       success: true,
+
+//       message:
+//         "Product added successfully",
+
+//       product,
+
+//     });
+
+//   } catch (error) {
+
+//     next(error);
+
+//   }
+// };
+
 export const addProduct = async (
   req,
   res,
   next
 ) => {
-
   try {
-
     const {
       title,
       description,
@@ -21,40 +107,72 @@ export const addProduct = async (
     } = req.body;
 
     if (stock < 0) {
-
       return res.status(400).json({
         success: false,
-        message: "Stock cannot be negative",
+        message:
+          "Stock cannot be negative",
       });
-
     }
 
     const formattedTags =
       Array.isArray(tags)
-
-        ? tags.map(
-          (tag) =>
-            tag.trim().toLowerCase()
+        ? tags.map((tag) =>
+          tag
+            .trim()
+            .toLowerCase()
         )
-
         : tags
           ?.split(",")
-          .map(
-            (tag) =>
-              tag.trim().toLowerCase()
-          );
+          .map((tag) =>
+            tag
+              .trim()
+              .toLowerCase()
+          ) || [];
+
+    const manualImages =
+      Array.isArray(images)
+        ? images
+        : images
+          ?.split(",")
+          .map((img) =>
+            img.trim()
+          ) || [];
+
+    const manualVideos =
+      Array.isArray(videos)
+        ? videos
+        : videos
+          ?.split(",")
+          .map((video) =>
+            video.trim()
+          ) || [];
+
+    const uploadedImages =
+      req.files?.images?.map(
+        (file) => file.path
+      ) || [];
+
+    const uploadedVideos =
+      req.files?.videos?.map(
+        (file) => file.path
+      ) || [];
+
+    const finalImages = [
+      ...manualImages,
+      ...uploadedImages,
+    ];
+
+    const finalVideos = [
+      ...manualVideos,
+      ...uploadedVideos,
+    ];
 
     const product =
       await Product.create({
-
         title,
-
         description,
-
         price,
-
         category,
-
         stock,
 
         lowStockThreshold:
@@ -62,31 +180,121 @@ export const addProduct = async (
 
         tags: formattedTags,
 
-        images,
+        images: finalImages,
 
-        videos,
+        videos: finalVideos,
 
-        createdBy: req.user._id,
-
+        createdBy:
+          req.user._id,
       });
 
     res.status(201).json({
-
       success: true,
 
       message:
         "Product added successfully",
 
       product,
-
     });
-
   } catch (error) {
-
     next(error);
-
   }
 };
+
+// export const updateProduct =
+//   async (
+//     req,
+//     res,
+//     next
+//   ) => {
+
+//     try {
+
+//       const product =
+//         await Product.findById(
+//           req.params.id
+//         );
+
+//       if (!product) {
+
+//         res.status(404);
+
+//         throw new Error(
+//           "Product not found"
+//         );
+//       }
+
+//       if (
+//         req.body.stock &&
+//         req.body.stock < 0
+//       ) {
+
+//         return res.status(400).json({
+//           success: false,
+//           message: "Stock cannot be negative",
+//         });
+
+//       }
+
+//       const formattedTags =
+//         Array.isArray(
+//           req.body.tags
+//         )
+
+//           ? req.body.tags.map(
+//             (tag) =>
+//               tag
+//                 .trim()
+//                 .toLowerCase()
+//           )
+
+//           : req.body.tags
+//             ?.split(",")
+//             .map(
+//               (tag) =>
+//                 tag
+//                   .trim()
+//                   .toLowerCase()
+//             );
+
+//       const updatedData = {
+
+//         ...req.body,
+
+//         tags:
+//           formattedTags,
+
+//       };
+
+//       const updatedProduct =
+//         await Product.findByIdAndUpdate(
+
+//           req.params.id,
+
+//           updatedData,
+
+//           {
+//             new: true,
+//           }
+
+//         );
+
+//       res.status(200).json({
+
+//         success: true,
+
+//         message:
+//           "Product updated successfully",
+
+//         updatedProduct,
+
+//       });
+
+//     } catch (error) {
+
+//       next(error);
+//     }
+//   };
 
 export const updateProduct =
   async (
@@ -118,7 +326,8 @@ export const updateProduct =
 
         return res.status(400).json({
           success: false,
-          message: "Stock cannot be negative",
+          message:
+            "Stock cannot be negative",
         });
 
       }
@@ -142,7 +351,57 @@ export const updateProduct =
                 tag
                   .trim()
                   .toLowerCase()
-            );
+            ) || [];
+
+      const manualImages =
+        Array.isArray(
+          req.body.imageUrls
+        )
+
+          ? req.body.imageUrls
+
+          : req.body.imageUrls
+            ?.split(",")
+            .map(
+              (img) =>
+                img.trim()
+            ) || [];
+
+      const manualVideos =
+        Array.isArray(
+          req.body.videoUrls
+        )
+
+          ? req.body.videoUrls
+
+          : req.body.videoUrls
+            ?.split(",")
+            .map(
+              (video) =>
+                video.trim()
+            ) || [];
+
+      const uploadedImages =
+        req.files?.images?.map(
+          (file) =>
+            file.path
+        ) || [];
+
+      const uploadedVideos =
+        req.files?.videos?.map(
+          (file) =>
+            file.path
+        ) || [];
+
+      const finalImages = [
+        ...manualImages,
+        ...uploadedImages,
+      ];
+
+      const finalVideos = [
+        ...manualVideos,
+        ...uploadedVideos,
+      ];
 
       const updatedData = {
 
@@ -150,6 +409,12 @@ export const updateProduct =
 
         tags:
           formattedTags,
+
+        images:
+          finalImages,
+
+        videos:
+          finalVideos,
 
       };
 
@@ -180,6 +445,7 @@ export const updateProduct =
     } catch (error) {
 
       next(error);
+
     }
   };
 
