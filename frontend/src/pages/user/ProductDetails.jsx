@@ -910,6 +910,9 @@ import {
   FaPlay,
   FaImage,
   FaVideo,
+  FaBolt,
+  FaShieldAlt,
+  FaTruck,
 } from "react-icons/fa";
 
 import Navbar from "../../components/Navbar";
@@ -1010,10 +1013,12 @@ function ProductDetails() {
       } catch (error) {
 
         toast.error(
+
           error?.response?.data
             ?.message ||
 
           "Failed to load related products"
+
         );
 
       }
@@ -1141,6 +1146,23 @@ function ProductDetails() {
       }
     };
 
+  const isVideo =
+    selectedMedia?.includes(
+      ".mp4"
+    ) ||
+
+    selectedMedia?.includes(
+      ".webm"
+    ) ||
+
+    selectedMedia?.includes(
+      ".mov"
+    ) ||
+
+    selectedMedia?.includes(
+      ".m4v"
+    );
+
   if (loading) {
 
     return (
@@ -1187,81 +1209,67 @@ function ProductDetails() {
 
         <div>
 
-          <div className="relative">
+          <div className="relative group">
 
-            {
-              selectedMedia?.includes(
-                ".mp4"
-              ) ||
+            {isVideo ? (
 
-              selectedMedia?.includes(
-                ".webm"
-              ) ||
+              <video
+                controls
+                src={selectedMedia}
+                className="
+                  w-full
+                  h-[520px]
+                  object-cover
+                  rounded-3xl
+                  border
+                  border-slate-200
+                  shadow-2xl
+                  bg-black
+                "
+              />
 
-              selectedMedia?.includes(
-                ".mov"
-              )
+            ) : (
 
-                ? (
+              <img
+                src={
+                  selectedMedia ||
+                  "/placeholder.png"
+                }
+                alt={
+                  product.title
+                }
+                className="
+                  w-full
+                  h-[520px]
+                  object-cover
+                  rounded-3xl
+                  border
+                  border-slate-200
+                  shadow-2xl
+                  bg-white
+                  transition-all
+                  duration-500
+                  group-hover:scale-[1.01]
+                "
+              />
 
-                  <video
-                    controls
-                    src={selectedMedia}
-                    className="
-                      w-full
-                      h-[420px]
-                      object-cover
-                      rounded-3xl
-                      border
-                      border-slate-200
-                      shadow-xl
-                      bg-black
-                    "
-                  />
+            )}
 
-                ) : (
-
-                  <img
-                    src={
-                      selectedMedia ||
-                      "/placeholder.png"
-                    }
-                    alt={
-                      product.title
-                    }
-                    className="
-                      w-full
-                      h-[420px]
-                      object-cover
-                      rounded-3xl
-                      border
-                      border-slate-200
-                      shadow-xl
-                      hover:shadow-2xl
-                      transition-all
-                      duration-500
-                      bg-white
-                    "
-                  />
-
-                )
-            }
-
-            <div className="absolute top-4 left-4 flex gap-2">
+            <div className="absolute top-5 left-5 flex gap-3">
 
               <span
                 className="
                   bg-black/70
                   text-white
-                  px-3
-                  py-1.5
+                  px-4
+                  py-2
                   rounded-xl
-                  text-xs
+                  text-sm
                   font-semibold
                   backdrop-blur-md
                   flex
                   items-center
-                  gap-1
+                  gap-2
                 "
               >
 
@@ -1281,14 +1289,14 @@ function ProductDetails() {
                     className="
                       bg-indigo-500
                       text-white
-                      px-3
-                      py-1.5
+                      px-4
+                      py-2
                       rounded-xl
-                      text-xs
+                      text-sm
                       font-semibold
                       flex
                       items-center
-                      gap-1
+                      gap-2
                     "
                   >
 
@@ -1309,7 +1317,7 @@ function ProductDetails() {
 
           {/* THUMBNAILS */}
 
-          <div className="flex gap-4 mt-5 overflow-x-auto pb-2">
+          <div className="flex gap-4 mt-6 overflow-x-auto pb-3">
 
             {
               [
@@ -1321,7 +1329,7 @@ function ProductDetails() {
                   index
                 ) => {
 
-                  const isVideo =
+                  const mediaIsVideo =
 
                     media.includes(
                       ".mp4"
@@ -1333,6 +1341,10 @@ function ProductDetails() {
 
                     media.includes(
                       ".mov"
+                    ) ||
+
+                    media.includes(
+                      ".m4v"
                     );
 
                   return (
@@ -1350,21 +1362,30 @@ function ProductDetails() {
                       "
                     >
 
-                      {isVideo ? (
+                      {mediaIsVideo ? (
 
                         <div className="relative">
 
                           <video
                             src={media}
-                            className="
-                              w-24
-                              h-24
+                            className={`
+                              w-28
+                              h-28
                               object-cover
                               rounded-2xl
-                              border
-                              border-slate-200
-                              shadow-sm
-                            "
+                              border-2
+                              shadow-md
+                              transition-all
+                              duration-300
+
+                              ${
+                                selectedMedia === media
+
+                                  ? "border-indigo-500 scale-105"
+
+                                  : "border-slate-200 hover:border-indigo-500 hover:scale-105"
+                              }
+                            `}
                           />
 
                           <div
@@ -1382,7 +1403,7 @@ function ProductDetails() {
                             <FaPlay
                               className="
                                 text-white
-                                text-xl
+                                text-2xl
                               "
                             />
 
@@ -1396,20 +1417,19 @@ function ProductDetails() {
                           src={media}
                           alt="product"
                           className={`
-                            w-24
-                            h-24
+                            w-28
+                            h-28
                             object-cover
                             rounded-2xl
-                            border
-                            shadow-sm
+                            border-2
+                            shadow-md
                             transition-all
                             duration-300
                             cursor-pointer
                             bg-white
 
                             ${
-                              selectedMedia ===
-                              media
+                              selectedMedia === media
 
                                 ? "border-indigo-500 scale-105"
 
@@ -1435,6 +1455,27 @@ function ProductDetails() {
 
         <div className="pt-2 lg:sticky lg:top-28 h-fit">
 
+          <div
+            className="
+              inline-flex
+              items-center
+              gap-2
+              bg-indigo-100
+              text-indigo-600
+              px-5
+              py-2.5
+              rounded-full
+              font-semibold
+              mb-6
+            "
+          >
+
+            <FaBolt />
+
+            Premium Product
+
+          </div>
+
           <h1
             className="
               text-4xl
@@ -1457,13 +1498,15 @@ function ProductDetails() {
 
           </p>
 
-          <div className="flex items-center gap-3 mt-5">
+          {/* RATING */}
+
+          <div className="flex items-center gap-4 mt-6">
 
             <div className="flex items-center gap-2 text-amber-500">
 
               <FaStar />
 
-              <span className="font-bold text-xl">
+              <span className="font-bold text-2xl">
 
                 {
                   product.averageRating?.toFixed(
@@ -1475,7 +1518,7 @@ function ProductDetails() {
 
             </div>
 
-            <span className="text-slate-500">
+            <span className="text-slate-500 text-lg">
 
               (
               {
@@ -1489,9 +1532,11 @@ function ProductDetails() {
 
           </div>
 
-          <div className="mt-6">
+          {/* PRICE */}
 
-            <span className="text-4xl font-extrabold text-indigo-600">
+          <div className="mt-8">
+
+            <span className="text-5xl font-extrabold text-indigo-600">
 
               ₹{product.price}
 
@@ -1499,7 +1544,9 @@ function ProductDetails() {
 
           </div>
 
-          <div className="mt-6">
+          {/* STOCK */}
+
+          <div className="mt-8">
 
             {product.stock === 0 ? (
 
@@ -1569,9 +1616,104 @@ function ProductDetails() {
 
           </div>
 
-          <div className="mt-8">
+          {/* FEATURES */}
 
-            <h2 className="text-3xl font-bold mb-4">
+          <div className="grid sm:grid-cols-3 gap-4 mt-10">
+
+            <div
+              className="
+                bg-white
+                border
+                border-slate-200
+                rounded-2xl
+                p-5
+                text-center
+                shadow-sm
+              "
+            >
+
+              <FaTruck
+                className="
+                  mx-auto
+                  text-2xl
+                  text-indigo-500
+                  mb-3
+                "
+              />
+
+              <p className="font-semibold">
+
+                Fast Delivery
+
+              </p>
+
+            </div>
+
+            <div
+              className="
+                bg-white
+                border
+                border-slate-200
+                rounded-2xl
+                p-5
+                text-center
+                shadow-sm
+              "
+            >
+
+              <FaShieldAlt
+                className="
+                  mx-auto
+                  text-2xl
+                  text-indigo-500
+                  mb-3
+                "
+              />
+
+              <p className="font-semibold">
+
+                Secure Purchase
+
+              </p>
+
+            </div>
+
+            <div
+              className="
+                bg-white
+                border
+                border-slate-200
+                rounded-2xl
+                p-5
+                text-center
+                shadow-sm
+              "
+            >
+
+              <FaHeart
+                className="
+                  mx-auto
+                  text-2xl
+                  text-pink-500
+                  mb-3
+                "
+              />
+
+              <p className="font-semibold">
+
+                Wishlist Ready
+
+              </p>
+
+            </div>
+
+          </div>
+
+          {/* DESCRIPTION */}
+
+          <div className="mt-10">
+
+            <h2 className="text-3xl font-bold mb-5">
 
               Description
 
@@ -1585,7 +1727,9 @@ function ProductDetails() {
 
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          {/* TAGS */}
+
+          <div className="mt-10 flex flex-wrap gap-3">
 
             {product.tags?.map(
               (
@@ -1627,7 +1771,9 @@ function ProductDetails() {
 
           </div>
 
-          <div className="flex flex-col gap-4 mt-10">
+          {/* ACTIONS */}
+
+          <div className="flex flex-col gap-4 mt-12">
 
             <button
               onClick={
@@ -1650,15 +1796,16 @@ function ProductDetails() {
                 gap-3
                 shadow-lg
 
-                ${product.stock === 0
+                ${
+                  product.stock === 0
 
-                  ? `
+                    ? `
                       bg-slate-300
                       cursor-not-allowed
                       text-slate-500
                     `
 
-                  : `
+                    : `
                       bg-indigo-500
                       hover:bg-indigo-600
                       text-white
@@ -1760,25 +1907,11 @@ function ProductDetails() {
               "
             >
 
-              <option value="1">
-                1 Star
-              </option>
-
-              <option value="2">
-                2 Stars
-              </option>
-
-              <option value="3">
-                3 Stars
-              </option>
-
-              <option value="4">
-                4 Stars
-              </option>
-
-              <option value="5">
-                5 Stars
-              </option>
+              <option value="1">1 Star</option>
+              <option value="2">2 Stars</option>
+              <option value="3">3 Stars</option>
+              <option value="4">4 Stars</option>
+              <option value="5">5 Stars</option>
 
             </select>
 

@@ -603,7 +603,6 @@
 
 // export default Products;
 
-
 import {
   useEffect,
   useState,
@@ -776,6 +775,18 @@ function Products() {
 
               </p>
 
+              <p className="text-slate-400 mt-2">
+
+                Total Products:
+                {" "}
+                <span className="font-bold text-indigo-600">
+
+                  {products.length}
+
+                </span>
+
+              </p>
+
             </div>
 
           </div>
@@ -828,6 +839,29 @@ function Products() {
             "
           >
 
+            <div
+              className="
+                w-28
+                h-28
+                mx-auto
+                rounded-full
+                bg-slate-100
+                flex
+                items-center
+                justify-center
+                mb-8
+              "
+            >
+
+              <FaBoxOpen
+                className="
+                  text-5xl
+                  text-slate-400
+                "
+              />
+
+            </div>
+
             <h2 className="text-4xl font-extrabold text-slate-900">
 
               No Products Found
@@ -836,7 +870,7 @@ function Products() {
 
             <p className="text-slate-500 text-lg mt-5">
 
-              Add products to manage your ecommerce store.
+              Start adding products to build your ecommerce store.
 
             </p>
 
@@ -861,6 +895,7 @@ function Products() {
                     overflow-hidden
                     shadow-sm
                     hover:shadow-2xl
+                    hover:shadow-indigo-500/10
                     transition-all
                     duration-500
                     hover:-translate-y-2
@@ -869,23 +904,64 @@ function Products() {
 
                   <div className="overflow-hidden relative">
 
-                    <img
-                      src={
-                        product.images?.[0] ||
-                        "/placeholder.png"
-                      }
-                      alt={
-                        product.title
-                      }
-                      className="
-                        h-72
-                        w-full
-                        object-cover
-                        hover:scale-110
-                        transition-transform
-                        duration-700
-                      "
-                    />
+                    {
+                      product.images?.[0] ? (
+
+                        <img
+                          src={
+                            product.images[0]
+                          }
+                          alt={
+                            product.title
+                          }
+                          className="
+                            h-72
+                            w-full
+                            object-cover
+                            hover:scale-110
+                            transition-transform
+                            duration-700
+                          "
+                        />
+
+                      ) : product.videos?.[0] ? (
+
+                        <video
+                          src={
+                            product.videos[0]
+                          }
+                          className="
+                            h-72
+                            w-full
+                            object-cover
+                            bg-black
+                          "
+                        />
+
+                      ) : (
+
+                        <div
+                          className="
+                            h-72
+                            w-full
+                            flex
+                            items-center
+                            justify-center
+                            bg-slate-100
+                          "
+                        >
+
+                          <FaBoxOpen
+                            className="
+                              text-6xl
+                              text-slate-300
+                            "
+                          />
+
+                        </div>
+
+                      )
+                    }
 
                     <div className="absolute top-4 left-4">
 
@@ -1031,6 +1107,19 @@ function Products() {
                     <p className="text-slate-500 mt-3 font-medium">
 
                       {product.category}
+
+                    </p>
+
+                    <p
+                      className="
+                        text-slate-500
+                        mt-3
+                        line-clamp-2
+                        min-h-[48px]
+                      "
+                    >
+
+                      {product.description}
 
                     </p>
 

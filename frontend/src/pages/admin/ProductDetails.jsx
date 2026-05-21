@@ -637,6 +637,7 @@ import {
   FaWarehouse,
   FaChartLine,
   FaPlay,
+  FaImages,
 } from "react-icons/fa";
 
 import Navbar from "../../components/Navbar";
@@ -757,6 +758,10 @@ function ProductDetails() {
 
     selectedMedia?.includes(
       ".mov"
+    ) ||
+
+    selectedMedia?.includes(
+      ".m4v"
     );
 
   if (loading) {
@@ -801,9 +806,11 @@ function ProductDetails() {
 
       <div className="max-w-[1400px] mx-auto px-6 py-12 grid lg:grid-cols-2 gap-16 items-start">
 
+        {/* LEFT SIDE */}
+
         <div>
 
-          <div className="relative">
+          <div className="relative group">
 
             {isVideo ? (
 
@@ -812,12 +819,12 @@ function ProductDetails() {
                 src={selectedMedia}
                 className="
                   w-full
-                  h-[420px]
+                  h-[500px]
                   object-cover
                   rounded-3xl
                   border
                   border-slate-200
-                  shadow-xl
+                  shadow-2xl
                   bg-black
                 "
               />
@@ -834,24 +841,56 @@ function ProductDetails() {
                 }
                 className="
                   w-full
-                  h-[420px]
+                  h-[500px]
                   object-cover
                   rounded-3xl
                   border
                   border-slate-200
-                  shadow-xl
-                  hover:shadow-2xl
+                  shadow-2xl
+                  bg-white
                   transition-all
                   duration-500
-                  bg-white
+                  group-hover:scale-[1.01]
                 "
               />
 
             )}
 
+            <div
+              className="
+                absolute
+                top-5
+                left-5
+                bg-black/70
+                text-white
+                px-4
+                py-2
+                rounded-full
+                text-sm
+                font-semibold
+                backdrop-blur-md
+                flex
+                items-center
+                gap-2
+              "
+            >
+
+              <FaImages />
+
+              {[
+                ...(product.images || []),
+                ...(product.videos || []),
+              ].length}
+              {" "}
+              Media Files
+
+            </div>
+
           </div>
 
-          <div className="flex gap-4 mt-5 overflow-x-auto pb-2">
+          {/* MEDIA THUMBNAILS */}
+
+          <div className="flex gap-4 mt-6 overflow-x-auto pb-3">
 
             {[
               ...(product.images || []),
@@ -874,6 +913,10 @@ function ProductDetails() {
 
                   media.includes(
                     ".mov"
+                  ) ||
+
+                  media.includes(
+                    ".m4v"
                   );
 
                 return (
@@ -897,15 +940,24 @@ function ProductDetails() {
 
                         <video
                           src={media}
-                          className="
-                            w-24
-                            h-24
+                          className={`
+                            w-28
+                            h-28
                             object-cover
                             rounded-2xl
-                            border
-                            border-slate-200
-                            shadow-sm
-                          "
+                            border-2
+                            shadow-md
+                            transition-all
+                            duration-300
+
+                            ${
+                              selectedMedia === media
+
+                                ? "border-indigo-500 scale-105"
+
+                                : "border-slate-200 hover:border-indigo-500 hover:scale-105"
+                            }
+                          `}
                         />
 
                         <div
@@ -923,7 +975,7 @@ function ProductDetails() {
                           <FaPlay
                             className="
                               text-white
-                              text-xl
+                              text-2xl
                             "
                           />
 
@@ -937,20 +989,19 @@ function ProductDetails() {
                         src={media}
                         alt="product"
                         className={`
-                          w-24
-                          h-24
+                          w-28
+                          h-28
                           object-cover
                           rounded-2xl
-                          border
-                          shadow-sm
+                          border-2
+                          shadow-md
                           transition-all
                           duration-300
                           cursor-pointer
                           bg-white
 
                           ${
-                            selectedMedia ===
-                            media
+                            selectedMedia === media
 
                               ? "border-indigo-500 scale-105"
 
@@ -970,6 +1021,8 @@ function ProductDetails() {
           </div>
 
         </div>
+
+        {/* RIGHT SIDE */}
 
         <div className="pt-2 lg:sticky lg:top-28 h-fit">
 
@@ -1025,13 +1078,15 @@ function ProductDetails() {
               "
             />
 
-            <span className="text-4xl font-extrabold text-indigo-600">
+            <span className="text-5xl font-extrabold text-indigo-600">
 
               {product.price}
 
             </span>
 
           </div>
+
+          {/* STOCK CARDS */}
 
           <div className="mt-8 grid sm:grid-cols-2 gap-5">
 
@@ -1222,6 +1277,8 @@ function ProductDetails() {
 
           </div>
 
+          {/* DESCRIPTION */}
+
           <div className="mt-10">
 
             <h2 className="text-3xl font-bold mb-5">
@@ -1237,6 +1294,8 @@ function ProductDetails() {
             </p>
 
           </div>
+
+          {/* TAGS */}
 
           <div className="mt-10">
 
@@ -1293,6 +1352,8 @@ function ProductDetails() {
             </div>
 
           </div>
+
+          {/* ACTION BUTTONS */}
 
           <div className="flex flex-col md:flex-row gap-5 mt-12">
 

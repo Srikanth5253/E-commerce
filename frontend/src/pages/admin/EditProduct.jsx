@@ -813,10 +813,6 @@ function EditProduct() {
 
       tags: "",
 
-      images: "",
-
-      videos: "",
-
     });
 
   const fetchProduct =
@@ -856,16 +852,6 @@ function EditProduct() {
             product.tags.join(
               ", "
             ),
-
-          images:
-            product.images.join(
-              ", "
-            ),
-
-          videos:
-            product.videos?.join(
-              ", "
-            ) || "",
 
         });
 
@@ -992,16 +978,6 @@ function EditProduct() {
         updatedData.append(
           "tags",
           formData.tags
-        );
-
-        updatedData.append(
-          "imageUrls",
-          formData.images
-        );
-
-        updatedData.append(
-          "videoUrls",
-          formData.videos
         );
 
         imageFiles.forEach(
@@ -1379,39 +1355,6 @@ function EditProduct() {
 
                 <FaImage />
 
-                Image URLs
-
-              </label>
-
-              <input
-                type="text"
-                name="images"
-                value={
-                  formData.images
-                }
-                onChange={
-                  handleChange
-                }
-                placeholder="Separate image URLs with commas"
-                className="
-                  w-full
-                  px-5
-                  py-4
-                  bg-slate-50
-                  border
-                  border-slate-300
-                  rounded-2xl
-                "
-              />
-
-            </div>
-
-            <div>
-
-              <label className="flex items-center gap-2 mb-3 text-slate-700 font-semibold">
-
-                <FaImage />
-
                 Upload Images
 
               </label>
@@ -1425,39 +1368,6 @@ function EditProduct() {
                     ...e.target.files,
                   ])
                 }
-                className="
-                  w-full
-                  px-5
-                  py-4
-                  bg-slate-50
-                  border
-                  border-slate-300
-                  rounded-2xl
-                "
-              />
-
-            </div>
-
-            <div>
-
-              <label className="flex items-center gap-2 mb-3 text-slate-700 font-semibold">
-
-                <FaVideo />
-
-                Video URLs
-
-              </label>
-
-              <input
-                type="text"
-                name="videos"
-                value={
-                  formData.videos
-                }
-                onChange={
-                  handleChange
-                }
-                placeholder="Separate video URLs with commas"
                 className="
                   w-full
                   px-5

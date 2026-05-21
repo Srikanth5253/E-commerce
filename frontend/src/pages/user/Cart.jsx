@@ -1,470 +1,1472 @@
+// import {
+//     useEffect,
+//     useState,
+// } from "react";
+
+// import toast from "react-hot-toast";
+
+// import Navbar from "../../components/Navbar";
+
+// import {
+//     getCart,
+//     removeFromCart,
+//     updateCartQuantity,
+// } from "../../services/CartService";
+
+// import {
+//     checkoutOrder,
+// } from "../../services/OrderService";
+
+// function Cart() {
+
+//     const [cart, setCart] =
+//         useState(null);
+
+//     const [loading, setLoading] =
+//         useState(true);
+
+//     const fetchCart =
+//         async () => {
+
+//             try {
+
+//                 const data =
+//                     await getCart();
+
+//                 setCart(data.cart);
+
+//             } catch (error) {
+
+//                 toast.error(
+//                     "Failed to load cart"
+//                 );
+
+//             } finally {
+
+//                 setLoading(false);
+
+//             }
+//         };
+
+//     useEffect(() => {
+
+//         fetchCart();
+
+//     }, []);
+
+//     const handleRemove =
+//         async (productId) => {
+
+//             try {
+
+//                 await removeFromCart(
+//                     productId
+//                 );
+
+//                 toast.success(
+//                     "Item removed"
+//                 );
+
+//                 fetchCart();
+
+//             } catch (error) {
+
+//                 toast.error(
+//                     error.response?.data
+//                         ?.message ||
+//                     "Remove failed"
+//                 );
+//             }
+//         };
+
+//     const handleQuantity =
+//         async (
+//             productId,
+//             action
+//         ) => {
+
+//             try {
+
+//                 await updateCartQuantity(
+//                     productId,
+//                     action
+//                 );
+
+//                 fetchCart();
+
+//             } catch (error) {
+
+//                 toast.error(
+//                     error.response?.data
+//                         ?.message ||
+//                     "Quantity update failed"
+//                 );
+//             }
+//         };
+
+//     const handleCheckout =
+//         async () => {
+
+//             if (hasInvalidStock) {
+
+//                 toast.error(
+//                     "Please resolve inventory issues before checkout"
+//                 );
+
+//                 return;
+//             }
+
+//             try {
+
+//                 const data =
+//                     await checkoutOrder();
+
+//                 window.location.href =
+//                     data.url;
+
+//             } catch (error) {
+
+//                 toast.error(
+//                     error.response?.data
+//                         ?.message ||
+//                     "Checkout failed"
+//                 );
+//             }
+//         };
+
+//     const hasInvalidStock =
+//         cart?.items?.some(
+//             (item) =>
+
+//                 item.quantity >
+//                 item.product.stock ||
+
+//                 item.product.stock === 0
+//         );
+
+//     const subtotal =
+//         cart?.items?.reduce(
+//             (
+//                 acc,
+//                 item
+//             ) =>
+//                 acc +
+//                 item.product.price *
+//                 item.quantity,
+//             0
+//         ) || 0;
+
+//     const gst =
+//         subtotal * 0.05;
+
+//     const total =
+//         subtotal + gst;
+
+//     if (loading) {
+
+//         return (
+
+//             <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-slate-100 flex items-center justify-center">
+
+//                 <div className="text-slate-500 text-2xl font-semibold">
+
+//                     Loading...
+
+//                 </div>
+
+//             </div>
+//         );
+//     }
+
+//     return (
+
+//         <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-slate-100 text-slate-900">
+
+//             <Navbar />
+
+//             <div className="max-w-7xl mx-auto px-6 py-12">
+
+//                 <h1 className="text-5xl font-extrabold mb-10 text-slate-900">
+
+//                     Shopping Cart
+
+//                 </h1>
+
+//                 {!cart ||
+//                     cart.items.length ===
+//                     0 ? (
+
+//                     <div className="text-slate-500 text-xl">
+
+//                         Cart is empty
+
+//                     </div>
+
+//                 ) : (
+
+//                     <div className="grid lg:grid-cols-3 gap-10">
+
+//                         <div className="lg:col-span-2 space-y-6">
+
+//                             {cart.items.map(
+//                                 (item) => (
+
+//                                     <div
+//                                         key={
+//                                             item.product
+//                                                 ._id
+//                                         }
+//                                         className="
+//                       bg-white
+//                       border
+//                       border-slate-200
+//                       rounded-3xl
+//                       p-5
+//                       flex
+//                       gap-5
+//                       shadow-sm
+//                       hover:shadow-2xl
+//                       transition-all
+//                       duration-500
+//                     "
+//                                     >
+
+//                                         <div className="overflow-hidden rounded-2xl">
+
+//                                             <img
+//                                                 src={
+//                                                     item.product
+//                                                         .images?.[0]
+//                                                 }
+//                                                 alt={
+//                                                     item.product
+//                                                         .title
+//                                                 }
+//                                                 className="
+//                         w-36
+//                         h-36
+//                         object-cover
+//                         hover:scale-110
+//                         transition-transform
+//                         duration-700
+//                       "
+//                                             />
+
+//                                         </div>
+
+//                                         <div className="flex-1">
+
+//                                             <h2 className="text-2xl font-bold text-slate-900">
+
+//                                                 {
+//                                                     item.product
+//                                                         .title
+//                                                 }
+
+//                                             </h2>
+
+//                                             <div
+//                                                 className="
+//                           flex
+//                           items-center
+//                           gap-4
+//                           mt-5
+//                         "
+//                                             >
+
+//                                                 <button
+//                                                     onClick={() =>
+//                                                         handleQuantity(
+//                                                             item.product._id,
+//                                                             "decrease"
+//                                                         )
+//                                                     }
+//                                                     className="
+//                             w-10
+//                             h-10
+//                             rounded-full
+//                             bg-slate-100
+//                             hover:bg-indigo-100
+//                             text-xl
+//                             font-bold
+//                             transition-all
+//                             duration-300
+//                           "
+//                                                 >
+//                                                     -
+//                                                 </button>
+
+//                                                 <span className="text-xl font-bold text-slate-900">
+
+//                                                     {
+//                                                         item.quantity
+//                                                     }
+
+//                                                 </span>
+
+//                                                 <button
+//                                                     onClick={() =>
+//                                                         handleQuantity(
+//                                                             item.product._id,
+//                                                             "increase"
+//                                                         )
+//                                                     }
+
+//                                                     disabled={
+//                                                         item.quantity >=
+//                                                         item.product.stock
+//                                                     }
+
+//                                                     className={`
+//                             w-10
+//                             h-10
+//                             rounded-full
+//                             text-xl
+//                             font-bold
+//                             transition-all
+//                             duration-300
+
+//                             ${item.quantity >=
+//                                                             item.product.stock
+
+//                                                             ? `
+//                                     bg-slate-200
+//                                     text-slate-400
+//                                     cursor-not-allowed
+//                                   `
+
+//                                                             : `
+//                                     bg-slate-100
+//                                     hover:bg-indigo-100
+//                                   `
+//                                                         }
+//                           `}
+//                                                 >
+//                                                     +
+//                                                 </button>
+
+//                                             </div>
+
+//                                             <p className="text-indigo-600 text-2xl font-bold mt-4">
+
+//                                                 ₹
+//                                                 {
+//                                                     item.product
+//                                                         .price
+//                                                 }
+
+//                                             </p>
+
+
+//                                             <div className="mt-4">
+
+//                                                 {item.product.stock === 0 ? (
+
+//                                                     <div
+//                                                         className="
+//                               inline-flex
+//                               items-center
+//                               bg-red-100
+//                               text-red-600
+//                               px-4
+//                               py-2
+//                               rounded-xl
+//                               text-sm
+//                               font-bold
+//                             "
+//                                                     >
+
+//                                                         Out Of Stock
+
+//                                                     </div>
+
+//                                                 ) : item.product.stock <=
+//                                                     item.product.lowStockThreshold ? (
+
+//                                                     <div
+//                                                         className="
+//                               inline-flex
+//                               items-center
+//                               bg-amber-100
+//                               text-amber-600
+//                               px-4
+//                               py-2
+//                               rounded-xl
+//                               text-sm
+//                               font-bold
+//                             "
+//                                                     >
+
+//                                                         Only {
+//                                                             item.product.stock
+//                                                         } left
+
+//                                                     </div>
+
+//                                                 ) : (
+
+//                                                     <div
+//                                                         className="
+//                               inline-flex
+//                               items-center
+//                               bg-green-100
+//                               text-green-600
+//                               px-4
+//                               py-2
+//                               rounded-xl
+//                               text-sm
+//                               font-bold
+//                             "
+//                                                     >
+
+//                                                         In Stock
+
+//                                                     </div>
+
+//                                                 )}
+
+//                                             </div>
+
+//                                             <button
+//                                                 onClick={() =>
+//                                                     handleRemove(
+//                                                         item
+//                                                             .product
+//                                                             ._id
+//                                                     )
+//                                                 }
+//                                                 className="
+//                           mt-5
+//                           bg-red-500
+//                           hover:bg-red-600
+//                           text-white
+//                           px-5
+//                           py-2.5
+//                           rounded-xl
+//                           font-semibold
+//                           transition-all
+//                           duration-300
+//                           hover:scale-105
+//                         "
+//                                             >
+
+//                                                 Remove
+
+//                                             </button>
+
+//                                         </div>
+
+//                                     </div>
+
+//                                 )
+//                             )}
+
+//                         </div>
+
+//                         <div
+//                             className="
+//                 bg-white
+//                 border
+//                 border-slate-200
+//                 rounded-3xl
+//                 p-8
+//                 h-fit
+//                 shadow-sm
+//                 hover:shadow-2xl
+//                 transition-all
+//                 duration-500
+//               "
+//                         >
+
+//                             <h2 className="text-3xl font-extrabold mb-8 text-slate-900">
+
+//                                 Order Summary
+
+//                             </h2>
+
+//                             <div className="space-y-5 text-lg text-slate-700">
+
+//                                 <div className="flex justify-between">
+
+//                                     <span>
+//                                         Subtotal
+//                                     </span>
+
+//                                     <span className="font-semibold">
+
+//                                         ₹
+//                                         {
+//                                             subtotal.toFixed(
+//                                                 2
+//                                             )
+//                                         }
+
+//                                     </span>
+
+//                                 </div>
+
+//                                 <div className="flex justify-between">
+
+//                                     <span>
+//                                         GST (5%)
+//                                     </span>
+
+//                                     <span className="font-semibold">
+
+//                                         ₹
+//                                         {
+//                                             gst.toFixed(
+//                                                 2
+//                                             )
+//                                         }
+
+//                                     </span>
+
+//                                 </div>
+
+//                                 <div className="border-t border-slate-200 pt-5 flex justify-between text-2xl font-bold">
+
+//                                     <span>
+//                                         Total
+//                                     </span>
+
+//                                     <span className="text-indigo-600">
+
+//                                         ₹
+//                                         {
+//                                             total.toFixed(
+//                                                 2
+//                                             )
+//                                         }
+
+//                                     </span>
+
+//                                 </div>
+
+//                             </div>
+
+//                             {hasInvalidStock && (
+
+//                                 <div
+//                                     className="
+//                     mt-8
+//                     bg-red-100
+//                     border
+//                     border-red-200
+//                     text-red-600
+//                     px-5
+//                     py-4
+//                     rounded-2xl
+//                     font-semibold
+//                     text-center
+//                   "
+//                                 >
+
+//                                     Some products exceed available inventory.
+//                                     Please update cart quantities.
+
+//                                 </div>
+
+//                             )}
+
+//                             <button
+
+//                                 onClick={handleCheckout}
+
+//                                 disabled={hasInvalidStock}
+
+//                                 className={`
+//                   mt-10
+//                   w-full
+//                   py-4
+//                   rounded-2xl
+//                   text-xl
+//                   font-semibold
+//                   transition-all
+//                   duration-300
+//                   shadow-lg
+
+//                   ${hasInvalidStock
+
+//                                         ? `
+//                           bg-slate-300
+//                           text-slate-500
+//                           cursor-not-allowed
+//                         `
+
+//                                         : `
+//                           bg-indigo-500
+//                           hover:bg-indigo-600
+//                           text-white
+//                           hover:scale-[1.02]
+//                           hover:shadow-indigo-500/30
+//                         `
+//                                     }
+//                 `}
+//                             >
+
+//                                 {
+//                                     hasInvalidStock
+
+//                                         ? "Inventory Issue"
+
+//                                         : "Proceed To Checkout"
+//                                 }
+
+//                             </button>
+
+//                         </div>
+
+//                     </div>
+
+//                 )}
+
+//             </div>
+
+//         </div>
+//     );
+// }
+
+// export default Cart;
+
+
 import {
-    useEffect,
-    useState,
+  useEffect,
+  useMemo,
+  useState,
 } from "react";
 
 import toast from "react-hot-toast";
 
+import {
+  FaShoppingCart,
+  FaTrash,
+  FaMinus,
+  FaPlus,
+  FaShieldAlt,
+  FaTruck,
+  FaBolt,
+  FaVideo,
+  FaImage,
+  FaArrowRight,
+  FaBoxOpen,
+} from "react-icons/fa";
+
 import Navbar from "../../components/Navbar";
 
 import {
-    getCart,
-    removeFromCart,
-    updateCartQuantity,
+  getCart,
+  removeFromCart,
+  updateCartQuantity,
 } from "../../services/CartService";
 
 import {
-    checkoutOrder,
+  checkoutOrder,
 } from "../../services/OrderService";
 
 function Cart() {
 
-    const [cart, setCart] =
-        useState(null);
+  const [cart, setCart] =
+    useState(null);
 
-    const [loading, setLoading] =
-        useState(true);
+  const [loading, setLoading] =
+    useState(true);
 
-    const fetchCart =
-        async () => {
+  const fetchCart =
+    async () => {
 
-            try {
+      try {
 
-                const data =
-                    await getCart();
+        const data =
+          await getCart();
 
-                setCart(data.cart);
+        setCart(data.cart);
 
-            } catch (error) {
+      } catch (error) {
 
-                toast.error(
-                    "Failed to load cart"
-                );
+        toast.error(
+          "Failed to load cart"
+        );
 
-            } finally {
+      } finally {
 
-                setLoading(false);
+        setLoading(false);
 
-            }
-        };
+      }
+    };
 
-    useEffect(() => {
+  useEffect(() => {
+
+    fetchCart();
+
+  }, []);
+
+  const handleRemove =
+    async (productId) => {
+
+      try {
+
+        await removeFromCart(
+          productId
+        );
+
+        toast.success(
+          "Item removed"
+        );
 
         fetchCart();
 
-    }, []);
+      } catch (error) {
 
-    const handleRemove =
-        async (productId) => {
+        toast.error(
 
-            try {
+          error.response?.data
+            ?.message ||
 
-                await removeFromCart(
-                    productId
-                );
+          "Remove failed"
 
-                toast.success(
-                    "Item removed"
-                );
+        );
+      }
+    };
 
-                fetchCart();
+  const handleQuantity =
+    async (
+      productId,
+      action
+    ) => {
 
-            } catch (error) {
+      try {
 
-                toast.error(
-                    error.response?.data
-                        ?.message ||
-                    "Remove failed"
-                );
-            }
-        };
-
-    const handleQuantity =
-        async (
-            productId,
-            action
-        ) => {
-
-            try {
-
-                await updateCartQuantity(
-                    productId,
-                    action
-                );
-
-                fetchCart();
-
-            } catch (error) {
-
-                toast.error(
-                    error.response?.data
-                        ?.message ||
-                    "Quantity update failed"
-                );
-            }
-        };
-
-    const handleCheckout =
-        async () => {
-
-            if (hasInvalidStock) {
-
-                toast.error(
-                    "Please resolve inventory issues before checkout"
-                );
-
-                return;
-            }
-
-            try {
-
-                const data =
-                    await checkoutOrder();
-
-                window.location.href =
-                    data.url;
-
-            } catch (error) {
-
-                toast.error(
-                    error.response?.data
-                        ?.message ||
-                    "Checkout failed"
-                );
-            }
-        };
-
-    const hasInvalidStock =
-        cart?.items?.some(
-            (item) =>
-
-                item.quantity >
-                item.product.stock ||
-
-                item.product.stock === 0
+        await updateCartQuantity(
+          productId,
+          action
         );
 
-    const subtotal =
+        fetchCart();
+
+      } catch (error) {
+
+        toast.error(
+
+          error.response?.data
+            ?.message ||
+
+          "Quantity update failed"
+
+        );
+      }
+    };
+
+  const handleCheckout =
+    async () => {
+
+      if (hasInvalidStock) {
+
+        toast.error(
+          "Please resolve inventory issues before checkout"
+        );
+
+        return;
+      }
+
+      try {
+
+        const data =
+          await checkoutOrder();
+
+        window.location.href =
+          data.url;
+
+      } catch (error) {
+
+        toast.error(
+
+          error.response?.data
+            ?.message ||
+
+          "Checkout failed"
+
+        );
+      }
+    };
+
+  const hasInvalidStock =
+    cart?.items?.some(
+      (item) =>
+
+        item.quantity >
+        item.product.stock ||
+
+        item.product.stock === 0
+    );
+
+  const subtotal =
+    useMemo(() => {
+
+      return (
+
         cart?.items?.reduce(
-            (
-                acc,
-                item
-            ) =>
-                acc +
-                item.product.price *
-                item.quantity,
-            0
-        ) || 0;
+          (
+            acc,
+            item
+          ) =>
 
-    const gst =
-        subtotal * 0.05;
+            acc +
+            item.product.price *
+            item.quantity,
 
-    const total =
-        subtotal + gst;
+          0
+        ) || 0
 
-    if (loading) {
+      );
 
-        return (
+    }, [cart]);
 
-            <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-slate-100 flex items-center justify-center">
+  const gst =
+    subtotal * 0.05;
 
-                <div className="text-slate-500 text-2xl font-semibold">
+  const deliveryCharge =
+    subtotal > 5000
+      ? 0
+      : 99;
 
-                    Loading...
+  const total =
+    subtotal +
+    gst +
+    deliveryCharge;
 
-                </div>
+  const totalItems =
+    cart?.items?.reduce(
+      (
+        acc,
+        item
+      ) =>
 
-            </div>
-        );
-    }
+        acc + item.quantity,
+
+      0
+    ) || 0;
+
+  if (loading) {
 
     return (
 
-        <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-slate-100 text-slate-900">
+      <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-slate-100 flex items-center justify-center">
 
-            <Navbar />
+        <div className="text-slate-500 text-2xl font-semibold">
 
-            <div className="max-w-7xl mx-auto px-6 py-12">
+          Loading Cart...
 
-                <h1 className="text-5xl font-extrabold mb-10 text-slate-900">
+        </div>
 
-                    Shopping Cart
+      </div>
 
-                </h1>
+    );
+  }
 
-                {!cart ||
-                    cart.items.length ===
-                    0 ? (
+  return (
 
-                    <div className="text-slate-500 text-xl">
+    <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-slate-100 text-slate-900">
 
-                        Cart is empty
+      <Navbar />
 
-                    </div>
+      <div className="max-w-7xl mx-auto px-6 py-12">
 
-                ) : (
+        {/* HEADER */}
 
-                    <div className="grid lg:grid-cols-3 gap-10">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 mb-14">
 
-                        <div className="lg:col-span-2 space-y-6">
+          <div className="flex items-center gap-5">
 
-                            {cart.items.map(
-                                (item) => (
+            <div
+              className="
+                w-20
+                h-20
+                rounded-3xl
+                bg-indigo-100
+                flex
+                items-center
+                justify-center
+              "
+            >
 
-                                    <div
-                                        key={
-                                            item.product
-                                                ._id
-                                        }
-                                        className="
-                      bg-white
-                      border
-                      border-slate-200
-                      rounded-3xl
-                      p-5
-                      flex
-                      gap-5
-                      shadow-sm
-                      hover:shadow-2xl
-                      transition-all
-                      duration-500
-                    "
-                                    >
+              <FaShoppingCart
+                className="
+                  text-4xl
+                  text-indigo-500
+                "
+              />
 
-                                        <div className="overflow-hidden rounded-2xl">
+            </div>
 
-                                            <img
-                                                src={
-                                                    item.product
-                                                        .images?.[0]
-                                                }
-                                                alt={
-                                                    item.product
-                                                        .title
-                                                }
-                                                className="
-                        w-36
-                        h-36
-                        object-cover
-                        hover:scale-110
-                        transition-transform
-                        duration-700
+            <div>
+
+              <h1 className="text-5xl font-extrabold text-slate-900">
+
+                Shopping Cart
+
+              </h1>
+
+              <p className="text-slate-500 mt-3 text-lg">
+
+                Review your products before checkout
+
+              </p>
+
+            </div>
+
+          </div>
+
+          {/* STATS */}
+
+          <div className="grid grid-cols-2 gap-4">
+
+            <div
+              className="
+                bg-white
+                border
+                border-slate-200
+                rounded-2xl
+                px-6
+                py-5
+                shadow-sm
+                text-center
+              "
+            >
+
+              <p className="text-slate-400 text-sm">
+
+                Items
+
+              </p>
+
+              <h2 className="text-3xl font-extrabold text-indigo-600 mt-1">
+
+                {totalItems}
+
+              </h2>
+
+            </div>
+
+            <div
+              className="
+                bg-white
+                border
+                border-slate-200
+                rounded-2xl
+                px-6
+                py-5
+                shadow-sm
+                text-center
+              "
+            >
+
+              <p className="text-slate-400 text-sm">
+
+                Total
+
+              </p>
+
+              <h2 className="text-3xl font-extrabold text-indigo-600 mt-1">
+
+                ₹{total.toFixed(0)}
+
+              </h2>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* EMPTY CART */}
+
+        {!cart ||
+        cart.items.length ===
+          0 ? (
+
+          <div
+            className="
+              bg-white
+              border
+              border-slate-200
+              rounded-3xl
+              p-16
+              text-center
+              shadow-xl
+            "
+          >
+
+            <div
+              className="
+                w-28
+                h-28
+                mx-auto
+                rounded-full
+                bg-slate-100
+                flex
+                items-center
+                justify-center
+                mb-8
+              "
+            >
+
+              <FaBoxOpen
+                className="
+                  text-5xl
+                  text-slate-400
+                "
+              />
+
+            </div>
+
+            <h2 className="text-4xl font-extrabold text-slate-900">
+
+              Your Cart Is Empty
+
+            </h2>
+
+            <p className="text-slate-500 text-lg mt-5">
+
+              Add products to continue shopping.
+
+            </p>
+
+          </div>
+
+        ) : (
+
+          <div className="grid lg:grid-cols-3 gap-10">
+
+            {/* CART ITEMS */}
+
+            <div className="lg:col-span-2 space-y-6">
+
+              {cart.items.map(
+                (item) => {
+
+                  const previewVideo =
+                    item.product
+                      .videos?.[0];
+
+                  return (
+
+                    <div
+                      key={
+                        item.product
+                          ._id
+                      }
+                      className="
+                        bg-white
+                        border
+                        border-slate-200
+                        rounded-3xl
+                        p-5
+                        flex
+                        flex-col
+                        md:flex-row
+                        gap-6
+                        shadow-sm
+                        hover:shadow-2xl
+                        hover:shadow-indigo-500/10
+                        transition-all
+                        duration-500
                       "
-                                            />
+                    >
 
-                                        </div>
+                      {/* MEDIA */}
 
-                                        <div className="flex-1">
+                      <div className="relative overflow-hidden rounded-2xl">
 
-                                            <h2 className="text-2xl font-bold text-slate-900">
+                        {item.product
+                          .images?.[0] ? (
 
-                                                {
-                                                    item.product
-                                                        .title
-                                                }
-
-                                            </h2>
-
-                                            <div
-                                                className="
-                          flex
-                          items-center
-                          gap-4
-                          mt-5
-                        "
-                                            >
-
-                                                <button
-                                                    onClick={() =>
-                                                        handleQuantity(
-                                                            item.product._id,
-                                                            "decrease"
-                                                        )
-                                                    }
-                                                    className="
-                            w-10
-                            h-10
-                            rounded-full
-                            bg-slate-100
-                            hover:bg-indigo-100
-                            text-xl
-                            font-bold
-                            transition-all
-                            duration-300
-                          "
-                                                >
-                                                    -
-                                                </button>
-
-                                                <span className="text-xl font-bold text-slate-900">
-
-                                                    {
-                                                        item.quantity
-                                                    }
-
-                                                </span>
-
-                                                <button
-                                                    onClick={() =>
-                                                        handleQuantity(
-                                                            item.product._id,
-                                                            "increase"
-                                                        )
-                                                    }
-
-                                                    disabled={
-                                                        item.quantity >=
-                                                        item.product.stock
-                                                    }
-
-                                                    className={`
-                            w-10
-                            h-10
-                            rounded-full
-                            text-xl
-                            font-bold
-                            transition-all
-                            duration-300
-
-                            ${item.quantity >=
-                                                            item.product.stock
-
-                                                            ? `
-                                    bg-slate-200
-                                    text-slate-400
-                                    cursor-not-allowed
-                                  `
-
-                                                            : `
-                                    bg-slate-100
-                                    hover:bg-indigo-100
-                                  `
-                                                        }
-                          `}
-                                                >
-                                                    +
-                                                </button>
-
-                                            </div>
-
-                                            <p className="text-indigo-600 text-2xl font-bold mt-4">
-
-                                                ₹
-                                                {
-                                                    item.product
-                                                        .price
-                                                }
-
-                                            </p>
-
-
-                                            <div className="mt-4">
-
-                                                {item.product.stock === 0 ? (
-
-                                                    <div
-                                                        className="
-                              inline-flex
-                              items-center
-                              bg-red-100
-                              text-red-600
-                              px-4
-                              py-2
-                              rounded-xl
-                              text-sm
-                              font-bold
+                          <img
+                            src={
+                              item.product
+                                .images?.[0]
+                            }
+                            alt={
+                              item.product
+                                .title
+                            }
+                            className="
+                              w-full
+                              md:w-40
+                              h-40
+                              object-cover
+                              hover:scale-110
+                              transition-transform
+                              duration-700
+                              bg-white
                             "
-                                                    >
+                          />
 
-                                                        Out Of Stock
+                        ) : previewVideo ? (
 
-                                                    </div>
-
-                                                ) : item.product.stock <=
-                                                    item.product.lowStockThreshold ? (
-
-                                                    <div
-                                                        className="
-                              inline-flex
-                              items-center
-                              bg-amber-100
-                              text-amber-600
-                              px-4
-                              py-2
-                              rounded-xl
-                              text-sm
-                              font-bold
+                          <video
+                            src={
+                              previewVideo
+                            }
+                            className="
+                              w-full
+                              md:w-40
+                              h-40
+                              object-cover
+                              bg-black
                             "
-                                                    >
+                          />
 
-                                                        Only {
-                                                            item.product.stock
-                                                        } left
+                        ) : (
 
-                                                    </div>
-
-                                                ) : (
-
-                                                    <div
-                                                        className="
-                              inline-flex
+                          <div
+                            className="
+                              w-full
+                              md:w-40
+                              h-40
+                              bg-slate-100
+                              flex
                               items-center
-                              bg-green-100
-                              text-green-600
-                              px-4
-                              py-2
-                              rounded-xl
-                              text-sm
-                              font-bold
+                              justify-center
                             "
-                                                    >
+                          >
 
-                                                        In Stock
+                            <FaBoxOpen
+                              className="
+                                text-5xl
+                                text-slate-300
+                              "
+                            />
 
-                                                    </div>
+                          </div>
 
-                                                )}
+                        )}
 
-                                            </div>
+                        <div className="absolute top-3 left-3 flex gap-2">
 
-                                            <button
-                                                onClick={() =>
-                                                    handleRemove(
-                                                        item
-                                                            .product
-                                                            ._id
-                                                    )
-                                                }
-                                                className="
-                          mt-5
-                          bg-red-500
-                          hover:bg-red-600
-                          text-white
-                          px-5
-                          py-2.5
-                          rounded-xl
-                          font-semibold
-                          transition-all
-                          duration-300
-                          hover:scale-105
-                        "
-                                            >
+                          <span
+                            className="
+                              bg-black/70
+                              text-white
+                              px-2.5
+                              py-1
+                              rounded-lg
+                              text-xs
+                              font-semibold
+                              backdrop-blur-md
+                              flex
+                              items-center
+                              gap-1
+                            "
+                          >
 
-                                                Remove
+                            <FaImage />
 
-                                            </button>
+                            {
+                              item.product
+                                .images
+                                ?.length || 0
+                            }
 
-                                        </div>
+                          </span>
 
-                                    </div>
+                          {item.product
+                            .videos
+                            ?.length >
+                            0 && (
 
-                                )
+                              <span
+                                className="
+                                  bg-indigo-500
+                                  text-white
+                                  px-2.5
+                                  py-1
+                                  rounded-lg
+                                  text-xs
+                                  font-semibold
+                                  flex
+                                  items-center
+                                  gap-1
+                                "
+                              >
+
+                                <FaVideo />
+
+                                {
+                                  item.product
+                                    .videos
+                                    ?.length
+                                }
+
+                              </span>
+
                             )}
 
                         </div>
 
-                        <div
+                      </div>
+
+                      {/* DETAILS */}
+
+                      <div className="flex-1">
+
+                        <h2 className="text-2xl font-bold text-slate-900">
+
+                          {
+                            item.product
+                              .title
+                          }
+
+                        </h2>
+
+                        <p className="text-slate-500 mt-2">
+
+                          {
+                            item.product
+                              .category
+                          }
+
+                        </p>
+
+                        <div className="mt-5 flex items-center gap-5">
+
+                          {/* QUANTITY */}
+
+                          <div
                             className="
+                              flex
+                              items-center
+                              gap-4
+                              bg-slate-100
+                              rounded-2xl
+                              px-4
+                              py-2
+                            "
+                          >
+
+                            <button
+                              onClick={() =>
+                                handleQuantity(
+                                  item.product
+                                    ._id,
+                                  "decrease"
+                                )
+                              }
+                              className="
+                                w-9
+                                h-9
+                                rounded-full
+                                bg-white
+                                hover:bg-indigo-100
+                                flex
+                                items-center
+                                justify-center
+                                transition-all
+                                duration-300
+                              "
+                            >
+
+                              <FaMinus />
+
+                            </button>
+
+                            <span className="text-xl font-bold">
+
+                              {
+                                item.quantity
+                              }
+
+                            </span>
+
+                            <button
+                              onClick={() =>
+                                handleQuantity(
+                                  item.product
+                                    ._id,
+                                  "increase"
+                                )
+                              }
+                              disabled={
+                                item.quantity >=
+                                item.product
+                                  .stock
+                              }
+                              className={`
+                                w-9
+                                h-9
+                                rounded-full
+                                flex
+                                items-center
+                                justify-center
+                                transition-all
+                                duration-300
+
+                                ${
+                                  item.quantity >=
+                                  item.product
+                                    .stock
+
+                                    ? `
+                                      bg-slate-200
+                                      text-slate-400
+                                      cursor-not-allowed
+                                    `
+
+                                    : `
+                                      bg-white
+                                      hover:bg-indigo-100
+                                    `
+                                }
+                              `}
+                            >
+
+                              <FaPlus />
+
+                            </button>
+
+                          </div>
+
+                          {/* PRICE */}
+
+                          <div>
+
+                            <p className="text-indigo-600 text-3xl font-extrabold">
+
+                              ₹
+                              {
+                                item.product
+                                  .price
+                              }
+
+                            </p>
+
+                          </div>
+
+                        </div>
+
+                        {/* STOCK */}
+
+                        <div className="mt-5">
+
+                          {item.product
+                            .stock ===
+                          0 ? (
+
+                            <div
+                              className="
+                                inline-flex
+                                items-center
+                                bg-red-100
+                                text-red-600
+                                px-4
+                                py-2
+                                rounded-xl
+                                text-sm
+                                font-bold
+                              "
+                            >
+
+                              Out Of Stock
+
+                            </div>
+
+                          ) : item.product
+                              .stock <=
+                            item.product
+                              .lowStockThreshold ? (
+
+                            <div
+                              className="
+                                inline-flex
+                                items-center
+                                bg-amber-100
+                                text-amber-600
+                                px-4
+                                py-2
+                                rounded-xl
+                                text-sm
+                                font-bold
+                              "
+                            >
+
+                              Only {
+                                item.product
+                                  .stock
+                              } left
+
+                            </div>
+
+                          ) : (
+
+                            <div
+                              className="
+                                inline-flex
+                                items-center
+                                bg-green-100
+                                text-green-600
+                                px-4
+                                py-2
+                                rounded-xl
+                                text-sm
+                                font-bold
+                              "
+                            >
+
+                              In Stock
+
+                            </div>
+
+                          )}
+
+                        </div>
+
+                        {/* REMOVE */}
+
+                        <button
+                          onClick={() =>
+                            handleRemove(
+                              item.product
+                                ._id
+                            )
+                          }
+                          className="
+                            mt-6
+                            bg-red-500
+                            hover:bg-red-600
+                            text-white
+                            px-5
+                            py-3
+                            rounded-2xl
+                            font-semibold
+                            transition-all
+                            duration-300
+                            hover:scale-105
+                            flex
+                            items-center
+                            gap-2
+                          "
+                        >
+
+                          <FaTrash />
+
+                          Remove
+
+                        </button>
+
+                      </div>
+
+                    </div>
+
+                  );
+                }
+              )}
+
+            </div>
+
+            {/* SUMMARY */}
+
+            <div
+              className="
                 bg-white
                 border
                 border-slate-200
@@ -475,80 +1477,191 @@ function Cart() {
                 hover:shadow-2xl
                 transition-all
                 duration-500
+                lg:sticky
+                lg:top-28
               "
-                        >
+            >
 
-                            <h2 className="text-3xl font-extrabold mb-8 text-slate-900">
+              <h2 className="text-3xl font-extrabold mb-8 text-slate-900">
 
-                                Order Summary
+                Order Summary
 
-                            </h2>
+              </h2>
 
-                            <div className="space-y-5 text-lg text-slate-700">
+              {/* FEATURES */}
 
-                                <div className="flex justify-between">
+              <div className="grid grid-cols-3 gap-3 mb-8">
 
-                                    <span>
-                                        Subtotal
-                                    </span>
+                <div
+                  className="
+                    bg-slate-50
+                    rounded-2xl
+                    p-4
+                    text-center
+                  "
+                >
 
-                                    <span className="font-semibold">
+                  <FaTruck
+                    className="
+                      mx-auto
+                      text-indigo-500
+                      text-xl
+                      mb-2
+                    "
+                  />
 
-                                        ₹
-                                        {
-                                            subtotal.toFixed(
-                                                2
-                                            )
-                                        }
+                  <p className="text-xs font-semibold">
 
-                                    </span>
+                    Fast Delivery
 
-                                </div>
+                  </p>
 
-                                <div className="flex justify-between">
+                </div>
 
-                                    <span>
-                                        GST (5%)
-                                    </span>
+                <div
+                  className="
+                    bg-slate-50
+                    rounded-2xl
+                    p-4
+                    text-center
+                  "
+                >
 
-                                    <span className="font-semibold">
+                  <FaShieldAlt
+                    className="
+                      mx-auto
+                      text-indigo-500
+                      text-xl
+                      mb-2
+                    "
+                  />
 
-                                        ₹
-                                        {
-                                            gst.toFixed(
-                                                2
-                                            )
-                                        }
+                  <p className="text-xs font-semibold">
 
-                                    </span>
+                    Secure
 
-                                </div>
+                  </p>
 
-                                <div className="border-t border-slate-200 pt-5 flex justify-between text-2xl font-bold">
+                </div>
 
-                                    <span>
-                                        Total
-                                    </span>
+                <div
+                  className="
+                    bg-slate-50
+                    rounded-2xl
+                    p-4
+                    text-center
+                  "
+                >
 
-                                    <span className="text-indigo-600">
+                  <FaBolt
+                    className="
+                      mx-auto
+                      text-indigo-500
+                      text-xl
+                      mb-2
+                    "
+                  />
 
-                                        ₹
-                                        {
-                                            total.toFixed(
-                                                2
-                                            )
-                                        }
+                  <p className="text-xs font-semibold">
 
-                                    </span>
+                    Instant
 
-                                </div>
+                  </p>
 
-                            </div>
+                </div>
 
-                            {hasInvalidStock && (
+              </div>
 
-                                <div
-                                    className="
+              {/* BILLING */}
+
+              <div className="space-y-5 text-lg text-slate-700">
+
+                <div className="flex justify-between">
+
+                  <span>
+                    Subtotal
+                  </span>
+
+                  <span className="font-semibold">
+
+                    ₹
+                    {
+                      subtotal.toFixed(
+                        2
+                      )
+                    }
+
+                  </span>
+
+                </div>
+
+                <div className="flex justify-between">
+
+                  <span>
+                    GST (5%)
+                  </span>
+
+                  <span className="font-semibold">
+
+                    ₹
+                    {
+                      gst.toFixed(
+                        2
+                      )
+                    }
+
+                  </span>
+
+                </div>
+
+                <div className="flex justify-between">
+
+                  <span>
+                    Delivery
+                  </span>
+
+                  <span className="font-semibold">
+
+                    {
+                      deliveryCharge ===
+                      0
+
+                        ? "FREE"
+
+                        : `₹${deliveryCharge}`
+                    }
+
+                  </span>
+
+                </div>
+
+                <div className="border-t border-slate-200 pt-5 flex justify-between text-2xl font-bold">
+
+                  <span>
+                    Total
+                  </span>
+
+                  <span className="text-indigo-600">
+
+                    ₹
+                    {
+                      total.toFixed(
+                        2
+                      )
+                    }
+
+                  </span>
+
+                </div>
+
+              </div>
+
+              {/* WARNING */}
+
+              {hasInvalidStock && (
+
+                <div
+                  className="
                     mt-8
                     bg-red-100
                     border
@@ -560,22 +1673,25 @@ function Cart() {
                     font-semibold
                     text-center
                   "
-                                >
+                >
 
-                                    Some products exceed available inventory.
-                                    Please update cart quantities.
+                  Some products exceed available inventory.
+                  Please update cart quantities.
 
-                                </div>
+                </div>
 
-                            )}
+              )}
 
-                            <button
+              {/* CHECKOUT */}
 
-                                onClick={handleCheckout}
-
-                                disabled={hasInvalidStock}
-
-                                className={`
+              <button
+                onClick={
+                  handleCheckout
+                }
+                disabled={
+                  hasInvalidStock
+                }
+                className={`
                   mt-10
                   w-full
                   py-4
@@ -585,47 +1701,57 @@ function Cart() {
                   transition-all
                   duration-300
                   shadow-lg
+                  flex
+                  items-center
+                  justify-center
+                  gap-3
 
-                  ${hasInvalidStock
+                  ${
+                    hasInvalidStock
 
-                                        ? `
-                          bg-slate-300
-                          text-slate-500
-                          cursor-not-allowed
-                        `
+                      ? `
+                        bg-slate-300
+                        text-slate-500
+                        cursor-not-allowed
+                      `
 
-                                        : `
-                          bg-indigo-500
-                          hover:bg-indigo-600
-                          text-white
-                          hover:scale-[1.02]
-                          hover:shadow-indigo-500/30
-                        `
-                                    }
+                      : `
+                        bg-indigo-500
+                        hover:bg-indigo-600
+                        text-white
+                        hover:scale-[1.02]
+                        hover:shadow-indigo-500/30
+                      `
+                  }
                 `}
-                            >
+              >
 
-                                {
-                                    hasInvalidStock
+                {
+                  hasInvalidStock
 
-                                        ? "Inventory Issue"
+                    ? "Inventory Issue"
 
-                                        : "Proceed To Checkout"
-                                }
+                    : "Proceed To Checkout"
+                }
 
-                            </button>
+                {!hasInvalidStock && (
 
-                        </div>
-
-                    </div>
+                  <FaArrowRight />
 
                 )}
 
+              </button>
+
             </div>
 
-        </div>
-    );
+          </div>
+
+        )}
+
+      </div>
+
+    </div>
+  );
 }
 
 export default Cart;
-

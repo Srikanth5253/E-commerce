@@ -93,7 +93,9 @@ export const addProduct = async (
   res,
   next
 ) => {
+
   try {
+
     const {
       title,
       description,
@@ -102,49 +104,35 @@ export const addProduct = async (
       stock,
       lowStockThreshold,
       tags,
-      images,
-      videos,
     } = req.body;
 
     if (stock < 0) {
+
       return res.status(400).json({
         success: false,
         message:
           "Stock cannot be negative",
       });
+
     }
 
     const formattedTags =
       Array.isArray(tags)
-        ? tags.map((tag) =>
-          tag
-            .trim()
-            .toLowerCase()
-        )
-        : tags
-          ?.split(",")
-          .map((tag) =>
+
+        ? tags.map(
+          (tag) =>
             tag
               .trim()
               .toLowerCase()
-          ) || [];
+        )
 
-    const manualImages =
-      Array.isArray(images)
-        ? images
-        : images
+        : tags
           ?.split(",")
-          .map((img) =>
-            img.trim()
-          ) || [];
-
-    const manualVideos =
-      Array.isArray(videos)
-        ? videos
-        : videos
-          ?.split(",")
-          .map((video) =>
-            video.trim()
+          .map(
+            (tag) =>
+              tag
+                .trim()
+                .toLowerCase()
           ) || [];
 
     const uploadedImages =
@@ -157,22 +145,17 @@ export const addProduct = async (
         (file) => file.path
       ) || [];
 
-    const finalImages = [
-      ...manualImages,
-      ...uploadedImages,
-    ];
-
-    const finalVideos = [
-      ...manualVideos,
-      ...uploadedVideos,
-    ];
-
     const product =
       await Product.create({
+
         title,
+
         description,
+
         price,
+
         category,
+
         stock,
 
         lowStockThreshold:
@@ -180,24 +163,32 @@ export const addProduct = async (
 
         tags: formattedTags,
 
-        images: finalImages,
+        images:
+          uploadedImages,
 
-        videos: finalVideos,
+        videos:
+          uploadedVideos,
 
         createdBy:
           req.user._id,
+
       });
 
     res.status(201).json({
+
       success: true,
 
       message:
         "Product added successfully",
 
       product,
+
     });
+
   } catch (error) {
+
     next(error);
+
   }
 };
 
@@ -295,7 +286,6 @@ export const addProduct = async (
 //       next(error);
 //     }
 //   };
-
 export const updateProduct =
   async (
     req,
@@ -317,6 +307,7 @@ export const updateProduct =
         throw new Error(
           "Product not found"
         );
+
       }
 
       if (
@@ -325,9 +316,12 @@ export const updateProduct =
       ) {
 
         return res.status(400).json({
+
           success: false,
+
           message:
             "Stock cannot be negative",
+
         });
 
       }
@@ -353,34 +347,6 @@ export const updateProduct =
                   .toLowerCase()
             ) || [];
 
-      const manualImages =
-        Array.isArray(
-          req.body.imageUrls
-        )
-
-          ? req.body.imageUrls
-
-          : req.body.imageUrls
-            ?.split(",")
-            .map(
-              (img) =>
-                img.trim()
-            ) || [];
-
-      const manualVideos =
-        Array.isArray(
-          req.body.videoUrls
-        )
-
-          ? req.body.videoUrls
-
-          : req.body.videoUrls
-            ?.split(",")
-            .map(
-              (video) =>
-                video.trim()
-            ) || [];
-
       const uploadedImages =
         req.files?.images?.map(
           (file) =>
@@ -393,16 +359,6 @@ export const updateProduct =
             file.path
         ) || [];
 
-      const finalImages = [
-        ...manualImages,
-        ...uploadedImages,
-      ];
-
-      const finalVideos = [
-        ...manualVideos,
-        ...uploadedVideos,
-      ];
-
       const updatedData = {
 
         ...req.body,
@@ -410,13 +366,27 @@ export const updateProduct =
         tags:
           formattedTags,
 
-        images:
-          finalImages,
-
-        videos:
-          finalVideos,
-
       };
+
+      // Only update media if uploaded
+
+      if (
+        uploadedImages.length > 0
+      ) {
+
+        updatedData.images =
+          uploadedImages;
+
+      }
+
+      if (
+        uploadedVideos.length > 0
+      ) {
+
+        updatedData.videos =
+          uploadedVideos;
+
+      }
 
       const updatedProduct =
         await Product.findByIdAndUpdate(

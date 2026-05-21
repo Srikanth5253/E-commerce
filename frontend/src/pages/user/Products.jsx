@@ -54,7 +54,7 @@
 //         );
 
 //       } catch (error) {
-//         toast.error(
+//          toast.error(
 //           error?.response?.data?.message ||
 //           "Failed to load products"
 //         );
@@ -443,6 +443,9 @@ import {
   FaSearch,
   FaFilter,
   FaBoxOpen,
+  FaVideo,
+  FaImage,
+  FaTags,
 } from "react-icons/fa";
 
 import toast from "react-hot-toast";
@@ -466,9 +469,10 @@ function Products() {
   const [search, setSearch] =
     useState("");
 
-  const [selectedCategory,
-    setSelectedCategory] =
-    useState("All");
+  const [
+    selectedCategory,
+    setSelectedCategory,
+  ] = useState("All");
 
   const [searchParams] =
     useSearchParams();
@@ -542,10 +546,13 @@ function Products() {
         );
 
       return [
+
         "All",
+
         ...new Set(
           allCategories
         ),
+
       ];
 
     }, [products]);
@@ -562,24 +569,22 @@ function Products() {
           const matchesSearch =
 
             product.title
-              .toLowerCase()
-              .includes(
-                query
-              ) ||
+              ?.toLowerCase()
+              .includes(query) ||
 
             product.category
-              .toLowerCase()
-              .includes(
-                query
-              ) ||
+              ?.toLowerCase()
+              .includes(query) ||
+
+            product.description
+              ?.toLowerCase()
+              .includes(query) ||
 
             product.tags?.some(
               (tag) =>
                 tag
-                  .toLowerCase()
-                  .includes(
-                    query
-                  )
+                  ?.toLowerCase()
+                  .includes(query)
             ) ||
 
             (
@@ -625,6 +630,38 @@ function Products() {
 
     ]);
 
+  const totalImages =
+    products.reduce(
+      (
+        total,
+        product
+      ) =>
+
+        total +
+        (
+          product.images
+            ?.length || 0
+        ),
+
+      0
+    );
+
+  const totalVideos =
+    products.reduce(
+      (
+        total,
+        product
+      ) =>
+
+        total +
+        (
+          product.videos
+            ?.length || 0
+        ),
+
+      0
+    );
+
   return (
 
     <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-slate-100 text-slate-900">
@@ -633,7 +670,9 @@ function Products() {
 
       <div className="px-6 py-14 max-w-7xl mx-auto">
 
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 mb-14">
+        {/* HEADER */}
+
+        <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-8 mb-14">
 
           <div className="flex items-center gap-5">
 
@@ -646,6 +685,7 @@ function Products() {
                 flex
                 items-center
                 justify-center
+                shadow-sm
               "
             >
 
@@ -662,13 +702,13 @@ function Products() {
 
               <h1 className="text-5xl font-extrabold text-slate-900">
 
-                Products
+                Explore Products
 
               </h1>
 
               <p className="text-slate-500 mt-3 text-lg">
 
-                Explore all available products
+                Discover premium products with images and videos
 
               </p>
 
@@ -676,35 +716,94 @@ function Products() {
 
           </div>
 
-          <div
-            className="
-              bg-white
-              border
-              border-slate-200
-              rounded-2xl
-              px-6
-              py-4
-              shadow-sm
-            "
-          >
+          {/* STATS */}
 
-            <p className="text-slate-500 text-sm">
+          <div className="grid grid-cols-3 gap-4">
 
-              Total Products
+            <div
+              className="
+                bg-white
+                border
+                border-slate-200
+                rounded-2xl
+                px-6
+                py-5
+                shadow-sm
+                text-center
+              "
+            >
 
-            </p>
+              <p className="text-slate-400 text-sm">
 
-            <h2 className="text-3xl font-extrabold text-indigo-600 mt-1">
+                Products
 
-              {filteredProducts.length}
+              </p>
 
-            </h2>
+              <h2 className="text-3xl font-extrabold text-indigo-600 mt-1">
 
-            <p className="text-slate-400 text-sm mt-1">
+                {filteredProducts.length}
 
-              Showing products with images & videos
+              </h2>
 
-            </p>
+            </div>
+
+            <div
+              className="
+                bg-white
+                border
+                border-slate-200
+                rounded-2xl
+                px-6
+                py-5
+                shadow-sm
+                text-center
+              "
+            >
+
+              <div className="flex items-center justify-center gap-2 text-slate-400 text-sm">
+
+                <FaImage />
+
+                Images
+
+              </div>
+
+              <h2 className="text-3xl font-extrabold text-indigo-600 mt-1">
+
+                {totalImages}
+
+              </h2>
+
+            </div>
+
+            <div
+              className="
+                bg-white
+                border
+                border-slate-200
+                rounded-2xl
+                px-6
+                py-5
+                shadow-sm
+                text-center
+              "
+            >
+
+              <div className="flex items-center justify-center gap-2 text-slate-400 text-sm">
+
+                <FaVideo />
+
+                Videos
+
+              </div>
+
+              <h2 className="text-3xl font-extrabold text-indigo-600 mt-1">
+
+                {totalVideos}
+
+              </h2>
+
+            </div>
 
           </div>
 
@@ -713,6 +812,8 @@ function Products() {
         {/* SEARCH + FILTER */}
 
         <div className="grid lg:grid-cols-4 gap-5 mb-12">
+
+          {/* SEARCH */}
 
           <div
             className="
@@ -745,7 +846,7 @@ function Products() {
                   e.target.value
                 )
               }
-              placeholder="Search products, tags, category, video..."
+              placeholder="Search products, tags, categories, videos..."
               className="
                 w-full
                 outline-none
@@ -756,6 +857,8 @@ function Products() {
             />
 
           </div>
+
+          {/* CATEGORY */}
 
           <div
             className="
@@ -821,11 +924,107 @@ function Products() {
 
         </div>
 
+        {/* QUICK TAGS */}
+
+        <div className="flex flex-wrap gap-3 mb-12">
+
+          <button
+            onClick={() =>
+              setSearch("video")
+            }
+            className="
+              px-5
+              py-2.5
+              rounded-full
+              bg-white
+              border
+              border-slate-200
+              text-slate-700
+              hover:bg-indigo-50
+              hover:border-indigo-400
+              transition-all
+              duration-300
+              flex
+              items-center
+              gap-2
+              font-medium
+            "
+          >
+
+            <FaVideo />
+
+            Video Products
+
+          </button>
+
+          <button
+            onClick={() =>
+              setSearch("image")
+            }
+            className="
+              px-5
+              py-2.5
+              rounded-full
+              bg-white
+              border
+              border-slate-200
+              text-slate-700
+              hover:bg-indigo-50
+              hover:border-indigo-400
+              transition-all
+              duration-300
+              flex
+              items-center
+              gap-2
+              font-medium
+            "
+          >
+
+            <FaImage />
+
+            Image Products
+
+          </button>
+
+          <button
+            onClick={() => {
+
+              setSearch("");
+
+              setSelectedCategory(
+                "All"
+              );
+
+            }}
+            className="
+              px-5
+              py-2.5
+              rounded-full
+              bg-indigo-500
+              text-white
+              hover:bg-indigo-600
+              transition-all
+              duration-300
+              flex
+              items-center
+              gap-2
+              font-medium
+            "
+          >
+
+            <FaTags />
+
+            Reset Filters
+
+          </button>
+
+        </div>
+
         {/* LOADING */}
 
         {loading ? (
 
-          <div className="text-center text-slate-500 text-xl py-20">
+          <div className="text-center text-slate-500 text-xl py-24">
 
             Loading products...
 
@@ -897,7 +1096,6 @@ function Products() {
                   lg:grid-cols-3
                   xl:grid-cols-4
                   gap-8
-                  animate-fadeIn
                 "
               >
 

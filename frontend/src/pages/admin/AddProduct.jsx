@@ -726,10 +726,6 @@ function AddProduct() {
 
       tags: "",
 
-      images: "",
-
-      videos: "",
-
     });
 
   const [imageFiles, setImageFiles] =
@@ -849,16 +845,6 @@ function AddProduct() {
         productData.append(
           "tags",
           formData.tags
-        );
-
-        productData.append(
-          "imageUrls",
-          formData.images
-        );
-
-        productData.append(
-          "videoUrls",
-          formData.videos
         );
 
         imageFiles.forEach(
@@ -1235,39 +1221,6 @@ function AddProduct() {
 
                 <FaImage />
 
-                Image URLs
-
-              </label>
-
-              <input
-                type="text"
-                name="images"
-                value={
-                  formData.images
-                }
-                onChange={
-                  handleChange
-                }
-                placeholder="Separate image URLs with commas"
-                className="
-                  w-full
-                  px-5
-                  py-4
-                  bg-slate-50
-                  border
-                  border-slate-300
-                  rounded-2xl
-                "
-              />
-
-            </div>
-
-            <div>
-
-              <label className="flex items-center gap-2 mb-3 text-slate-700 font-semibold">
-
-                <FaImage />
-
                 Upload Images
 
               </label>
@@ -1281,39 +1234,6 @@ function AddProduct() {
                     ...e.target.files,
                   ])
                 }
-                className="
-                  w-full
-                  px-5
-                  py-4
-                  bg-slate-50
-                  border
-                  border-slate-300
-                  rounded-2xl
-                "
-              />
-
-            </div>
-
-            <div>
-
-              <label className="flex items-center gap-2 mb-3 text-slate-700 font-semibold">
-
-                <FaVideo />
-
-                Video URLs
-
-              </label>
-
-              <input
-                type="text"
-                name="videos"
-                value={
-                  formData.videos
-                }
-                onChange={
-                  handleChange
-                }
-                placeholder="Separate video URLs with commas"
                 className="
                   w-full
                   px-5
@@ -1373,6 +1293,10 @@ function AddProduct() {
                 font-semibold
                 transition-all
                 duration-300
+                hover:scale-[1.02]
+                shadow-lg
+                hover:shadow-indigo-500/30
+                disabled:opacity-70
               "
             >
 

@@ -1,5 +1,520 @@
+// import {
+//   useEffect,
+//   useState,
+// } from "react";
+
+// import {
+//   FaBoxOpen,
+//   FaCheckCircle,
+//   FaClock,
+//   FaTruck,
+//   FaTimesCircle,
+//   FaRupeeSign,
+// } from "react-icons/fa";
+
+// import toast from "react-hot-toast";
+
+// import Navbar
+//   from "../../components/Navbar";
+
+// import {
+//   getMyOrders,
+// } from "../../services/OrderService";
+
+// function Orders() {
+
+//   const [orders, setOrders] =
+//     useState([]);
+
+//   const [loading, setLoading] =
+//     useState(true);
+
+//   const fetchOrders =
+//     async () => {
+
+//       try {
+
+//         const data =
+//           await getMyOrders();
+
+//         setOrders(
+//           data.orders
+//         );
+
+//       } catch (error) {
+//         toast.error(
+//           error?.response?.data?.message ||
+//           "Failed to load orders"
+//         );
+//       } finally {
+
+//         setLoading(false);
+
+//       }
+//     };
+
+//   useEffect(() => {
+
+//     fetchOrders();
+
+//   }, []);
+
+//   const getStatusColor =
+//     (status) => {
+
+//       switch (status) {
+
+//         case "Processing":
+//           return `
+//             bg-yellow-100
+//             text-yellow-600
+//           `;
+
+//         case "Shipped":
+//           return `
+//             bg-blue-100
+//             text-blue-600
+//           `;
+
+//         case "Delivered":
+//           return `
+//             bg-green-100
+//             text-green-600
+//           `;
+
+//         case "Cancelled":
+//           return `
+//             bg-red-100
+//             text-red-600
+//           `;
+
+//         default:
+//           return `
+//             bg-slate-100
+//             text-slate-700
+//           `;
+//       }
+//     };
+
+//   const getStatusIcon =
+//     (status) => {
+
+//       switch (status) {
+
+//         case "Processing":
+//           return <FaClock />;
+
+//         case "Shipped":
+//           return <FaTruck />;
+
+//         case "Delivered":
+//           return <FaCheckCircle />;
+
+//         case "Cancelled":
+//           return <FaTimesCircle />;
+
+//         default:
+//           return <FaBoxOpen />;
+//       }
+//     };
+
+//   if (loading) {
+
+//     return (
+
+//       <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-slate-100 flex items-center justify-center">
+
+//         <div className="text-slate-500 text-2xl font-semibold">
+
+//           Loading...
+
+//         </div>
+
+//       </div>
+//     );
+//   }
+
+//   return (
+
+//     <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-slate-100 text-slate-900">
+
+//       <Navbar />
+
+//       <div className="max-w-7xl mx-auto px-6 py-12">
+
+//         <div className="flex items-center gap-5 mb-12">
+
+//           <div
+//             className="
+//               w-20
+//               h-20
+//               rounded-3xl
+//               bg-indigo-100
+//               flex
+//               items-center
+//               justify-center
+//             "
+//           >
+
+//             <FaBoxOpen
+//               className="
+//                 text-4xl
+//                 text-indigo-500
+//               "
+//             />
+
+//           </div>
+
+//           <div>
+
+//             <h1 className="text-5xl font-extrabold text-slate-900">
+
+//               My Orders
+
+//             </h1>
+
+//             <p className="text-slate-500 mt-3 text-lg">
+
+//               Track all your purchases and order history
+
+//             </p>
+
+//           </div>
+
+//         </div>
+
+//         {orders.length === 0 ? (
+
+//           <div
+//             className="
+//               bg-white
+//               border
+//               border-slate-200
+//               rounded-3xl
+//               p-16
+//               text-center
+//               shadow-xl
+//             "
+//           >
+
+//             <h2 className="text-4xl font-extrabold text-slate-900">
+
+//               No Orders Found
+
+//             </h2>
+
+//             <p className="text-slate-500 text-lg mt-5">
+
+//               You haven’t placed any orders yet.
+
+//             </p>
+
+//           </div>
+
+//         ) : (
+
+//           <div className="space-y-8">
+
+//             {orders.map(
+//               (order) => (
+
+//                 <div
+//                   key={order._id}
+//                   className="
+//                     bg-white
+//                     border
+//                     border-slate-200
+//                     rounded-3xl
+//                     p-8
+//                     shadow-sm
+//                     hover:shadow-2xl
+//                     transition-all
+//                     duration-500
+//                   "
+//                 >
+
+//                   <div className="flex flex-wrap items-center justify-between gap-8">
+
+//                     <div>
+
+//                       <p className="text-slate-500 mb-2 font-medium">
+
+//                         Order ID
+
+//                       </p>
+
+//                       <h2 className="text-xl font-bold text-slate-900 break-all">
+
+//                         {order._id}
+
+//                       </h2>
+
+//                     </div>
+
+//                     <div>
+
+//                       <p className="text-slate-500 mb-2 font-medium">
+
+//                         Status
+
+//                       </p>
+
+//                       <div
+//                         className={`
+//                           inline-flex
+//                           items-center
+//                           gap-2
+//                           px-5
+//                           py-2.5
+//                           rounded-2xl
+//                           font-bold
+//                           text-lg
+//                           ${getStatusColor(
+//                           order.status
+//                         )}
+//                         `}
+//                       >
+
+//                         {
+//                           getStatusIcon(
+//                             order.status
+//                           )
+//                         }
+
+//                         {order.status}
+
+//                       </div>
+
+//                     </div>
+
+//                     <div>
+
+//                       <p className="text-slate-500 mb-2 font-medium">
+
+//                         Payment
+
+//                       </p>
+
+//                       <div
+//                         className={`
+//                           inline-flex
+//                           items-center
+//                           gap-2
+//                           px-5
+//                           py-2.5
+//                           rounded-2xl
+//                           font-bold
+//                           text-lg
+
+//                           ${order.isPaid
+
+//                             ? `
+//                                 bg-green-100
+//                                 text-green-600
+//                               `
+
+//                             : `
+//                                 bg-red-100
+//                                 text-red-600
+//                               `
+//                           }
+//                         `}
+//                       >
+
+//                         {
+//                           order.isPaid
+
+//                             ? <FaCheckCircle />
+
+//                             : <FaTimesCircle />
+//                         }
+
+//                         {
+//                           order.isPaid
+
+//                             ? "Paid"
+
+//                             : "Pending"
+//                         }
+
+//                       </div>
+
+//                     </div>
+
+//                     <div>
+
+//                       <p className="text-slate-500 mb-2 font-medium">
+
+//                         Total
+
+//                       </p>
+
+//                       <div className="flex items-center gap-2">
+
+//                         <FaRupeeSign
+//                           className="
+//                             text-indigo-500
+//                             text-2xl
+//                           "
+//                         />
+
+//                         <span className="text-indigo-600 text-4xl font-extrabold">
+
+//                           {order.totalPrice}
+
+//                         </span>
+
+//                       </div>
+
+//                     </div>
+
+//                   </div>
+
+//                   <div className="mt-10 space-y-5">
+
+//                     {order.orderItems.map(
+//                       (item) => (
+
+//                         <div
+//                           key={item.product}
+//                           className="
+//                             flex
+//                             flex-col
+//                             sm:flex-row
+//                             sm:items-center
+//                             gap-5
+//                             border
+//                             border-slate-200
+//                             bg-slate-50
+//                             rounded-3xl
+//                             p-5
+//                             hover:bg-white
+//                             hover:shadow-lg
+//                             transition-all
+//                             duration-300
+//                           "
+//                         >
+
+//                           <div className="overflow-hidden rounded-2xl">
+
+//                             <img
+//                               src={
+//                                 item.image
+//                               }
+//                               alt={
+//                                 item.title
+//                               }
+//                               className="
+//                                 w-28
+//                                 h-28
+//                                 object-cover
+//                                 hover:scale-110
+//                                 transition-transform
+//                                 duration-700
+//                               "
+//                             />
+
+//                           </div>
+
+//                           <div className="flex-1">
+
+//                             <h3 className="text-2xl font-bold text-slate-900">
+
+//                               {item.title}
+
+//                             </h3>
+
+//                             <div className="flex flex-wrap gap-6 mt-3 text-slate-500 font-medium">
+
+//                               <p>
+
+//                                 Quantity:
+//                                 {" "}
+//                                 {item.quantity}
+
+//                               </p>
+
+//                               <p>
+
+//                                 Price:
+//                                 {" "}
+//                                 ₹{item.price}
+
+//                               </p>
+
+//                             </div>
+
+//                           </div>
+
+//                           <div className="text-right">
+
+//                             <p className="text-slate-500 mb-2 font-medium">
+
+//                               Item Total
+
+//                             </p>
+
+//                             <div className="text-indigo-600 text-3xl font-extrabold">
+
+//                               ₹
+//                               {
+//                                 (
+//                                   item.price *
+//                                   item.quantity
+//                                 ).toFixed(2)
+//                               }
+
+//                             </div>
+
+//                           </div>
+
+//                         </div>
+
+//                       )
+//                     )}
+
+//                   </div>
+
+//                   <div className="mt-8 pt-6 border-t border-slate-200 flex flex-wrap items-center justify-between gap-5">
+
+//                     <div className="text-slate-500">
+
+//                       {
+//                         order.orderItems.length
+//                       }
+//                       {" "}
+//                       item(s) in this order
+
+//                     </div>
+
+//                     <div className="text-slate-500">
+
+//                       Ordered successfully
+
+//                     </div>
+
+//                   </div>
+
+//                 </div>
+
+//               )
+//             )}
+
+//           </div>
+
+//         )}
+
+//       </div>
+
+//     </div>
+//   );
+// }
+
+// export default Orders;
+
 import {
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
@@ -10,6 +525,12 @@ import {
   FaTruck,
   FaTimesCircle,
   FaRupeeSign,
+  FaImage,
+  FaVideo,
+  FaShoppingBag,
+  FaWallet,
+  FaBolt,
+  FaShieldAlt,
 } from "react-icons/fa";
 
 import toast from "react-hot-toast";
@@ -42,10 +563,16 @@ function Orders() {
         );
 
       } catch (error) {
+
         toast.error(
-          error?.response?.data?.message ||
+
+          error?.response?.data
+            ?.message ||
+
           "Failed to load orders"
+
         );
+
       } finally {
 
         setLoading(false);
@@ -59,36 +586,75 @@ function Orders() {
 
   }, []);
 
+  const totalSpent =
+    useMemo(() => {
+
+      return orders.reduce(
+        (
+          acc,
+          order
+        ) =>
+
+          acc +
+          order.totalPrice,
+
+        0
+      );
+
+    }, [orders]);
+
+  const totalProducts =
+    useMemo(() => {
+
+      return orders.reduce(
+        (
+          acc,
+          order
+        ) =>
+
+          acc +
+          order.orderItems.length,
+
+        0
+      );
+
+    }, [orders]);
+
   const getStatusColor =
     (status) => {
 
       switch (status) {
 
         case "Processing":
+
           return `
             bg-yellow-100
             text-yellow-600
           `;
 
         case "Shipped":
+
           return `
             bg-blue-100
             text-blue-600
           `;
 
         case "Delivered":
+
           return `
             bg-green-100
             text-green-600
           `;
 
         case "Cancelled":
+
           return `
             bg-red-100
             text-red-600
           `;
 
         default:
+
           return `
             bg-slate-100
             text-slate-700
@@ -102,18 +668,23 @@ function Orders() {
       switch (status) {
 
         case "Processing":
+
           return <FaClock />;
 
         case "Shipped":
+
           return <FaTruck />;
 
         case "Delivered":
+
           return <FaCheckCircle />;
 
         case "Cancelled":
+
           return <FaTimesCircle />;
 
         default:
+
           return <FaBoxOpen />;
       }
     };
@@ -126,11 +697,12 @@ function Orders() {
 
         <div className="text-slate-500 text-2xl font-semibold">
 
-          Loading...
+          Loading Orders...
 
         </div>
 
       </div>
+
     );
   }
 
@@ -142,46 +714,141 @@ function Orders() {
 
       <div className="max-w-7xl mx-auto px-6 py-12">
 
-        <div className="flex items-center gap-5 mb-12">
+        {/* HEADER */}
 
-          <div
-            className="
-              w-20
-              h-20
-              rounded-3xl
-              bg-indigo-100
-              flex
-              items-center
-              justify-center
-            "
-          >
+        <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-8 mb-14">
 
-            <FaBoxOpen
+          <div className="flex items-center gap-5">
+
+            <div
               className="
-                text-4xl
-                text-indigo-500
+                w-20
+                h-20
+                rounded-3xl
+                bg-indigo-100
+                flex
+                items-center
+                justify-center
               "
-            />
+            >
+
+              <FaShoppingBag
+                className="
+                  text-4xl
+                  text-indigo-500
+                "
+              />
+
+            </div>
+
+            <div>
+
+              <h1 className="text-5xl font-extrabold text-slate-900">
+
+                My Orders
+
+              </h1>
+
+              <p className="text-slate-500 mt-3 text-lg">
+
+                Track your purchases and order history
+
+              </p>
+
+            </div>
 
           </div>
 
-          <div>
+          {/* STATS */}
 
-            <h1 className="text-5xl font-extrabold text-slate-900">
+          <div className="grid grid-cols-3 gap-4">
 
-              My Orders
+            <div
+              className="
+                bg-white
+                border
+                border-slate-200
+                rounded-2xl
+                px-6
+                py-5
+                shadow-sm
+                text-center
+              "
+            >
 
-            </h1>
+              <p className="text-slate-400 text-sm">
 
-            <p className="text-slate-500 mt-3 text-lg">
+                Orders
 
-              Track all your purchases and order history
+              </p>
 
-            </p>
+              <h2 className="text-3xl font-extrabold text-indigo-600 mt-1">
+
+                {orders.length}
+
+              </h2>
+
+            </div>
+
+            <div
+              className="
+                bg-white
+                border
+                border-slate-200
+                rounded-2xl
+                px-6
+                py-5
+                shadow-sm
+                text-center
+              "
+            >
+
+              <p className="text-slate-400 text-sm">
+
+                Products
+
+              </p>
+
+              <h2 className="text-3xl font-extrabold text-indigo-600 mt-1">
+
+                {totalProducts}
+
+              </h2>
+
+            </div>
+
+            <div
+              className="
+                bg-white
+                border
+                border-slate-200
+                rounded-2xl
+                px-6
+                py-5
+                shadow-sm
+                text-center
+              "
+            >
+
+              <p className="text-slate-400 text-sm">
+
+                Total Spent
+
+              </p>
+
+              <h2 className="text-3xl font-extrabold text-indigo-600 mt-1">
+
+                ₹{totalSpent.toFixed(0)}
+
+              </h2>
+
+            </div>
 
           </div>
 
         </div>
+
+        {/* EMPTY */}
 
         {orders.length === 0 ? (
 
@@ -196,6 +863,29 @@ function Orders() {
               shadow-xl
             "
           >
+
+            <div
+              className="
+                w-28
+                h-28
+                mx-auto
+                rounded-full
+                bg-slate-100
+                flex
+                items-center
+                justify-center
+                mb-8
+              "
+            >
+
+              <FaBoxOpen
+                className="
+                  text-5xl
+                  text-slate-400
+                "
+              />
+
+            </div>
 
             <h2 className="text-4xl font-extrabold text-slate-900">
 
@@ -228,10 +918,13 @@ function Orders() {
                     p-8
                     shadow-sm
                     hover:shadow-2xl
+                    hover:shadow-indigo-500/10
                     transition-all
                     duration-500
                   "
                 >
+
+                  {/* TOP */}
 
                   <div className="flex flex-wrap items-center justify-between gap-8">
 
@@ -250,6 +943,8 @@ function Orders() {
                       </h2>
 
                     </div>
+
+                    {/* STATUS */}
 
                     <div>
 
@@ -270,8 +965,8 @@ function Orders() {
                           font-bold
                           text-lg
                           ${getStatusColor(
-                          order.status
-                        )}
+                            order.status
+                          )}
                         `}
                       >
 
@@ -286,6 +981,8 @@ function Orders() {
                       </div>
 
                     </div>
+
+                    {/* PAYMENT */}
 
                     <div>
 
@@ -306,17 +1003,18 @@ function Orders() {
                           font-bold
                           text-lg
 
-                          ${order.isPaid
+                          ${
+                            order.isPaid
 
-                            ? `
-                                bg-green-100
-                                text-green-600
-                              `
+                              ? `
+                                  bg-green-100
+                                  text-green-600
+                                `
 
-                            : `
-                                bg-red-100
-                                text-red-600
-                              `
+                              : `
+                                  bg-red-100
+                                  text-red-600
+                                `
                           }
                         `}
                       >
@@ -340,6 +1038,8 @@ function Orders() {
                       </div>
 
                     </div>
+
+                    {/* TOTAL */}
 
                     <div>
 
@@ -370,114 +1070,298 @@ function Orders() {
 
                   </div>
 
+                  {/* FEATURES */}
+
+                  <div className="grid grid-cols-3 gap-4 mt-10">
+
+                    <div
+                      className="
+                        bg-slate-50
+                        rounded-2xl
+                        p-5
+                        text-center
+                      "
+                    >
+
+                      <FaTruck
+                        className="
+                          mx-auto
+                          text-indigo-500
+                          text-2xl
+                          mb-3
+                        "
+                      />
+
+                      <p className="font-semibold">
+
+                        Fast Delivery
+
+                      </p>
+
+                    </div>
+
+                    <div
+                      className="
+                        bg-slate-50
+                        rounded-2xl
+                        p-5
+                        text-center
+                      "
+                    >
+
+                      <FaShieldAlt
+                        className="
+                          mx-auto
+                          text-indigo-500
+                          text-2xl
+                          mb-3
+                        "
+                      />
+
+                      <p className="font-semibold">
+
+                        Secure Payment
+
+                      </p>
+
+                    </div>
+
+                    <div
+                      className="
+                        bg-slate-50
+                        rounded-2xl
+                        p-5
+                        text-center
+                      "
+                    >
+
+                      <FaBolt
+                        className="
+                          mx-auto
+                          text-indigo-500
+                          text-2xl
+                          mb-3
+                        "
+                      />
+
+                      <p className="font-semibold">
+
+                        Instant Updates
+
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                  {/* ITEMS */}
+
                   <div className="mt-10 space-y-5">
 
                     {order.orderItems.map(
-                      (item) => (
+                      (item, index) => {
 
-                        <div
-                          key={item.product}
-                          className="
-                            flex
-                            flex-col
-                            sm:flex-row
-                            sm:items-center
-                            gap-5
-                            border
-                            border-slate-200
-                            bg-slate-50
-                            rounded-3xl
-                            p-5
-                            hover:bg-white
-                            hover:shadow-lg
-                            transition-all
-                            duration-300
-                          "
-                        >
+                        const isVideo =
+                          item.image?.includes(
+                            ".mp4"
+                          ) ||
 
-                          <div className="overflow-hidden rounded-2xl">
+                          item.image?.includes(
+                            ".webm"
+                          ) ||
 
-                            <img
-                              src={
-                                item.image
-                              }
-                              alt={
-                                item.title
-                              }
-                              className="
-                                w-28
-                                h-28
-                                object-cover
-                                hover:scale-110
-                                transition-transform
-                                duration-700
-                              "
-                            />
+                          item.image?.includes(
+                            ".mov"
+                          );
 
-                          </div>
+                        return (
 
-                          <div className="flex-1">
+                          <div
+                            key={index}
+                            className="
+                              flex
+                              flex-col
+                              sm:flex-row
+                              sm:items-center
+                              gap-5
+                              border
+                              border-slate-200
+                              bg-slate-50
+                              rounded-3xl
+                              p-5
+                              hover:bg-white
+                              hover:shadow-lg
+                              transition-all
+                              duration-300
+                            "
+                          >
 
-                            <h3 className="text-2xl font-bold text-slate-900">
+                            {/* MEDIA */}
 
-                              {item.title}
+                            <div className="relative overflow-hidden rounded-2xl">
 
-                            </h3>
+                              {isVideo ? (
 
-                            <div className="flex flex-wrap gap-6 mt-3 text-slate-500 font-medium">
+                                <video
+                                  src={
+                                    item.image
+                                  }
+                                  className="
+                                    w-28
+                                    h-28
+                                    object-cover
+                                    bg-black
+                                  "
+                                />
 
-                              <p>
+                              ) : (
 
-                                Quantity:
-                                {" "}
-                                {item.quantity}
+                                <img
+                                  src={
+                                    item.image
+                                  }
+                                  alt={
+                                    item.title
+                                  }
+                                  className="
+                                    w-28
+                                    h-28
+                                    object-cover
+                                    hover:scale-110
+                                    transition-transform
+                                    duration-700
+                                    bg-white
+                                  "
+                                />
+
+                              )}
+
+                              <div className="absolute top-2 left-2">
+
+                                {isVideo ? (
+
+                                  <div
+                                    className="
+                                      bg-indigo-500
+                                      text-white
+                                      px-2.5
+                                      py-1
+                                      rounded-lg
+                                      text-xs
+                                      font-semibold
+                                      flex
+                                      items-center
+                                      gap-1
+                                    "
+                                  >
+
+                                    <FaVideo />
+
+                                    Video
+
+                                  </div>
+
+                                ) : (
+
+                                  <div
+                                    className="
+                                      bg-black/70
+                                      text-white
+                                      px-2.5
+                                      py-1
+                                      rounded-lg
+                                      text-xs
+                                      font-semibold
+                                      backdrop-blur-md
+                                      flex
+                                      items-center
+                                      gap-1
+                                    "
+                                  >
+
+                                    <FaImage />
+
+                                    Image
+
+                                  </div>
+
+                                )}
+
+                              </div>
+
+                            </div>
+
+                            {/* DETAILS */}
+
+                            <div className="flex-1">
+
+                              <h3 className="text-2xl font-bold text-slate-900">
+
+                                {item.title}
+
+                              </h3>
+
+                              <div className="flex flex-wrap gap-6 mt-4 text-slate-500 font-medium">
+
+                                <p>
+
+                                  Quantity:
+                                  {" "}
+                                  {item.quantity}
+
+                                </p>
+
+                                <p>
+
+                                  Price:
+                                  {" "}
+                                  ₹{item.price}
+
+                                </p>
+
+                              </div>
+
+                            </div>
+
+                            {/* ITEM TOTAL */}
+
+                            <div className="text-right">
+
+                              <p className="text-slate-500 mb-2 font-medium">
+
+                                Item Total
 
                               </p>
 
-                              <p>
+                              <div className="text-indigo-600 text-3xl font-extrabold">
 
-                                Price:
-                                {" "}
-                                ₹{item.price}
+                                ₹
+                                {
+                                  (
+                                    item.price *
+                                    item.quantity
+                                  ).toFixed(2)
+                                }
 
-                              </p>
+                              </div>
 
                             </div>
 
                           </div>
 
-                          <div className="text-right">
-
-                            <p className="text-slate-500 mb-2 font-medium">
-
-                              Item Total
-
-                            </p>
-
-                            <div className="text-indigo-600 text-3xl font-extrabold">
-
-                              ₹
-                              {
-                                (
-                                  item.price *
-                                  item.quantity
-                                ).toFixed(2)
-                              }
-
-                            </div>
-
-                          </div>
-
-                        </div>
-
-                      )
+                        );
+                      }
                     )}
 
                   </div>
 
+                  {/* FOOTER */}
+
                   <div className="mt-8 pt-6 border-t border-slate-200 flex flex-wrap items-center justify-between gap-5">
 
-                    <div className="text-slate-500">
+                    <div className="text-slate-500 flex items-center gap-2">
+
+                      <FaBoxOpen />
 
                       {
                         order.orderItems.length
@@ -487,9 +1371,11 @@ function Orders() {
 
                     </div>
 
-                    <div className="text-slate-500">
+                    <div className="text-slate-500 flex items-center gap-2">
 
-                      Ordered successfully
+                      <FaWallet />
+
+                      Order processed successfully
 
                     </div>
 
@@ -511,4 +1397,3 @@ function Orders() {
 }
 
 export default Orders;
-
