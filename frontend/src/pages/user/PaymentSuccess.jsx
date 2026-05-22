@@ -30,59 +30,136 @@ function PaymentSuccess() {
   const [orderCreated, setOrderCreated] =
     useState(false);
 
+  // useEffect(() => {
+
+  //   const createOrder =
+  //     async () => {
+
+  //       try {
+
+  //         const response =
+  //           await API.post(
+  //             "/api/orders/payment-success"
+  //           );
+
+  //         setOrderCreated(true);
+
+  //         toast.success(
+  //           "Order placed successfully"
+  //         );
+
+  //         setTimeout(() => {
+
+  //           navigate(
+  //             "/my-orders"
+  //           );
+
+  //         }, 3500);
+
+  //       } catch (error) {
+
+  //         toast.error(
+
+  //           error.response?.data
+  //             ?.message ||
+
+  //           "Order creation failed"
+
+  //         );
+
+  //         setTimeout(() => {
+
+  //           navigate("/cart");
+
+  //         }, 3000);
+
+  //       } finally {
+
+  //         setLoading(false);
+
+  //       }
+  //     };
+
+  //   createOrder();
+
+  // }, []);
   useEffect(() => {
 
-    const createOrder =
-      async () => {
+  const createOrder =
+    async () => {
 
-        try {
+      try {
 
-          const response =
-            await API.post(
-              "/api/orders/payment-success"
-            );
-
-          setOrderCreated(true);
-
-          toast.success(
-            "Order placed successfully"
+        const params =
+          new URLSearchParams(
+            window.location.search
           );
 
-          setTimeout(() => {
+        const sessionId =
+          params.get(
+            "session_id"
+          );
 
-            navigate(
-              "/my-orders"
-            );
-
-          }, 3500);
-
-        } catch (error) {
+        if (!sessionId) {
 
           toast.error(
-
-            error.response?.data
-              ?.message ||
-
-            "Order creation failed"
-
+            "Invalid payment session"
           );
 
-          setTimeout(() => {
+          navigate("/cart");
 
-            navigate("/cart");
-
-          }, 3000);
-
-        } finally {
-
-          setLoading(false);
-
+          return;
         }
-      };
 
-    createOrder();
+        const response =
+          await API.post(
+            "/api/orders/payment-success",
+            {
+              sessionId,
+            }
+          );
 
-  }, []);
+        setOrderCreated(true);
+
+        toast.success(
+          "Order placed successfully"
+        );
+
+        setTimeout(() => {
+
+          navigate(
+            "/my-orders"
+          );
+
+        }, 3500);
+
+      } catch (error) {
+
+        toast.error(
+
+          error.response?.data
+            ?.message ||
+
+          "Order creation failed"
+
+        );
+
+        setTimeout(() => {
+
+          navigate("/cart");
+
+        }, 3000);
+
+      } finally {
+
+        setLoading(false);
+
+      }
+    };
+
+  createOrder();
+
+}, []);
 
   return (
 

@@ -42,3 +42,55 @@ export const sendUserMessage =
 
     return response.data;
   };
+
+  export const getAddresses =
+  async () => {
+
+    const response =
+      await API.get(
+        "/api/users/address"
+      );
+
+    return response.data;
+  };
+
+
+export const addAddress =
+  async (addressData) => {
+
+    const response =
+      await API.post(
+        "/api/users/address",
+        addressData
+      );
+
+    return response.data;
+  };
+
+
+export const updateAddress =
+  async (
+    id,
+    addressData
+  ) => {
+
+    const response =
+      await API.put(
+        `/api/users/address/${id}`,
+        addressData
+      );
+
+    return response.data;
+  };
+
+
+export const deleteAddress =
+  async (id) => {
+
+    const response =
+      await API.delete(
+        `/api/users/address/${id}`
+      );
+
+    return response.data;
+  };

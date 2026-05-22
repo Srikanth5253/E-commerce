@@ -10,6 +10,7 @@ import protect
 import {
   placeOrder,
   getMyOrders,
+  getOrderById,
   createCheckoutSession,
   paymentSuccess
 } from "../../controllers/user/orderController.js";
@@ -38,6 +39,12 @@ router.get(
   "/my-orders",
   protect,
   getMyOrders
+);
+
+router.get(
+  "/:id",
+  protect,
+  getOrderById
 );
 
 

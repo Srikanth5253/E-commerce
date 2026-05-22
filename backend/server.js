@@ -10,6 +10,7 @@ import adminRoutes from "./routes/admin/adminRoutes.js";
 import adminChatRoutes from "./routes/admin/chatRoutes.js";
 
 import userProductRoutes from "./routes/user/productRoutes.js";
+import userRoutes from "./routes/user/userRoutes.js";
 import cartRoutes from "./routes/user/cartRoutes.js";
 import wishlistRoutes from "./routes/user/wishlistRoutes.js";
 import orderRoutes from "./routes/user/orderRoutes.js";
@@ -34,9 +35,15 @@ app.use(
 );
 
 app.use("/api/auth", authRoutes);
+
 app.use(
   "/api/admin/products",
   adminProductRoutes
+);
+
+app.use(
+  "/api/users",
+  userRoutes
 );
 
 app.use(
