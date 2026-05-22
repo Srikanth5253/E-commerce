@@ -149,8 +149,6 @@ export const updateAddress = async (
   }
 };
 
-
-// DELETE ADDRESS
 export const deleteAddress = async (
   req,
   res
