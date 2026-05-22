@@ -166,12 +166,21 @@ function Login() {
 
     try {
 
+      const sanitizedData = {
+
+        ...formData,
+
+        email:
+          formData.email
+            .trim()
+            .toLowerCase(),
+      };
+
       const response =
         await API.post(
           "/api/auth/login",
-          formData
+          sanitizedData
         );
-
       localStorage.setItem(
         "token",
         response.data.token

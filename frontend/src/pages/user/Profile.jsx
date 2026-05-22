@@ -149,6 +149,53 @@ function Profile() {
   const handleAddressSubmit =
     async () => {
 
+      if (
+        !addressForm.fullName.trim() ||
+
+        !addressForm.phone.trim() ||
+
+        !addressForm.address.trim() ||
+
+        !addressForm.city.trim() ||
+
+        !addressForm.state.trim() ||
+
+        !addressForm.pincode.trim()
+      ) {
+
+        toast.error(
+          "Please fill all address fields"
+        );
+
+        return;
+      }
+
+      if (
+        !/^[0-9]{10}$/.test(
+          addressForm.phone
+        )
+      ) {
+
+        toast.error(
+          "Enter valid 10-digit phone number"
+        );
+
+        return;
+      }
+
+      if (
+        !/^[0-9]{6}$/.test(
+          addressForm.pincode
+        )
+      ) {
+
+        toast.error(
+          "Enter valid 6-digit pincode"
+        );
+
+        return;
+      }
+
       try {
 
         if (
@@ -913,9 +960,9 @@ function Profile() {
               {addresses.map(
                 (address) => (
 
-                <div
-                  key={address._id}
-                  className="
+                  <div
+                    key={address._id}
+                    className="
                     border
                     border-slate-200
                     rounded-3xl
@@ -926,39 +973,39 @@ function Profile() {
                     transition-all
                     duration-300
                   "
-                >
+                  >
 
-                  <div className="
+                    <div className="
                     flex
                     items-start
                     justify-between
                   ">
 
-                    <div className="
+                      <div className="
                       flex
                       items-center
                       gap-3
                     ">
 
-                      <FaMapMarkerAlt
-                        className="
+                        <FaMapMarkerAlt
+                          className="
                           text-indigo-500
                           text-xl
                         "
-                      />
+                        />
 
-                      <div>
+                        <div>
 
-                        <h3 className="
+                          <h3 className="
                           text-xl
                           font-bold
                         ">
-                          {address.label}
-                        </h3>
+                            {address.label}
+                          </h3>
 
-                        {address.isDefault && (
+                          {address.isDefault && (
 
-                          <span className="
+                            <span className="
                             text-xs
                             bg-green-100
                             text-green-600
@@ -967,70 +1014,70 @@ function Profile() {
                             rounded-full
                             font-semibold
                           ">
-                            Default
-                          </span>
-                        )}
+                              Default
+                            </span>
+                          )}
+
+                        </div>
 
                       </div>
+
+                      <button
+                        onClick={() =>
+                          handleDeleteAddress(
+                            address._id
+                          )
+                        }
+                        className="
+                        text-red-500
+                        hover:text-red-600
+                      "
+                      >
+
+                        <FaTrash />
+
+                      </button>
+
+                    </div>
+
+                    <div className="
+                    mt-5
+                    space-y-2
+                  ">
+
+                      <p className="
+                      font-bold
+                    ">
+                        {address.fullName}
+                      </p>
+
+                      <p>
+                        {address.phone}
+                      </p>
+
+                      <p>
+                        {address.address}
+                      </p>
+
+                      <p>
+                        {address.city},
+                        {" "}
+                        {address.state}
+                        {" "}
+                        -
+                        {" "}
+                        {address.pincode}
+                      </p>
 
                     </div>
 
                     <button
                       onClick={() =>
-                        handleDeleteAddress(
-                          address._id
+                        handleEditAddress(
+                          address
                         )
                       }
                       className="
-                        text-red-500
-                        hover:text-red-600
-                      "
-                    >
-
-                      <FaTrash />
-
-                    </button>
-
-                  </div>
-
-                  <div className="
-                    mt-5
-                    space-y-2
-                  ">
-
-                    <p className="
-                      font-bold
-                    ">
-                      {address.fullName}
-                    </p>
-
-                    <p>
-                      {address.phone}
-                    </p>
-
-                    <p>
-                      {address.address}
-                    </p>
-
-                    <p>
-                      {address.city},
-                      {" "}
-                      {address.state}
-                      {" "}
-                      -
-                      {" "}
-                      {address.pincode}
-                    </p>
-
-                  </div>
-
-                  <button
-                    onClick={() =>
-                      handleEditAddress(
-                        address
-                      )
-                    }
-                    className="
                       mt-6
                       bg-indigo-50
                       hover:bg-indigo-100
@@ -1043,16 +1090,16 @@ function Profile() {
                       items-center
                       gap-2
                     "
-                  >
+                    >
 
-                    <FaEdit />
+                      <FaEdit />
 
-                    Edit Address
+                      Edit Address
 
-                  </button>
+                    </button>
 
-                </div>
-              ))}
+                  </div>
+                ))}
 
             </div>
 

@@ -104,9 +104,23 @@ function Register() {
 
       try {
 
+        const sanitizedData = {
+
+          ...formData,
+
+          email:
+            formData.email
+              .trim()
+              .toLowerCase(),
+
+          name:
+            formData.name
+              .trim(),
+        };
+
         await API.post(
           "/api/auth/register",
-          formData
+          sanitizedData
         );
 
         toast.success(
