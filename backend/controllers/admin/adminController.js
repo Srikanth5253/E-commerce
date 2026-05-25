@@ -7,6 +7,9 @@ import User
 import Order
   from "../../models/Order.js";
 
+import stripe
+  from "../../config/stripe.js";
+
 export const getDashboardStats =
   async (
     req,
@@ -255,6 +258,30 @@ export const processRefund =
         throw new Error(
           "Refund already processed"
         );
+      }
+
+      if (
+        order.paymentMethod ===
+        "ONLINE"
+      ) {
+
+        if (
+          !order.paymentIntentId
+        ) {
+
+          res.status(400);
+
+          throw new Error(
+            "Payment Intent ID missing"
+          );
+        }
+
+        await stripe.refunds.create({
+
+          payment_intent:
+            order.paymentIntentId,
+
+        });
       }
 
       order.refundStatus =

@@ -721,6 +721,9 @@ export const paymentSuccess =
 
           paidAt:
             Date.now(),
+          
+          paymentIntentId:
+            session.payment_intent,
         });
 
       for (

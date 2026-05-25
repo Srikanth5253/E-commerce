@@ -105,6 +105,11 @@ const orderSchema =
 
       paidAt: Date,
 
+      paymentIntentId: {
+        type: String,
+      },
+
+
       refundStatus: {
         type: String,
 
