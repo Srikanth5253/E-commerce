@@ -494,46 +494,93 @@ function AdminOrders() {
 
                         <select
                           value={order.status}
+
                           onChange={(e) =>
                             handleStatus(
                               order._id,
                               e.target.value
                             )
                           }
+
+                          disabled={
+                            order.status ===
+                            "Delivered" ||
+
+                            order.status ===
+                            "Cancelled"
+                          }
+
                           className="
-                            bg-slate-50
-                            border
-                            border-slate-300
-                            rounded-xl
-                            px-4
-                            py-3
-                            outline-none
-                            focus:border-indigo-500
-                            focus:ring-4
-                            focus:ring-indigo-100
-                            transition-all
-                            duration-300
-                          "
+    bg-slate-50
+    border
+    border-slate-300
+    rounded-xl
+    px-4
+    py-3
+    outline-none
+    focus:border-indigo-500
+    focus:ring-4
+    focus:ring-indigo-100
+    transition-all
+    duration-300
+    disabled:opacity-60
+    disabled:cursor-not-allowed
+  "
                         >
 
-                          <option value="Processing">
-                            Processing
-                          </option>
+                          {order.status ===
+                            "Processing" && (
 
-                          <option value="Shipped">
-                            Shipped
-                          </option>
+                              <>
+                                <option value="Processing">
+                                  Processing
+                                </option>
 
-                          <option value="Delivered">
-                            Delivered
-                          </option>
+                                <option value="Shipped">
+                                  Shipped
+                                </option>
 
-                          <option value="Cancelled">
-                            Cancelled
-                          </option>
+                                <option value="Cancelled">
+                                  Cancelled
+                                </option>
+                              </>
+
+                            )}
+
+                          {order.status ===
+                            "Shipped" && (
+
+                              <>
+                                <option value="Shipped">
+                                  Shipped
+                                </option>
+
+                                <option value="Delivered">
+                                  Delivered
+                                </option>
+                              </>
+
+                            )}
+
+                          {order.status ===
+                            "Delivered" && (
+
+                              <option value="Delivered">
+                                Delivered
+                              </option>
+
+                            )}
+
+                          {order.status ===
+                            "Cancelled" && (
+
+                              <option value="Cancelled">
+                                Cancelled
+                              </option>
+
+                            )}
 
                         </select>
-
                       </div>
 
                     </div>
@@ -581,16 +628,15 @@ function AdminOrders() {
                           font-semibold
                           mt-4
 
-                          ${
-                            order.paymentMethod ===
+                          ${order.paymentMethod ===
                             "COD"
 
-                              ? `
+                            ? `
                                 bg-amber-100
                                 text-amber-700
                               `
 
-                              : `
+                            : `
                                 bg-green-100
                                 text-green-700
                               `
@@ -602,7 +648,7 @@ function AdminOrders() {
 
                         {
                           order.paymentMethod ===
-                          "COD"
+                            "COD"
 
                             ? "COD"
 
@@ -687,7 +733,7 @@ function AdminOrders() {
 
                             {
                               order.deliveryPrice ===
-                              0
+                                0
 
                                 ? "FREE"
 

@@ -69,6 +69,79 @@ export const getAllOrders =
     }
   };
 
+// export const updateOrderStatus =
+//   async (
+//     req,
+//     res,
+//     next
+//   ) => {
+
+//     try {
+
+//       const {
+//         status,
+//       } = req.body;
+
+//       const order =
+//         await Order.findById(
+//           req.params.id
+//         );
+
+//       if (!order) {
+
+//         res.status(404);
+
+//         throw new Error(
+//           "Order not found"
+//         );
+//       }
+
+//       order.status =
+//         status;
+
+//       if (
+//         status ===
+//         "Delivered"
+//       ) {
+
+//         order.deliveredAt =
+//           Date.now();
+//       }
+
+//       if (
+
+//         status ===
+//         "Delivered" &&
+
+//         order.paymentMethod ===
+//         "COD"
+
+//       ) {
+
+//         order.isPaid =
+//           true;
+
+//         order.paidAt =
+//           Date.now();
+//       }
+
+//       await order.save();
+
+//       res.status(200).json({
+//         success: true,
+
+//         message:
+//           "Order status updated",
+
+//         order,
+//       });
+
+//     } catch (error) {
+
+//       next(error);
+//     }
+//   };
+
 export const updateOrderStatus =
   async (
     req,
@@ -94,6 +167,64 @@ export const updateOrderStatus =
         throw new Error(
           "Order not found"
         );
+      }
+
+      if (
+        order.status ===
+        "Delivered" ||
+
+        order.status ===
+        "Cancelled"
+      ) {
+
+        res.status(400);
+
+        throw new Error(
+          "Completed orders cannot be modified"
+        );
+      }
+
+      if (
+        order.status ===
+        "Shipped" &&
+
+        status ===
+        "Cancelled"
+      ) {
+
+        res.status(400);
+
+        throw new Error(
+          "Shipped orders cannot be cancelled"
+        );
+      }
+
+      if (
+        status ===
+        "Cancelled"
+      ) {
+
+        for (
+          const item of
+          order.orderItems
+        ) {
+
+          const product =
+            await Product.findById(
+              item.product
+            );
+
+          if (product) {
+
+            product.stock +=
+              item.quantity;
+
+            product.sold -=
+              item.quantity;
+
+            await product.save();
+          }
+        }
       }
 
       order.status =
