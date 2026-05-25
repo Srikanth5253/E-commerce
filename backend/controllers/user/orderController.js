@@ -574,7 +574,12 @@ export const paymentSuccess =
 
       const session =
         await stripe.checkout.sessions.retrieve(
-          sessionId
+          sessionId,
+          {
+            expand: [
+              "payment_intent",
+            ],
+          }
         );
 
       if (
@@ -721,9 +726,9 @@ export const paymentSuccess =
 
           paidAt:
             Date.now(),
-          
+
           paymentIntentId:
-            session.payment_intent,
+            session.payment_intent.id,
         });
 
       for (
