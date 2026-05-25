@@ -40,6 +40,16 @@ export const updateOrderStatus =
     return response.data;
   };
 
+export const processRefund =
+  async (id) => {
+
+    const response =
+      await API.put(
+        `/api/admin/orders/refund/${id}`
+      );
+
+    return response.data;
+  };
 
 export const getConversations =
   async () => {

@@ -11,7 +11,8 @@ import admin from "../../middleware/roleMiddleware.js";
 import {
   getDashboardStats,
   getAllOrders,
-  updateOrderStatus
+  updateOrderStatus,
+  processRefund,
 } from "../../controllers/admin/adminController.js";
 
 
@@ -34,6 +35,13 @@ router.put(
   protect,
   admin,
   updateOrderStatus
+);
+
+router.put(
+  "/orders/refund/:id",
+  protect,
+  admin,
+  processRefund
 );
 
 export default router;

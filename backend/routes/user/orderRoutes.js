@@ -12,7 +12,8 @@ import {
   getMyOrders,
   getOrderById,
   createCheckoutSession,
-  paymentSuccess
+  paymentSuccess,
+  cancelMyOrder,
 } from "../../controllers/user/orderController.js";
 
 
@@ -45,6 +46,12 @@ router.get(
   "/:id",
   protect,
   getOrderById
+);
+
+router.put(
+  "/cancel/:id",
+  protect,
+  cancelMyOrder
 );
 
 

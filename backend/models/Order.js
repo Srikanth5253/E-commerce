@@ -105,6 +105,22 @@ const orderSchema =
 
       paidAt: Date,
 
+      refundStatus: {
+        type: String,
+
+        enum: [
+          "Not Applicable",
+          "Pending",
+          "Processed",
+        ],
+
+        default: "Not Applicable",
+      },
+
+      refundRequestedAt: Date,
+
+      refundedAt: Date,
+
       status: {
         type: String,
 

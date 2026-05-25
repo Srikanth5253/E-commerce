@@ -45,3 +45,14 @@ export const checkoutOrder =
 
     return response.data;
   };
+
+export const cancelOrder =
+  async (id) => {
+
+    const response =
+      await API.put(
+        `/api/orders/cancel/${id}`
+      );
+
+    return response.data;
+  };
