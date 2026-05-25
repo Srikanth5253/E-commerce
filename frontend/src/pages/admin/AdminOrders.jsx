@@ -1099,21 +1099,37 @@ function AdminOrders() {
     };
 
   const totalRevenue =
-    useMemo(() => {
+  useMemo(() => {
 
-      return orders.reduce(
-        (
-          acc,
-          order
-        ) =>
+    return orders.reduce(
+      (
+        acc,
+        order
+      ) => {
 
-          acc +
-          order.totalPrice,
+        if (
 
-        0
-      );
+          order.isPaid &&
 
-    }, [orders]);
+          order.refundStatus !==
+          "Processed"
+
+        ) {
+
+          return (
+            acc +
+            order.totalPrice
+          );
+        }
+
+        return acc;
+
+      },
+
+      0
+    );
+
+  }, [orders]);
 
   const paidOrders =
     useMemo(() => {
