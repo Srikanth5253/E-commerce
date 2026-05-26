@@ -16,6 +16,7 @@ import {
   FaTimesCircle,
   FaShoppingBag,
   FaMoneyCheckAlt,
+  FaEye,
 } from "react-icons/fa";
 
 import toast from "react-hot-toast";
@@ -984,17 +985,25 @@ function Orders() {
                           )
                         }
                         className="
-                          bg-indigo-500
-                          hover:bg-indigo-600
-                          text-white
-                          px-6
-                          py-3
-                          rounded-2xl
-                          font-semibold
-                          transition-all
-                          duration-300
-                        "
+    bg-indigo-500
+    hover:bg-indigo-600
+    text-white
+    px-7
+    py-3
+    rounded-2xl
+    font-semibold
+    transition-all
+    duration-300
+    flex
+    items-center
+    gap-3
+    shadow-lg
+    hover:shadow-indigo-500/30
+    hover:scale-105
+  "
                       >
+
+                        <FaEye />
 
                         View Details
 

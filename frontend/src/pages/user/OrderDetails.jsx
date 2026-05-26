@@ -17,6 +17,7 @@ import {
     FaClock,
     FaTruck,
     FaTimesCircle,
+    FaMoneyCheckAlt,
 } from "react-icons/fa";
 
 import Navbar
@@ -369,7 +370,8 @@ function OrderDetails() {
                         </button>
 
                         <h1 className="
-              text-5xl
+              text-4xl
+              lg:text-5xl
               font-extrabold
               text-slate-900
             ">
@@ -397,51 +399,6 @@ function OrderDetails() {
             flex-wrap
             gap-4
           ">
-
-                        <div
-                            className={`
-                px-6
-                py-3
-                rounded-2xl
-                font-bold
-                text-lg
-                flex
-                items-center
-                gap-3
-
-                ${order.isPaid
-
-                                    ? `
-                        bg-green-100
-                        text-green-600
-                      `
-
-                                    : `
-                        bg-red-100
-                        text-red-600
-                      `
-                                }
-              `}
-                        >
-
-                            <FaCheckCircle />
-
-                            <span>
-
-                                Payment:
-                                {" "}
-
-                                {
-                                    order.isPaid
-
-                                        ? "Paid"
-
-                                        : "Pending"
-                                }
-
-                            </span>
-
-                        </div>
 
                         {
                             order.status ===
@@ -497,7 +454,8 @@ function OrderDetails() {
           ">
 
                         <h2 className="
-              text-3xl
+              text-2xl
+              lg:text-3xl
               font-bold
               text-slate-900
             ">
@@ -607,14 +565,17 @@ function OrderDetails() {
 
                                         <div
                                             className={`
-                        w-16
-                        h-16
+                        w-14
+                        h-14
+                        lg:w-16
+                        lg:h-16
                         rounded-full
                         flex
                         items-center
                         justify-center
                         text-white
-                        text-xl
+                        text-lg
+                        lg:text-xl
                         font-bold
                         ${getStepColor(
                                                 index,
@@ -648,6 +609,8 @@ function OrderDetails() {
                       mt-4
                       font-bold
                       text-slate-700
+                      text-sm
+                      lg:text-base
                     ">
 
                                             {step}
@@ -702,7 +665,8 @@ function OrderDetails() {
             ">
 
                             <h2 className="
-                text-3xl
+                text-2xl
+                lg:text-3xl
                 font-bold
                 text-slate-900
                 mb-6
@@ -772,37 +736,38 @@ function OrderDetails() {
                     </div>
 
                     <div className="
-            bg-white
-            border
-            border-slate-200
-            rounded-3xl
-            p-8
-            shadow-sm
-            h-fit
-            sticky
-            top-28
-          ">
+  bg-white
+  border
+  border-slate-200
+  rounded-3xl
+  p-8
+  shadow-sm
+  h-fit
+  sticky
+  top-28
+">
 
                         <h2 className="
-              text-3xl
-              font-bold
-              text-slate-900
-              mb-8
-            ">
+    text-2xl
+    lg:text-3xl
+    font-bold
+    text-slate-900
+    mb-8
+  ">
 
                             Order Summary
 
                         </h2>
 
                         <div className="
-              space-y-5
-              text-lg
-            ">
+    space-y-5
+    text-lg
+  ">
 
                             <div className="
-                flex
-                justify-between
-              ">
+      flex
+      justify-between
+    ">
 
                                 <span>
                                     Items Price
@@ -820,9 +785,9 @@ function OrderDetails() {
                             </div>
 
                             <div className="
-                flex
-                justify-between
-              ">
+      flex
+      justify-between
+    ">
 
                                 <span>
                                     GST
@@ -840,9 +805,9 @@ function OrderDetails() {
                             </div>
 
                             <div className="
-                flex
-                justify-between
-              ">
+      flex
+      justify-between
+    ">
 
                                 <span>
                                     Delivery
@@ -864,22 +829,22 @@ function OrderDetails() {
                             </div>
 
                             <div className="
-                border-t
-                border-slate-200
-                pt-5
-                flex
-                justify-between
-                text-2xl
-                font-bold
-              ">
+      border-t
+      border-slate-200
+      pt-5
+      flex
+      justify-between
+      text-2xl
+      font-bold
+    ">
 
                                 <span>
                                     Total
                                 </span>
 
                                 <span className="
-                  text-indigo-600
-                ">
+        text-indigo-600
+      ">
 
                                     ₹
                                     {
@@ -891,6 +856,292 @@ function OrderDetails() {
                                 </span>
 
                             </div>
+
+                            <div>
+
+                                <p className="
+        text-slate-500
+        mb-3
+      ">
+
+                                    Payment Status
+
+                                </p>
+
+                                <div
+                                    className={`
+          inline-flex
+          items-center
+          gap-3
+          px-5
+          py-3
+          rounded-2xl
+          font-bold
+
+          ${order.isPaid
+
+                                            ? `
+                  bg-green-100
+                  text-green-700
+                `
+
+                                            : `
+                  bg-red-100
+                  text-red-700
+                `
+                                        }
+        `}
+                                >
+
+                                    <FaMoneyCheckAlt />
+
+                                    {
+                                        order.isPaid
+
+                                            ? "Paid"
+
+                                            : "Pending"
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div className="
+    mt-10
+    pt-8
+    border-t
+    border-slate-200
+    space-y-7
+  ">
+
+                            <div>
+
+                                <p className="
+        text-slate-500
+        mb-2
+      ">
+
+                                    Ordered On
+
+                                </p>
+
+                                <p className="
+        font-bold
+        text-slate-900
+      ">
+
+                                    {
+                                        new Date(
+                                            order.createdAt
+                                        ).toLocaleString()
+                                    }
+
+                                </p>
+
+                            </div>
+
+                            {
+                                order.status !==
+                                "Cancelled" &&
+
+                                order.paidAt && (
+
+                                    <div>
+
+                                        <p className="
+          text-slate-500
+          mb-2
+        ">
+
+                                            Paid On
+
+                                        </p>
+
+                                        <p className="
+          font-bold
+          text-green-600
+        ">
+
+                                            {
+                                                new Date(
+                                                    order.paidAt
+                                                ).toLocaleString()
+                                            }
+
+                                        </p>
+
+                                    </div>
+
+                                )
+                            }
+
+                            {
+                                order.status ===
+                                "Delivered" &&
+
+                                order.deliveredAt && (
+
+                                    <div>
+
+                                        <p className="
+          text-slate-500
+          mb-2
+        ">
+
+                                            Delivered On
+
+                                        </p>
+
+                                        <p className="
+          font-bold
+          text-indigo-600
+        ">
+
+                                            {
+                                                new Date(
+                                                    order.deliveredAt
+                                                ).toLocaleString()
+                                            }
+
+                                        </p>
+
+                                    </div>
+
+                                )
+                            }
+
+                            {
+                                order.status ===
+                                "Cancelled" &&
+
+                                order.isPaid &&
+
+                                order.refundStatus && (
+
+                                    <div>
+
+                                        <p className="
+            text-slate-500
+            mb-2
+          ">
+
+                                            Refund Status
+
+                                        </p>
+
+                                        <div
+                                            className={`
+              inline-flex
+              items-center
+              gap-3
+              px-5
+              py-3
+              rounded-2xl
+              font-bold
+
+              ${order.refundStatus ===
+                                                    "Pending"
+
+                                                    ? `
+                      bg-yellow-100
+                      text-yellow-700
+                    `
+
+                                                    : `
+                      bg-green-100
+                      text-green-700
+                    `
+                                                }
+            `}
+                                        >
+
+                                            {
+                                                order.refundStatus
+                                            }
+
+                                        </div>
+
+                                    </div>
+
+                                )
+                            }
+
+                            {
+                                order.status ===
+                                "Cancelled" &&
+
+                                order.isPaid &&
+
+                                order.refundRequestedAt && (
+
+                                    <div>
+
+                                        <p className="
+          text-slate-500
+          mb-2
+        ">
+
+                                            Refund Requested
+
+                                        </p>
+
+                                        <p className="
+          font-bold
+          text-yellow-700
+        ">
+
+                                            {
+                                                new Date(
+                                                    order.refundRequestedAt
+                                                ).toLocaleString()
+                                            }
+
+                                        </p>
+
+                                    </div>
+
+                                )
+                            }
+
+                            {
+                                order.status ===
+                                "Cancelled" &&
+
+                                order.isPaid &&
+
+                                order.refundedAt && (
+
+                                    <div>
+
+                                        <p className="
+          text-slate-500
+          mb-2
+        ">
+
+                                            Refunded On
+
+                                        </p>
+
+                                        <p className="
+          font-bold
+          text-green-700
+        ">
+
+                                            {
+                                                new Date(
+                                                    order.refundedAt
+                                                ).toLocaleString()
+                                            }
+
+                                        </p>
+
+                                    </div>
+
+                                )
+                            }
 
                         </div>
 
