@@ -16,6 +16,7 @@ import {
   FaRupeeSign,
   FaLayerGroup,
   FaWarehouse,
+  FaCloudUploadAlt,
 } from "react-icons/fa";
 
 import Navbar from "../../components/Navbar";
@@ -535,6 +536,7 @@ function AddProduct() {
 
             </div>
 
+
             <div>
 
               <label className="flex items-center gap-2 mb-3 text-slate-700 font-semibold">
@@ -545,27 +547,72 @@ function AddProduct() {
 
               </label>
 
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={(e) =>
-                  setImageFiles([
-                    ...e.target.files,
-                  ])
-                }
+              <label
                 className="
-                  w-full
-                  px-5
-                  py-4
-                  bg-slate-50
-                  border
-                  border-slate-300
-                  rounded-2xl
-                "
-              />
+      flex
+      flex-col
+      items-center
+      justify-center
+      w-full
+      p-8
+      border-2
+      border-dashed
+      border-indigo-300
+      bg-indigo-50
+      rounded-3xl
+      cursor-pointer
+      hover:bg-indigo-100
+      transition-all
+      duration-300
+    "
+              >
+
+                <FaCloudUploadAlt
+                  className="
+        text-5xl
+        text-indigo-500
+        mb-4
+      "
+                />
+
+                <p className="text-lg font-semibold text-slate-700">
+
+                  Click to upload images
+
+                </p>
+
+                <p className="text-sm text-slate-500 mt-1">
+
+                  PNG, JPG, WEBP
+
+                </p>
+
+                {imageFiles.length > 0 && (
+
+                  <p className="mt-4 text-indigo-600 font-medium">
+
+                    {imageFiles.length} image(s) selected
+
+                  </p>
+
+                )}
+
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  hidden
+                  onChange={(e) =>
+                    setImageFiles([
+                      ...e.target.files,
+                    ])
+                  }
+                />
+
+              </label>
 
             </div>
+
 
             <div>
 
@@ -577,25 +624,69 @@ function AddProduct() {
 
               </label>
 
-              <input
-                type="file"
-                multiple
-                accept="video/*"
-                onChange={(e) =>
-                  setVideoFiles([
-                    ...e.target.files,
-                  ])
-                }
+              <label
                 className="
-                  w-full
-                  px-5
-                  py-4
-                  bg-slate-50
-                  border
-                  border-slate-300
-                  rounded-2xl
-                "
-              />
+      flex
+      flex-col
+      items-center
+      justify-center
+      w-full
+      p-8
+      border-2
+      border-dashed
+      border-pink-300
+      bg-pink-50
+      rounded-3xl
+      cursor-pointer
+      hover:bg-pink-100
+      transition-all
+      duration-300
+    "
+              >
+
+                <FaCloudUploadAlt
+                  className="
+        text-5xl
+        text-pink-500
+        mb-4
+      "
+                />
+
+                <p className="text-lg font-semibold text-slate-700">
+
+                  Click to upload videos
+
+                </p>
+
+                <p className="text-sm text-slate-500 mt-1">
+
+                  MP4, MOV, AVI
+
+                </p>
+
+                {videoFiles.length > 0 && (
+
+                  <p className="mt-4 text-pink-600 font-medium">
+
+                    {videoFiles.length} video(s) selected
+
+                  </p>
+
+                )}
+
+                <input
+                  type="file"
+                  multiple
+                  accept="video/*"
+                  hidden
+                  onChange={(e) =>
+                    setVideoFiles([
+                      ...e.target.files,
+                    ])
+                  }
+                />
+
+              </label>
 
             </div>
 
