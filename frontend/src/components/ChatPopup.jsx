@@ -478,7 +478,7 @@ import {
   sendUserMessage,
 } from "../services/UserService";
 
-import { socket } from "../../socket";
+import { socket } from "../../socket.js";
 
 const ChatPopup = ({
   open,
