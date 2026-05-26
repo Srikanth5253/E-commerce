@@ -15,6 +15,7 @@ import {
   FaTruck,
   FaTimesCircle,
   FaShoppingBag,
+  FaMoneyCheckAlt,
 } from "react-icons/fa";
 
 import toast from "react-hot-toast";
@@ -77,74 +78,13 @@ function Orders() {
   const handleCancelOrder =
     async (id) => {
 
-      toast((t) => (
-        <div className="flex flex-col gap-4">
-          <p className="font-semibold">
-            Cancel this order?
-          </p>
-
-          <div className="flex gap-3">
-            <button
-              onClick={async () => {
-                toast.dismiss(t.id);
-
-                try {
-
-                  const data =
-                    await cancelOrder(id);
-
-                  toast.success(
-                    data.message
-                  );
-
-                  fetchOrders();
-
-                } catch (error) {
-
-                  toast.error(
-
-                    error.response?.data
-                      ?.message ||
-
-                    "Failed to cancel order"
-                  );
-                }
-              }}
-              className="
-          bg-red-500
-          text-white
-          px-4
-          py-2
-          rounded-xl
-        "
-            >
-              Yes
-            </button>
-
-            <button
-              onClick={() =>
-                toast.dismiss(t.id)
-              }
-              className="
-          bg-slate-200
-          px-4
-          py-2
-          rounded-xl
-        "
-            >
-              No
-            </button>
-          </div>
-        </div>
-      ));
-
       try {
 
         const data =
           await cancelOrder(id);
 
         toast.success(
-          data.message
+          "Order Cancelled Successfully"
         );
 
         fetchOrders();
@@ -157,7 +97,9 @@ function Orders() {
             ?.message ||
 
           "Failed to cancel order"
+
         );
+
       }
     };
 
@@ -621,19 +563,18 @@ function Orders() {
 
                         <div
                           className={`
-                            px-5
-                            py-2
-                            rounded-2xl
-                            font-bold
-                            flex
-                            items-center
-                            gap-3
+    px-5
+    py-2
+    rounded-2xl
+    font-bold
+    flex
+    items-center
+    gap-3
 
-                            ${getStatusColor(
+    ${getStatusColor(
                             order.status
-                          )
-                            }
-                          `}
+                          )}
+  `}
                         >
 
                           {
@@ -642,39 +583,57 @@ function Orders() {
                             )
                           }
 
-                          {order.status}
+                          <span>
+
+                            Order Status:
+                            {" "}
+                            {order.status}
+
+                          </span>
 
                         </div>
 
                         <div
                           className={`
-                            px-5
-                            py-2
-                            rounded-2xl
-                            font-bold
+    px-5
+    py-2
+    rounded-2xl
+    font-bold
+    flex
+    items-center
+    gap-3
 
-                            ${order.isPaid
+    ${order.isPaid
 
                               ? `
-                                    bg-green-100
-                                    text-green-700
-                                  `
+            bg-green-100
+            text-green-700
+          `
 
                               : `
-                                    bg-red-100
-                                    text-red-700
-                                  `
+            bg-red-100
+            text-red-700
+          `
                             }
-                          `}
+  `}
                         >
 
-                          {
-                            order.isPaid
+                          <FaMoneyCheckAlt />
 
-                              ? "Paid"
+                          <span>
 
-                              : "Pending"
-                          }
+                            Payment:
+                            {" "}
+
+                            {
+                              order.isPaid
+
+                                ? "Paid"
+
+                                : "Pending"
+                            }
+
+                          </span>
 
                         </div>
 

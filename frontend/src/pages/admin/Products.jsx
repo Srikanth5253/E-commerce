@@ -74,14 +74,6 @@ function Products() {
   const handleDelete =
     async (id) => {
 
-      const confirmDelete =
-        window.confirm(
-          "Delete this product?"
-        );
-
-      if (!confirmDelete)
-        return;
-
       try {
 
         await deleteProduct(id);

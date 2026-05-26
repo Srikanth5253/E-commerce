@@ -80,74 +80,12 @@ function OrderDetails() {
     const handleCancelOrder =
         async (id) => {
 
-            toast((t) => (
-                <div className="flex flex-col gap-4">
-                    <p className="font-semibold">
-                        Cancel this order?
-                    </p>
-
-                    <div className="flex gap-3">
-                        <button
-                            onClick={async () => {
-                                toast.dismiss(t.id);
-
-                                try {
-
-                                    const data =
-                                        await cancelOrder(id);
-
-                                    toast.success(
-                                        data.message
-                                    );
-
-                                    fetchOrder();
-
-                                } catch (error) {
-
-                                    toast.error(
-
-                                        error.response?.data
-                                            ?.message ||
-
-                                        "Failed to cancel order"
-                                    );
-                                }
-                            }}
-                            className="
-          bg-red-500
-          text-white
-          px-4
-          py-2
-          rounded-xl
-        "
-                        >
-                            Yes
-                        </button>
-
-                        <button
-                            onClick={() =>
-                                toast.dismiss(t.id)
-                            }
-                            className="
-          bg-slate-200
-          px-4
-          py-2
-          rounded-xl
-        "
-                        >
-                            No
-                        </button>
-                    </div>
-                </div>
-            ));
-
             try {
 
-                const data =
-                    await cancelOrder(id);
+                await cancelOrder(id);
 
                 toast.success(
-                    data.message
+                    "Order Cancelled Successfully"
                 );
 
                 fetchOrder();
@@ -160,15 +98,27 @@ function OrderDetails() {
                         ?.message ||
 
                     "Failed to cancel order"
+
                 );
+
             }
         };
 
-    const steps = [
-        "Processing",
-        "Shipped",
-        "Delivered",
-    ];
+    const steps =
+
+        order?.status ===
+            "Cancelled"
+
+            ? [
+                "Processing",
+                "Cancelled",
+            ]
+
+            : [
+                "Processing",
+                "Shipped",
+                "Delivered",
+            ];
 
     const currentStep =
         steps.indexOf(
@@ -176,18 +126,106 @@ function OrderDetails() {
         );
 
     const getStepColor =
-        (index) => {
+        (index, step) => {
+
+            if (
+                step === "Cancelled"
+            ) {
+
+                return `
+          bg-red-500
+        `;
+            }
+
+            if (
+                step === "Delivered"
+            ) {
+
+                return index <=
+                    currentStep
+
+                    ? `
+              bg-green-500
+            `
+
+                    : `
+              bg-slate-300
+            `;
+            }
+
+            if (
+                step === "Shipped"
+            ) {
+
+                return index <=
+                    currentStep
+
+                    ? `
+              bg-blue-500
+            `
+
+                    : `
+              bg-slate-300
+            `;
+            }
 
             return index <=
                 currentStep
 
                 ? `
-            bg-indigo-500
+            bg-yellow-500
           `
 
                 : `
             bg-slate-300
           `;
+        };
+
+    const getLineColor =
+        (index) => {
+
+            if (
+                order?.status ===
+                "Cancelled"
+            ) {
+
+                return `
+          bg-red-500
+        `;
+            }
+
+            if (
+                index < currentStep
+            ) {
+
+                if (
+                    steps[index + 1] ===
+                    "Delivered"
+                ) {
+
+                    return `
+              bg-green-500
+            `;
+                }
+
+                if (
+                    steps[index + 1] ===
+                    "Shipped"
+                ) {
+
+                    return `
+              bg-blue-500
+            `;
+                }
+
+                return `
+            bg-yellow-500
+          `;
+            }
+
+            return `
+        bg-slate-300
+      `;
         };
 
     const getExpectedDelivery =
@@ -294,6 +332,7 @@ function OrderDetails() {
         px-6
         py-12
       ">
+
                 <div className="
           flex
           flex-col
@@ -366,73 +405,41 @@ function OrderDetails() {
                 rounded-2xl
                 font-bold
                 text-lg
+                flex
+                items-center
+                gap-3
 
-                ${order.status ===
-                                    "Delivered"
+                ${order.isPaid
 
                                     ? `
                         bg-green-100
                         text-green-600
                       `
 
-                                    : order.status ===
-                                        "Shipped"
-
-                                        ? `
-                          bg-blue-100
-                          text-blue-600
-                        `
-
-                                        : order.status ===
-                                            "Cancelled"
-
-                                            ? `
-                            bg-red-100
-                            text-red-600
-                          `
-
-                                            : `
-                            bg-yellow-100
-                            text-yellow-600
-                          `
-                                }
-              `}
-                        >
-
-                            {order.status}
-
-                        </div>
-
-                        <div
-                            className={`
-                px-6
-                py-3
-                rounded-2xl
-                font-bold
-                text-lg
-
-                ${order.isPaid
-
-                                    ? `
-                      bg-green-100
-                      text-green-600
-                    `
-
                                     : `
-                      bg-red-100
-                      text-red-600
-                    `
+                        bg-red-100
+                        text-red-600
+                      `
                                 }
               `}
                         >
 
-                            {
-                                order.isPaid
+                            <FaCheckCircle />
 
-                                    ? "Paid"
+                            <span>
 
-                                    : "Pending"
-                            }
+                                Payment:
+                                {" "}
+
+                                {
+                                    order.isPaid
+
+                                        ? "Paid"
+
+                                        : "Pending"
+                                }
+
+                            </span>
 
                         </div>
 
@@ -469,236 +476,210 @@ function OrderDetails() {
 
                 </div>
 
-                {
-                    order.status !==
-                    "Cancelled" && (
+                <div className="
+          bg-white
+          border
+          border-slate-200
+          rounded-3xl
+          p-8
+          shadow-sm
+          mb-10
+        ">
 
-                        <div className="
-            bg-white
-            border
-            border-slate-200
-            rounded-3xl
-            p-8
-            shadow-sm
+                    <div className="
+            flex
+            flex-col
+            lg:flex-row
+            lg:items-center
+            lg:justify-between
+            gap-5
             mb-10
           ">
 
-                            <div className="
-              flex
-              flex-col
-              lg:flex-row
-              lg:items-center
-              lg:justify-between
-              gap-5
-              mb-10
+                        <h2 className="
+              text-3xl
+              font-bold
+              text-slate-900
             ">
 
-                                <h2 className="
-                text-3xl
-                font-bold
-                text-slate-900
-              ">
+                            Delivery Timeline
 
-                                    Delivery Timeline
+                        </h2>
 
-                                </h2>
-
-                                <div className="
-                bg-indigo-50
-                text-indigo-600
-                border
-                border-indigo-200
+                        <div
+                            className={`
                 px-5
                 py-3
                 rounded-2xl
                 font-semibold
-              ">
 
-                                    {
-                                        order.status ===
-                                            "Delivered"
+                ${order.status ===
+                                    "Delivered"
 
-                                            ? "Delivered Successfully"
+                                    ? `
+                        bg-green-100
+                        text-green-600
+                        border
+                        border-green-200
+                      `
 
-                                            : order.status ===
-                                                "Shipped"
+                                    : order.status ===
+                                        "Shipped"
 
-                                                ? "Arriving Soon"
+                                        ? `
+                          bg-blue-100
+                          text-blue-600
+                          border
+                          border-blue-200
+                        `
 
-                                                : `Expected Delivery: ${getExpectedDelivery()}`
-                                    }
+                                        : order.status ===
+                                            "Cancelled"
 
-                                </div>
+                                            ? `
+                            bg-red-100
+                            text-red-600
+                            border
+                            border-red-200
+                          `
 
-                            </div>
+                                            : `
+                            bg-yellow-100
+                            text-yellow-600
+                            border
+                            border-yellow-200
+                          `
+                                }
+              `}
+                        >
 
-                            <div className="
-              flex
-              items-center
-              justify-between
-              gap-4
-            ">
+                            {
+                                order.status ===
+                                    "Delivered"
 
-                                {steps.map(
-                                    (
-                                        step,
-                                        index
-                                    ) => (
+                                    ? "Delivered Successfully"
+
+                                    : order.status ===
+                                        "Shipped"
+
+                                        ? "Arriving Soon"
+
+                                        : order.status ===
+                                            "Cancelled"
+
+                                            ? "Order Cancelled"
+
+                                            : `Expected Delivery: ${getExpectedDelivery()}`
+                            }
+
+                        </div>
+
+                    </div>
+
+                    <div className="
+            flex
+            items-center
+            justify-between
+            gap-4
+          ">
+
+                        {steps.map(
+                            (
+                                step,
+                                index
+                            ) => (
+
+                                <div
+                                    key={step}
+                                    className="
+                    flex-1
+                    flex
+                    items-center
+                  "
+                                >
+
+                                    <div className="
+                    flex
+                    flex-col
+                    items-center
+                    flex-1
+                  ">
 
                                         <div
-                                            key={step}
-                                            className="
-                      flex-1
-                      flex
-                      items-center
-                    "
+                                            className={`
+                        w-16
+                        h-16
+                        rounded-full
+                        flex
+                        items-center
+                        justify-center
+                        text-white
+                        text-xl
+                        font-bold
+                        ${getStepColor(
+                                                index,
+                                                step
+                                            )}
+                      `}
                                         >
 
-                                            <div className="
-                      flex
-                      flex-col
-                      items-center
-                      flex-1
-                    ">
+                                            {
+                                                step ===
+                                                    "Processing"
 
-                                                <div
-                                                    className={`
-                          w-16
-                          h-16
-                          rounded-full
-                          flex
-                          items-center
-                          justify-center
-                          text-white
-                          text-xl
-                          font-bold
-                          ${getStepColor(
-                                                        index
-                                                    )}
-                        `}
-                                                >
+                                                    ? <FaClock />
 
-                                                    {
-                                                        index === 0
+                                                    : step ===
+                                                        "Shipped"
 
-                                                            ? <FaClock />
+                                                        ? <FaTruck />
 
-                                                            : index === 1
+                                                        : step ===
+                                                            "Delivered"
 
-                                                                ? <FaTruck />
+                                                            ? <FaCheckCircle />
 
-                                                                : <FaCheckCircle />
-                                                    }
-
-                                                </div>
-
-                                                <p className="
-                        mt-4
-                        font-bold
-                        text-slate-700
-                      ">
-
-                                                    {step}
-
-                                                </p>
-
-                                            </div>
-
-                                            {index <
-                                                steps.length - 1 && (
-
-                                                    <div
-                                                        className={`
-                          h-1
-                          flex-1
-                          rounded-full
-                          ${index <
-                                                                currentStep
-
-                                                                ? `
-                                  bg-indigo-500
-                                `
-
-                                                                : `
-                                  bg-slate-300
-                                `
-                                                            }
-                        `}
-                                                    />
-
-                                                )}
+                                                            : <FaTimesCircle />
+                                            }
 
                                         </div>
 
-                                    )
-                                )}
+                                        <p className="
+                      mt-4
+                      font-bold
+                      text-slate-700
+                    ">
 
-                            </div>
+                                            {step}
 
-                        </div>
+                                        </p>
 
-                    )}
+                                    </div>
 
-                {
-                    order.status ===
-                    "Cancelled" && (
+                                    {index <
+                                        steps.length - 1 && (
 
-                        <div className="
-            bg-red-50
-            border
-            border-red-200
-            rounded-3xl
-            p-8
-            mb-10
-            flex
-            items-center
-            gap-5
-          ">
+                                            <div
+                                                className={`
+                        h-1
+                        flex-1
+                        rounded-full
+                        ${getLineColor(
+                                                    index
+                                                )}
+                      `}
+                                            />
 
-                            <FaTimesCircle
-                                className="
-                text-red-500
-                text-5xl
-              "
-                            />
+                                        )}
 
-                            <div>
+                                </div>
 
-                                <h2 className="
-                text-3xl
-                font-bold
-                text-red-600
-              ">
+                            )
+                        )}
 
-                                    Order Cancelled
+                    </div>
 
-                                </h2>
-
-                                <p className="
-                text-red-500
-                mt-2
-              ">
-
-                                    {
-                                        order.isPaid
-
-                                            ? `
-        Order cancelled successfully.
-        Refund will be processed soon.
-      `
-
-                                            : `
-        Order cancelled successfully.
-      `
-                                    }
-
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                    )}
+                </div>
 
                 <div className="
           grid
@@ -910,213 +891,6 @@ function OrderDetails() {
                                 </span>
 
                             </div>
-
-                        </div>
-
-                        <div className="
-              mt-10
-              pt-8
-              border-t
-              border-slate-200
-              space-y-6
-            ">
-
-                            <div>
-
-                                <p className="
-                  text-slate-500
-                  mb-2
-                ">
-
-                                    Ordered On
-
-                                </p>
-
-                                <p className="
-                  font-bold
-                  text-slate-900
-                ">
-
-                                    {
-                                        new Date(
-                                            order.createdAt
-                                        ).toLocaleString()
-                                    }
-
-                                </p>
-
-                            </div>
-
-                            {order.paidAt && (
-
-                                <div>
-
-                                    <p className="
-                    text-slate-500
-                    mb-2
-                  ">
-
-                                        Paid On
-
-                                    </p>
-
-                                    <p className="
-                    font-bold
-                    text-green-600
-                  ">
-
-                                        {
-                                            new Date(
-                                                order.paidAt
-                                            ).toLocaleString()
-                                        }
-
-                                    </p>
-
-                                </div>
-
-                            )}
-
-                            {order.deliveredAt && (
-
-                                <div>
-
-                                    <p className="
-                    text-slate-500
-                    mb-2
-                  ">
-
-                                        Delivered On
-
-                                    </p>
-
-                                    <p className="
-                    font-bold
-                    text-indigo-600
-                  ">
-
-                                        {
-                                            new Date(
-                                                order.deliveredAt
-                                            ).toLocaleString()
-                                        }
-
-                                    </p>
-
-                                </div>
-
-                            )}
-
-                            {order.refundStatus &&
-                                order.refundStatus !==
-                                "Not Applicable" && (
-
-                                    <div>
-
-                                        <p className="
-      text-slate-500
-      mb-2
-    ">
-
-                                            Refund Status
-
-                                        </p>
-
-                                        <div
-                                            className={`
-        inline-flex
-        items-center
-        gap-3
-        px-5
-        py-3
-        rounded-2xl
-        font-bold
-
-        ${order.refundStatus ===
-                                                    "Pending"
-
-                                                    ? `
-                bg-yellow-100
-                text-yellow-700
-              `
-
-                                                    : `
-                bg-green-100
-                text-green-700
-              `
-                                                }
-      `}
-                                        >
-
-                                            {
-                                                order.refundStatus
-                                            }
-
-                                        </div>
-
-                                    </div>
-
-                                )}
-
-                            {order.refundRequestedAt && (
-
-                                <div>
-
-                                    <p className="
-      text-slate-500
-      mb-2
-    ">
-
-                                        Refund Requested
-
-                                    </p>
-
-                                    <p className="
-      font-bold
-      text-yellow-700
-    ">
-
-                                        {
-                                            new Date(
-                                                order.refundRequestedAt
-                                            ).toLocaleString()
-                                        }
-
-                                    </p>
-
-                                </div>
-
-                            )}
-
-                            {order.refundedAt && (
-
-                                <div>
-
-                                    <p className="
-      text-slate-500
-      mb-2
-    ">
-
-                                        Refunded On
-
-                                    </p>
-
-                                    <p className="
-      font-bold
-      text-green-700
-    ">
-
-                                        {
-                                            new Date(
-                                                order.refundedAt
-                                            ).toLocaleString()
-                                        }
-
-                                    </p>
-
-                                </div>
-
-                            )}
 
                         </div>
 

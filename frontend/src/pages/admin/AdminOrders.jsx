@@ -97,75 +97,13 @@ function AdminOrders() {
   const handleRefund =
     async (id) => {
 
-      toast((t) => (
-        <div className="flex flex-col gap-4">
-          <p className="font-semibold">
-            Process refund for this order?
-          </p>
-
-          <div className="flex gap-3">
-            <button
-              onClick={async () => {
-
-                toast.dismiss(t.id);
-
-                try {
-
-                  const data =
-                    await processRefund(id);
-
-                  toast.success(
-                    data.message
-                  );
-
-                  fetchOrders();
-
-                } catch (error) {
-
-                  toast.error(
-
-                    error.response?.data
-                      ?.message ||
-
-                    "Refund failed"
-                  );
-                }
-              }}
-              className="
-          bg-green-500
-          text-white
-          px-4
-          py-2
-          rounded-xl
-        "
-            >
-              Yes
-            </button>
-
-            <button
-              onClick={() =>
-                toast.dismiss(t.id)
-              }
-              className="
-          bg-slate-200
-          px-4
-          py-2
-          rounded-xl
-        "
-            >
-              No
-            </button>
-          </div>
-        </div>
-      ));
-
       try {
 
         const data =
           await processRefund(id);
 
         toast.success(
-          data.message
+          "Refund Processed Successfully"
         );
 
         fetchOrders();
@@ -177,8 +115,10 @@ function AdminOrders() {
           error.response?.data
             ?.message ||
 
-          "Refund failed"
+          "Refund Failed"
+
         );
+
       }
     };
 
@@ -1162,8 +1102,6 @@ function AdminOrders() {
                       )}
 
                   </div>
-
-                  {/* ADDRESS */}
 
                   <div className="
                     mt-10

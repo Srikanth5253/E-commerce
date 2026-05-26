@@ -93,14 +93,6 @@ function ProductDetails() {
   const handleDelete =
     async () => {
 
-      const confirmDelete =
-        window.confirm(
-          "Delete this product?"
-        );
-
-      if (!confirmDelete)
-        return;
-
       try {
 
         await deleteProduct(
@@ -328,12 +320,11 @@ function ProductDetails() {
                             transition-all
                             duration-300
 
-                            ${
-                              selectedMedia === media
+                            ${selectedMedia === media
 
-                                ? "border-indigo-500 scale-105"
+                              ? "border-indigo-500 scale-105"
 
-                                : "border-slate-200 hover:border-indigo-500 hover:scale-105"
+                              : "border-slate-200 hover:border-indigo-500 hover:scale-105"
                             }
                           `}
                         />
@@ -378,12 +369,11 @@ function ProductDetails() {
                           cursor-pointer
                           bg-white
 
-                          ${
-                            selectedMedia === media
+                          ${selectedMedia === media
 
-                              ? "border-indigo-500 scale-105"
+                            ? "border-indigo-500 scale-105"
 
-                              : "border-slate-200 hover:border-indigo-500 hover:scale-105"
+                            : "border-slate-200 hover:border-indigo-500 hover:scale-105"
                           }
                         `}
                       />
