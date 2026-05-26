@@ -705,7 +705,7 @@ import {
   sendAdminMessage,
 } from "../../services/AdminService";
 
-import { socket } from "../../socket.js";
+import socket  from "../../socket.js";
 
 const AdminChats = () => {
 
