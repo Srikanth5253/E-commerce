@@ -241,7 +241,7 @@ export const sendMessage =
 
       await conversation.save();
 
-      getIO.to(conversationId).emit(
+      getIO().to(conversationId).emit(
         "newMessage",
         message
       );
