@@ -95,234 +95,236 @@ function Profile() {
         );
 
       } catch (error) {
-
-        console.log(error);
+        toast.error(
+          error.response?.data?.message ||
+          "Failed to fetch addresses"
+        );
       }
     };
 
-  const handleSave =
-    async () => {
+const handleSave =
+  async () => {
 
-      if (!name.trim()) {
+    if (!name.trim()) {
 
-        toast.error(
-          "Name is required"
-        );
+      toast.error(
+        "Name is required"
+      );
 
-        return;
-      }
+      return;
+    }
 
-      try {
+    try {
 
-        const response =
-          await updateProfile({
-            name,
-          });
+      const response =
+        await updateProfile({
+          name,
+        });
 
-        localStorage.setItem(
-          "user",
-          JSON.stringify(
-            response.user
-          )
-        );
-
-        setUser(
+      localStorage.setItem(
+        "user",
+        JSON.stringify(
           response.user
+        )
+      );
+
+      setUser(
+        response.user
+      );
+
+      toast.success(
+        "Profile Updated"
+      );
+
+      setIsEditing(false);
+
+    } catch (error) {
+
+      toast.error(
+        error.response?.data
+          ?.message ||
+        "Update Failed"
+      );
+    }
+  };
+
+const handleAddressSubmit =
+  async () => {
+
+    if (
+      !addressForm.fullName.trim() ||
+
+      !addressForm.phone.trim() ||
+
+      !addressForm.address.trim() ||
+
+      !addressForm.city.trim() ||
+
+      !addressForm.state.trim() ||
+
+      !addressForm.pincode.trim()
+    ) {
+
+      toast.error(
+        "Please fill all address fields"
+      );
+
+      return;
+    }
+
+    if (
+      !/^[0-9]{10}$/.test(
+        addressForm.phone
+      )
+    ) {
+
+      toast.error(
+        "Enter valid 10-digit phone number"
+      );
+
+      return;
+    }
+
+    if (
+      !/^[0-9]{6}$/.test(
+        addressForm.pincode
+      )
+    ) {
+
+      toast.error(
+        "Enter valid 6-digit pincode"
+      );
+
+      return;
+    }
+
+    try {
+
+      if (
+        editingAddressId
+      ) {
+
+        await updateAddress(
+          editingAddressId,
+          addressForm
         );
 
         toast.success(
-          "Profile Updated"
+          "Address Updated"
         );
 
-        setIsEditing(false);
+      } else {
 
-      } catch (error) {
-
-        toast.error(
-          error.response?.data
-            ?.message ||
-          "Update Failed"
-        );
-      }
-    };
-
-  const handleAddressSubmit =
-    async () => {
-
-      if (
-        !addressForm.fullName.trim() ||
-
-        !addressForm.phone.trim() ||
-
-        !addressForm.address.trim() ||
-
-        !addressForm.city.trim() ||
-
-        !addressForm.state.trim() ||
-
-        !addressForm.pincode.trim()
-      ) {
-
-        toast.error(
-          "Please fill all address fields"
+        await addAddress(
+          addressForm
         );
 
-        return;
-      }
-
-      if (
-        !/^[0-9]{10}$/.test(
-          addressForm.phone
-        )
-      ) {
-
-        toast.error(
-          "Enter valid 10-digit phone number"
-        );
-
-        return;
-      }
-
-      if (
-        !/^[0-9]{6}$/.test(
-          addressForm.pincode
-        )
-      ) {
-
-        toast.error(
-          "Enter valid 6-digit pincode"
-        );
-
-        return;
-      }
-
-      try {
-
-        if (
-          editingAddressId
-        ) {
-
-          await updateAddress(
-            editingAddressId,
-            addressForm
-          );
-
-          toast.success(
-            "Address Updated"
-          );
-
-        } else {
-
-          await addAddress(
-            addressForm
-          );
-
-          toast.success(
-            "Address Added"
-          );
-        }
-
-        fetchAddresses();
-
-        setShowAddressForm(
-          false
-        );
-
-        setEditingAddressId(
-          null
-        );
-
-        setAddressForm({
-          fullName: "",
-          phone: "",
-          address: "",
-          city: "",
-          state: "",
-          pincode: "",
-          label: "Home",
-          isDefault: false,
-        });
-
-      } catch (error) {
-
-        toast.error(
-          error.response?.data
-            ?.message ||
-          "Something went wrong"
+        toast.success(
+          "Address Added"
         );
       }
-    };
 
-  const handleEditAddress =
-    (address) => {
+      fetchAddresses();
+
+      setShowAddressForm(
+        false
+      );
 
       setEditingAddressId(
-        address._id
+        null
       );
 
       setAddressForm({
-        fullName:
-          address.fullName,
-
-        phone:
-          address.phone,
-
-        address:
-          address.address,
-
-        city:
-          address.city,
-
-        state:
-          address.state,
-
-        pincode:
-          address.pincode,
-
-        label:
-          address.label,
-
-        isDefault:
-          address.isDefault,
+        fullName: "",
+        phone: "",
+        address: "",
+        city: "",
+        state: "",
+        pincode: "",
+        label: "Home",
+        isDefault: false,
       });
 
-      setShowAddressForm(
-        true
+    } catch (error) {
+
+      toast.error(
+        error.response?.data
+          ?.message ||
+        "Something went wrong"
       );
-    };
+    }
+  };
 
-  const handleDeleteAddress =
-    async (id) => {
+const handleEditAddress =
+  (address) => {
 
-      try {
+    setEditingAddressId(
+      address._id
+    );
 
-        await deleteAddress(
-          id
-        );
+    setAddressForm({
+      fullName:
+        address.fullName,
 
-        toast.success(
-          "Address Deleted"
-        );
+      phone:
+        address.phone,
 
-        fetchAddresses();
+      address:
+        address.address,
 
-      } catch (error) {
+      city:
+        address.city,
 
-        toast.error(
-          "Delete Failed"
-        );
-      }
-    };
+      state:
+        address.state,
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-slate-100 text-slate-900">
+      pincode:
+        address.pincode,
 
-      <Navbar />
+      label:
+        address.label,
 
-      <div className="max-w-[1400px] mx-auto px-6 py-12 grid lg:grid-cols-4 gap-10">
+      isDefault:
+        address.isDefault,
+    });
 
-        <div
-          className="
+    setShowAddressForm(
+      true
+    );
+  };
+
+const handleDeleteAddress =
+  async (id) => {
+
+    try {
+
+      await deleteAddress(
+        id
+      );
+
+      toast.success(
+        "Address Deleted"
+      );
+
+      fetchAddresses();
+
+    } catch (error) {
+
+      toast.error(
+        "Delete Failed"
+      );
+    }
+  };
+
+return (
+  <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-slate-100 text-slate-900">
+
+    <Navbar />
+
+    <div className="max-w-[1400px] mx-auto px-6 py-12 grid lg:grid-cols-4 gap-10">
+
+      <div
+        className="
             bg-white/80
             backdrop-blur-xl
             border
@@ -332,12 +334,12 @@ function Profile() {
             h-fit
             shadow-xl
           "
-        >
+      >
 
-          <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center">
 
-            <div
-              className="
+          <div
+            className="
                 w-28
                 h-28
                 rounded-full
@@ -352,24 +354,24 @@ function Profile() {
                 text-white
                 shadow-lg
               "
-            >
-              {user?.name?.charAt(0)}
-            </div>
-
-            <h2 className="text-3xl font-extrabold mt-6 text-slate-900">
-              {user?.name}
-            </h2>
-
-            <p className="text-slate-500 mt-3 text-center break-all">
-              {user?.email}
-            </p>
-
+          >
+            {user?.name?.charAt(0)}
           </div>
 
-          <div className="mt-10 space-y-4">
+          <h2 className="text-3xl font-extrabold mt-6 text-slate-900">
+            {user?.name}
+          </h2>
 
-            <button
-              className="
+          <p className="text-slate-500 mt-3 text-center break-all">
+            {user?.email}
+          </p>
+
+        </div>
+
+        <div className="mt-10 space-y-4">
+
+          <button
+            className="
                 w-full
                 flex
                 items-center
@@ -386,17 +388,17 @@ function Profile() {
                 shadow-lg
                 hover:shadow-indigo-500/30
               "
-            >
+          >
 
-              <FaUser />
+            <FaUser />
 
-              Profile Overview
+            Profile Overview
 
-            </button>
+          </button>
 
-            <Link
-              to="/my-orders"
-              className="
+          <Link
+            to="/my-orders"
+            className="
                 flex
                 items-center
                 gap-3
@@ -414,17 +416,17 @@ function Profile() {
                 duration-300
                 shadow-sm
               "
-            >
+          >
 
-              <FaBoxOpen />
+            <FaBoxOpen />
 
-              Orders
+            Orders
 
-            </Link>
+          </Link>
 
-            <Link
-              to="/wishlist"
-              className="
+          <Link
+            to="/wishlist"
+            className="
                 flex
                 items-center
                 gap-3
@@ -442,22 +444,22 @@ function Profile() {
                 duration-300
                 shadow-sm
               "
-            >
+          >
 
-              <FaHeart />
+            <FaHeart />
 
-              Wishlist
+            Wishlist
 
-            </Link>
-
-          </div>
+          </Link>
 
         </div>
 
-        <div className="lg:col-span-3 space-y-8">
+      </div>
 
-          <div
-            className="
+      <div className="lg:col-span-3 space-y-8">
+
+        <div
+          className="
               bg-white
               border
               border-slate-200
@@ -465,37 +467,37 @@ function Profile() {
               p-8
               shadow-xl
             "
-          >
+        >
 
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
 
-              <div>
+            <div>
 
-                <h1 className="text-5xl font-extrabold text-slate-900">
-                  Profile Overview
-                </h1>
+              <h1 className="text-5xl font-extrabold text-slate-900">
+                Profile Overview
+              </h1>
 
-                <p className="text-slate-500 mt-3 text-lg">
-                  Manage your personal information
-                </p>
+              <p className="text-slate-500 mt-3 text-lg">
+                Manage your personal information
+              </p>
 
-              </div>
+            </div>
 
-              <button
-                onClick={() => {
+            <button
+              onClick={() => {
 
-                  if (isEditing) {
+                if (isEditing) {
 
-                    handleSave();
+                  handleSave();
 
-                  } else {
+                } else {
 
-                    setIsEditing(
-                      true
-                    );
-                  }
-                }}
-                className="
+                  setIsEditing(
+                    true
+                  );
+                }
+              }}
+              className="
                   bg-indigo-500
                   hover:bg-indigo-600
                   text-white
@@ -513,42 +515,42 @@ function Profile() {
                   justify-center
                   gap-3
                 "
-              >
+            >
 
-                {isEditing ? (
-                  <FaSave />
-                ) : (
-                  <FaEdit />
-                )}
+              {isEditing ? (
+                <FaSave />
+              ) : (
+                <FaEdit />
+              )}
 
-                {isEditing
-                  ? "Save Profile"
-                  : "Edit Profile"}
+              {isEditing
+                ? "Save Profile"
+                : "Edit Profile"}
 
-              </button>
+            </button>
 
-            </div>
+          </div>
 
-            <div className="grid md:grid-cols-2 gap-8 mt-12">
+          <div className="grid md:grid-cols-2 gap-8 mt-12">
 
-              <div>
+            <div>
 
-                <p className="text-slate-600 font-medium">
-                  Full Name
-                </p>
+              <p className="text-slate-600 font-medium">
+                Full Name
+              </p>
 
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) =>
-                    setName(
-                      e.target.value
-                    )
-                  }
-                  disabled={
-                    !isEditing
-                  }
-                  className="
+              <input
+                type="text"
+                value={name}
+                onChange={(e) =>
+                  setName(
+                    e.target.value
+                  )
+                }
+                disabled={
+                  !isEditing
+                }
+                className="
                     mt-3
                     w-full
                     bg-slate-50
@@ -565,23 +567,23 @@ function Profile() {
                     duration-300
                     disabled:opacity-70
                   "
-                />
+              />
 
-              </div>
+            </div>
 
-              <div>
+            <div>
 
-                <p className="text-slate-600 font-medium">
-                  Email Address
-                </p>
+              <p className="text-slate-600 font-medium">
+                Email Address
+              </p>
 
-                <input
-                  type="text"
-                  value={
-                    user?.email
-                  }
-                  disabled
-                  className="
+              <input
+                type="text"
+                value={
+                  user?.email
+                }
+                disabled
+                className="
                     mt-3
                     w-full
                     bg-slate-100
@@ -592,30 +594,28 @@ function Profile() {
                     rounded-2xl
                     opacity-80
                   "
-                />
+              />
 
-              </div>
+            </div>
 
-              <div>
+            <div>
 
-                <p className="text-slate-600 font-medium">
-                  Account Status
-                </p>
+              <p className="text-slate-600 font-medium">
+                Account Status
+              </p>
 
-                <div className="flex items-center gap-3 mt-4">
+              <div className="flex items-center gap-3 mt-4">
 
-                  <FaCheckCircle
-                    className="
+                <FaCheckCircle
+                  className="
                       text-green-500
                       text-2xl
                     "
-                  />
+                />
 
-                  <h3 className="text-2xl font-bold text-green-500">
-                    Active
-                  </h3>
-
-                </div>
+                <h3 className="text-2xl font-bold text-green-500">
+                  Active
+                </h3>
 
               </div>
 
@@ -623,8 +623,10 @@ function Profile() {
 
           </div>
 
-          <div
-            className="
+        </div>
+
+        <div
+          className="
               bg-white
               border
               border-slate-200
@@ -632,46 +634,46 @@ function Profile() {
               p-8
               shadow-xl
             "
-          >
+        >
 
-            <div className="
+          <div className="
               flex
               items-center
               justify-between
               mb-8
             ">
 
-              <div>
+            <div>
 
-                <h2 className="
+              <h2 className="
                   text-4xl
                   font-extrabold
                   text-slate-900
                 ">
-                  Saved Addresses
-                </h2>
+                Saved Addresses
+              </h2>
 
-                <p className="
+              <p className="
                   text-slate-500
                   mt-2
                 ">
-                  Manage your delivery addresses
-                </p>
+                Manage your delivery addresses
+              </p>
 
-              </div>
+            </div>
 
-              <button
-                onClick={() => {
+            <button
+              onClick={() => {
 
-                  setShowAddressForm(
-                    true
-                  );
+                setShowAddressForm(
+                  true
+                );
 
-                  setEditingAddressId(
-                    null
-                  );
-                }}
-                className="
+                setEditingAddressId(
+                  null
+                );
+              }}
+              className="
                   bg-black
                   hover:bg-slate-800
                   text-white
@@ -685,19 +687,19 @@ function Profile() {
                   transition-all
                   duration-300
                 "
-              >
+            >
 
-                <FaPlus />
+              <FaPlus />
 
-                Add Address
+              Add Address
 
-              </button>
+            </button>
 
-            </div>
+          </div>
 
-            {showAddressForm && (
+          {showAddressForm && (
 
-              <div className="
+            <div className="
                 border
                 border-slate-200
                 rounded-3xl
@@ -706,67 +708,67 @@ function Profile() {
                 bg-slate-50
               ">
 
-                <div className="
+              <div className="
                   grid
                   md:grid-cols-2
                   gap-5
                 ">
 
-                  <input
-                    type="text"
-                    placeholder="Full Name"
-                    value={
-                      addressForm.fullName
-                    }
-                    onChange={(e) =>
-                      setAddressForm({
-                        ...addressForm,
-                        fullName:
-                          e.target.value,
-                      })
-                    }
-                    className="
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  value={
+                    addressForm.fullName
+                  }
+                  onChange={(e) =>
+                    setAddressForm({
+                      ...addressForm,
+                      fullName:
+                        e.target.value,
+                    })
+                  }
+                  className="
                       border
                       border-slate-300
                       p-4
                       rounded-2xl
                     "
-                  />
+                />
 
-                  <input
-                    type="text"
-                    placeholder="Phone Number"
-                    value={
-                      addressForm.phone
-                    }
-                    onChange={(e) =>
-                      setAddressForm({
-                        ...addressForm,
-                        phone:
-                          e.target.value,
-                      })
-                    }
-                    className="
+                <input
+                  type="text"
+                  placeholder="Phone Number"
+                  value={
+                    addressForm.phone
+                  }
+                  onChange={(e) =>
+                    setAddressForm({
+                      ...addressForm,
+                      phone:
+                        e.target.value,
+                    })
+                  }
+                  className="
                       border
                       border-slate-300
                       p-4
                       rounded-2xl
                     "
-                  />
+                />
 
-                  <textarea
-                    placeholder="Address"
-                    value={
-                      addressForm.address
-                    }
-                    onChange={(e) =>
-                      setAddressForm({
-                        ...addressForm,
-                        address:
-                          e.target.value,
-                      })
-                    }
-                    className="
+                <textarea
+                  placeholder="Address"
+                  value={
+                    addressForm.address
+                  }
+                  onChange={(e) =>
+                    setAddressForm({
+                      ...addressForm,
+                      address:
+                        e.target.value,
+                    })
+                  }
+                  className="
                       md:col-span-2
                       border
                       border-slate-300
@@ -774,144 +776,144 @@ function Profile() {
                       rounded-2xl
                       h-32
                     "
-                  />
+                />
 
-                  <input
-                    type="text"
-                    placeholder="City"
-                    value={
-                      addressForm.city
-                    }
-                    onChange={(e) =>
-                      setAddressForm({
-                        ...addressForm,
-                        city:
-                          e.target.value,
-                      })
-                    }
-                    className="
+                <input
+                  type="text"
+                  placeholder="City"
+                  value={
+                    addressForm.city
+                  }
+                  onChange={(e) =>
+                    setAddressForm({
+                      ...addressForm,
+                      city:
+                        e.target.value,
+                    })
+                  }
+                  className="
                       border
                       border-slate-300
                       p-4
                       rounded-2xl
                     "
-                  />
+                />
 
-                  <input
-                    type="text"
-                    placeholder="State"
-                    value={
-                      addressForm.state
-                    }
-                    onChange={(e) =>
-                      setAddressForm({
-                        ...addressForm,
-                        state:
-                          e.target.value,
-                      })
-                    }
-                    className="
+                <input
+                  type="text"
+                  placeholder="State"
+                  value={
+                    addressForm.state
+                  }
+                  onChange={(e) =>
+                    setAddressForm({
+                      ...addressForm,
+                      state:
+                        e.target.value,
+                    })
+                  }
+                  className="
                       border
                       border-slate-300
                       p-4
                       rounded-2xl
                     "
-                  />
+                />
 
-                  <input
-                    type="text"
-                    placeholder="Pincode"
-                    value={
-                      addressForm.pincode
-                    }
-                    onChange={(e) =>
-                      setAddressForm({
-                        ...addressForm,
-                        pincode:
-                          e.target.value,
-                      })
-                    }
-                    className="
+                <input
+                  type="text"
+                  placeholder="Pincode"
+                  value={
+                    addressForm.pincode
+                  }
+                  onChange={(e) =>
+                    setAddressForm({
+                      ...addressForm,
+                      pincode:
+                        e.target.value,
+                    })
+                  }
+                  className="
                       border
                       border-slate-300
                       p-4
                       rounded-2xl
                     "
-                  />
+                />
 
-                  <select
-                    value={
-                      addressForm.label
-                    }
-                    onChange={(e) =>
-                      setAddressForm({
-                        ...addressForm,
-                        label:
-                          e.target.value,
-                      })
-                    }
-                    className="
+                <select
+                  value={
+                    addressForm.label
+                  }
+                  onChange={(e) =>
+                    setAddressForm({
+                      ...addressForm,
+                      label:
+                        e.target.value,
+                    })
+                  }
+                  className="
                       border
                       border-slate-300
                       p-4
                       rounded-2xl
                     "
-                  >
+                >
 
-                    <option>
-                      Home
-                    </option>
+                  <option>
+                    Home
+                  </option>
 
-                    <option>
-                      Office
-                    </option>
+                  <option>
+                    Office
+                  </option>
 
-                    <option>
-                      Other
-                    </option>
+                  <option>
+                    Other
+                  </option>
 
-                  </select>
+                </select>
 
-                </div>
+              </div>
 
-                <div className="
+              <div className="
                   flex
                   items-center
                   gap-3
                   mt-5
                 ">
 
-                  <input
-                    type="checkbox"
-                    checked={
-                      addressForm.isDefault
-                    }
-                    onChange={(e) =>
-                      setAddressForm({
-                        ...addressForm,
-                        isDefault:
-                          e.target.checked,
-                      })
-                    }
-                  />
+                <input
+                  type="checkbox"
+                  checked={
+                    addressForm.isDefault
+                  }
+                  onChange={(e) =>
+                    setAddressForm({
+                      ...addressForm,
+                      isDefault:
+                        e.target.checked,
+                    })
+                  }
+                />
 
-                  <p>
-                    Set as default address
-                  </p>
+                <p>
+                  Set as default address
+                </p>
 
-                </div>
+              </div>
 
-                <div className="
+              <div className="
                   flex
                   gap-4
                   mt-6
                 ">
 
-                  <button
-                    onClick={
-                      handleAddressSubmit
-                    }
-                    className="
+                <button
+                  onClick={
+                    handleAddressSubmit
+                  }
+                  className="
                       bg-indigo-500
                       hover:bg-indigo-600
                       text-white
@@ -920,21 +922,21 @@ function Profile() {
                       rounded-2xl
                       font-semibold
                     "
-                  >
+                >
 
-                    {editingAddressId
-                      ? "Update Address"
-                      : "Save Address"}
+                  {editingAddressId
+                    ? "Update Address"
+                    : "Save Address"}
 
-                  </button>
+                </button>
 
-                  <button
-                    onClick={() =>
-                      setShowAddressForm(
-                        false
-                      )
-                    }
-                    className="
+                <button
+                  onClick={() =>
+                    setShowAddressForm(
+                      false
+                    )
+                  }
+                  className="
                       bg-slate-200
                       hover:bg-slate-300
                       px-6
@@ -942,27 +944,27 @@ function Profile() {
                       rounded-2xl
                       font-semibold
                     "
-                  >
-                    Cancel
-                  </button>
-
-                </div>
+                >
+                  Cancel
+                </button>
 
               </div>
-            )}
 
-            <div className="
+            </div>
+          )}
+
+          <div className="
               grid
               md:grid-cols-2
               gap-6
             ">
 
-              {addresses.map(
-                (address) => (
+            {addresses.map(
+              (address) => (
 
-                  <div
-                    key={address._id}
-                    className="
+                <div
+                  key={address._id}
+                  className="
                     border
                     border-slate-200
                     rounded-3xl
@@ -973,39 +975,39 @@ function Profile() {
                     transition-all
                     duration-300
                   "
-                  >
+                >
 
-                    <div className="
+                  <div className="
                     flex
                     items-start
                     justify-between
                   ">
 
-                      <div className="
+                    <div className="
                       flex
                       items-center
                       gap-3
                     ">
 
-                        <FaMapMarkerAlt
-                          className="
+                      <FaMapMarkerAlt
+                        className="
                           text-indigo-500
                           text-xl
                         "
-                        />
+                      />
 
-                        <div>
+                      <div>
 
-                          <h3 className="
+                        <h3 className="
                           text-xl
                           font-bold
                         ">
-                            {address.label}
-                          </h3>
+                          {address.label}
+                        </h3>
 
-                          {address.isDefault && (
+                        {address.isDefault && (
 
-                            <span className="
+                          <span className="
                             text-xs
                             bg-green-100
                             text-green-600
@@ -1014,70 +1016,70 @@ function Profile() {
                             rounded-full
                             font-semibold
                           ">
-                              Default
-                            </span>
-                          )}
-
-                        </div>
+                            Default
+                          </span>
+                        )}
 
                       </div>
-
-                      <button
-                        onClick={() =>
-                          handleDeleteAddress(
-                            address._id
-                          )
-                        }
-                        className="
-                        text-red-500
-                        hover:text-red-600
-                      "
-                      >
-
-                        <FaTrash />
-
-                      </button>
-
-                    </div>
-
-                    <div className="
-                    mt-5
-                    space-y-2
-                  ">
-
-                      <p className="
-                      font-bold
-                    ">
-                        {address.fullName}
-                      </p>
-
-                      <p>
-                        {address.phone}
-                      </p>
-
-                      <p>
-                        {address.address}
-                      </p>
-
-                      <p>
-                        {address.city},
-                        {" "}
-                        {address.state}
-                        {" "}
-                        -
-                        {" "}
-                        {address.pincode}
-                      </p>
 
                     </div>
 
                     <button
                       onClick={() =>
-                        handleEditAddress(
-                          address
+                        handleDeleteAddress(
+                          address._id
                         )
                       }
                       className="
+                        text-red-500
+                        hover:text-red-600
+                      "
+                    >
+
+                      <FaTrash />
+
+                    </button>
+
+                  </div>
+
+                  <div className="
+                    mt-5
+                    space-y-2
+                  ">
+
+                    <p className="
+                      font-bold
+                    ">
+                      {address.fullName}
+                    </p>
+
+                    <p>
+                      {address.phone}
+                    </p>
+
+                    <p>
+                      {address.address}
+                    </p>
+
+                    <p>
+                      {address.city},
+                      {" "}
+                      {address.state}
+                      {" "}
+                      -
+                      {" "}
+                      {address.pincode}
+                    </p>
+
+                  </div>
+
+                  <button
+                    onClick={() =>
+                      handleEditAddress(
+                        address
+                      )
+                    }
+                    className="
                       mt-6
                       bg-indigo-50
                       hover:bg-indigo-100
@@ -1090,23 +1092,23 @@ function Profile() {
                       items-center
                       gap-2
                     "
-                    >
+                  >
 
-                      <FaEdit />
+                    <FaEdit />
 
-                      Edit Address
+                    Edit Address
 
-                    </button>
+                  </button>
 
-                  </div>
-                ))}
-
-            </div>
+                </div>
+              ))}
 
           </div>
 
-          <div
-            className="
+        </div>
+
+        <div
+          className="
               bg-white
               border
               border-slate-200
@@ -1114,16 +1116,16 @@ function Profile() {
               p-8
               shadow-xl
             "
-          >
+        >
 
-            <h2 className="text-4xl font-extrabold mb-8 text-slate-900">
-              Recent Activity
-            </h2>
+          <h2 className="text-4xl font-extrabold mb-8 text-slate-900">
+            Recent Activity
+          </h2>
 
-            <div className="space-y-5">
+          <div className="space-y-5">
 
-              <div
-                className="
+            <div
+              className="
                   bg-slate-50
                   border
                   border-slate-200
@@ -1134,12 +1136,12 @@ function Profile() {
                   transition-all
                   duration-300
                 "
-              >
-                Logged into account
-              </div>
+            >
+              Logged into account
+            </div>
 
-              <div
-                className="
+            <div
+              className="
                   bg-slate-50
                   border
                   border-slate-200
@@ -1150,12 +1152,12 @@ function Profile() {
                   transition-all
                   duration-300
                 "
-              >
-                Viewed products
-              </div>
+            >
+              Viewed products
+            </div>
 
-              <div
-                className="
+            <div
+              className="
                   bg-slate-50
                   border
                   border-slate-200
@@ -1166,10 +1168,8 @@ function Profile() {
                   transition-all
                   duration-300
                 "
-              >
-                Updated profile
-              </div>
-
+            >
+              Updated profile
             </div>
 
           </div>
@@ -1179,7 +1179,10 @@ function Profile() {
       </div>
 
     </div>
-  );
+
+  </div>
+);
+
 }
 
 export default Profile;
