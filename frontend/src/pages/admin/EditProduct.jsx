@@ -19,6 +19,8 @@ import {
   FaLayerGroup,
   FaWarehouse,
   FaEdit,
+  FaCloudUploadAlt,
+  FaTimes,
 } from "react-icons/fa";
 
 import Navbar from "../../components/Navbar";
@@ -608,28 +610,118 @@ function EditProduct() {
 
               </label>
 
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={(e) =>
-                  setImageFiles([
-                    ...e.target.files,
-                  ])
-                }
+              <label
                 className="
-                  w-full
-                  px-5
-                  py-4
-                  bg-slate-50
-                  border
-                  border-slate-300
-                  rounded-2xl
-                "
-              />
+      flex
+      flex-col
+      items-center
+      justify-center
+      w-full
+      p-8
+      border-2
+      border-dashed
+      border-indigo-300
+      bg-indigo-50
+      rounded-3xl
+      cursor-pointer
+      hover:bg-indigo-100
+      transition-all
+      duration-300
+    "
+              >
+
+                <FaCloudUploadAlt
+                  className="
+        text-5xl
+        text-indigo-500
+        mb-4
+      "
+                />
+
+                <p className="text-lg font-semibold text-slate-700">
+
+                  Click to upload images
+
+                </p>
+
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  hidden
+                  onChange={(e) =>
+                    setImageFiles([
+                      ...imageFiles,
+                      ...Array.from(
+                        e.target.files
+                      ),
+                    ])
+                  }
+                />
+
+              </label>
+
+              {imageFiles.length > 0 && (
+
+                <div className="mt-4 space-y-3">
+
+                  {imageFiles.map(
+                    (file, index) => (
+
+                      <div
+                        key={index}
+                        className="
+              flex
+              items-center
+              justify-between
+              bg-white
+              border
+              border-slate-200
+              rounded-2xl
+              px-4
+              py-3
+            "
+                      >
+
+                        <p className="text-slate-700 text-sm truncate">
+
+                          {file.name}
+
+                        </p>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setImageFiles(
+
+                              imageFiles.filter(
+                                (_, i) =>
+                                  i !== index
+                              )
+
+                            )
+                          }
+                          className="
+                text-red-500
+                hover:text-red-700
+                transition
+              "
+                        >
+
+                          <FaTimes />
+
+                        </button>
+
+                      </div>
+
+                    )
+                  )}
+
+                </div>
+
+              )}
 
             </div>
-
             <div>
 
               <label className="flex items-center gap-2 mb-3 text-slate-700 font-semibold">
@@ -640,25 +732,116 @@ function EditProduct() {
 
               </label>
 
-              <input
-                type="file"
-                multiple
-                accept="video/*"
-                onChange={(e) =>
-                  setVideoFiles([
-                    ...e.target.files,
-                  ])
-                }
+              <label
                 className="
-                  w-full
-                  px-5
-                  py-4
-                  bg-slate-50
-                  border
-                  border-slate-300
-                  rounded-2xl
-                "
-              />
+      flex
+      flex-col
+      items-center
+      justify-center
+      w-full
+      p-8
+      border-2
+      border-dashed
+      border-pink-300
+      bg-pink-50
+      rounded-3xl
+      cursor-pointer
+      hover:bg-pink-100
+      transition-all
+      duration-300
+    "
+              >
+
+                <FaCloudUploadAlt
+                  className="
+        text-5xl
+        text-pink-500
+        mb-4
+      "
+                />
+
+                <p className="text-lg font-semibold text-slate-700">
+
+                  Click to upload videos
+
+                </p>
+
+                <input
+                  type="file"
+                  multiple
+                  accept="video/*"
+                  hidden
+                  onChange={(e) =>
+                    setVideoFiles([
+                      ...videoFiles,
+                      ...Array.from(
+                        e.target.files
+                      ),
+                    ])
+                  }
+                />
+
+              </label>
+
+              {videoFiles.length > 0 && (
+
+                <div className="mt-4 space-y-3">
+
+                  {videoFiles.map(
+                    (file, index) => (
+
+                      <div
+                        key={index}
+                        className="
+              flex
+              items-center
+              justify-between
+              bg-white
+              border
+              border-slate-200
+              rounded-2xl
+              px-4
+              py-3
+            "
+                      >
+
+                        <p className="text-slate-700 text-sm truncate">
+
+                          {file.name}
+
+                        </p>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setVideoFiles(
+
+                              videoFiles.filter(
+                                (_, i) =>
+                                  i !== index
+                              )
+
+                            )
+                          }
+                          className="
+                text-red-500
+                hover:text-red-700
+                transition
+              "
+                        >
+
+                          <FaTimes />
+
+                        </button>
+
+                      </div>
+
+                    )
+                  )}
+
+                </div>
+
+              )}
 
             </div>
 

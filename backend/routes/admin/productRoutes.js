@@ -38,7 +38,7 @@ router.put(
   upload.fields([
     {
       name: "images",
-      maxCount: 10,
+      maxCount: 15,
     },
     {
       name: "videos",
