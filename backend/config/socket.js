@@ -16,7 +16,7 @@ export const initSocket = (server) => {
   io.on("connection", (socket) => {
 
     console.log(
-      "Socket connected:"
+      "Socket connected"
     );
 
     socket.on(
@@ -28,7 +28,7 @@ export const initSocket = (server) => {
         );
 
         console.log(
-          `Joined room: ${conversationId}`
+          `Joined room`
         );
       }
     );
