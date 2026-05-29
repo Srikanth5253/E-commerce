@@ -22,10 +22,10 @@ import AdminOrders from "./pages/admin/AdminOrders";
 import AdminChats from "./pages/admin/AdminChats";
 
 
-import Home from "./pages/user/Home"
+import Home from "./pages/user/Home";
 import Products from "./pages/user/Products";
 import ProductDetails from "./pages/user/ProductDetails";
-import Cart from "./pages/user/Cart"
+import Cart from "./pages/user/Cart";
 import Profile from "./pages/user/Profile";
 import Checkout from "./pages/user/Checkout";
 import Wishlist from "./pages/user/Wishlist";
